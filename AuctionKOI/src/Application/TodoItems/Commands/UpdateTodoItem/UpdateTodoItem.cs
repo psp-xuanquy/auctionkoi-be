@@ -3,7 +3,7 @@
 namespace AuctionKOI.Application.TodoItems.Commands.UpdateTodoItem;
 public record UpdateTodoItemCommand : IRequest
 {
-    public int Id { get; init; }
+    public required string Id { get; init; }
 
     public string? Title { get; init; }
 

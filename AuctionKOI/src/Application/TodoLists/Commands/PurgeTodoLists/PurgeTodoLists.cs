@@ -3,7 +3,7 @@ using AuctionKOI.Application.Common.Security;
 using AuctionKOI.Domain.Constants;
 
 namespace AuctionKOI.Application.TodoLists.Commands.PurgeTodoLists;
-[Authorize(Roles = Roles.Administrator)]
+[Authorize(Roles = Roles.Manager)]
 [Authorize(Policy = Policies.CanPurge)]
 public record PurgeTodoListsCommand : IRequest;
 

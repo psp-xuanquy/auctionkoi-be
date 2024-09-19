@@ -3,9 +3,9 @@
 namespace AuctionKOI.Application.TodoItems.Queries.GetTodoItemsWithPagination;
 public class TodoItemBriefDto
 {
-    public int Id { get; init; }
+    public required string Id { get; init; }
 
-    public int ListId { get; init; }
+    public required string ListId { get; init; }
 
     public string? Title { get; init; }
 

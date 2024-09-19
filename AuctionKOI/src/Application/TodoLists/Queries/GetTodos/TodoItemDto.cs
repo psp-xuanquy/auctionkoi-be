@@ -1,11 +1,12 @@
-﻿using AuctionKOI.Domain.Entities;
+﻿using System.Globalization;
+using AuctionKOI.Domain.Entities;
 
 namespace AuctionKOI.Application.TodoLists.Queries.GetTodos;
 public class TodoItemDto
 {
-    public int Id { get; init; }
+    public required string Id { get; init; }
 
-    public int ListId { get; init; }
+    public required string ListId { get; init; }
 
     public string? Title { get; init; }
 

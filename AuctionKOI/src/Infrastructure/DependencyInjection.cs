@@ -1,5 +1,6 @@
 ﻿using AuctionKOI.Application.Common.Interfaces;
 using AuctionKOI.Domain.Constants;
+using AuctionKOI.Domain.Entities;
 using AuctionKOI.Infrastructure.Data;
 using AuctionKOI.Infrastructure.Data.Interceptors;
 using AuctionKOI.Infrastructure.Identity;
@@ -46,7 +47,7 @@ public static class DependencyInjection
         services.AddTransient<IIdentityService, IdentityService>();
 
         services.AddAuthorization(options =>
-            options.AddPolicy(Policies.CanPurge, policy => policy.RequireRole(Roles.Administrator)));
+            options.AddPolicy(Policies.CanPurge, policy => policy.RequireRole(Roles.Manager)));
 
         return services;
     }

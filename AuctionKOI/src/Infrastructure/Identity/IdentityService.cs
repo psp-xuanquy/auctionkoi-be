@@ -1,5 +1,6 @@
 using AuctionKOI.Application.Common.Interfaces;
 using AuctionKOI.Application.Common.Models;
+using AuctionKOI.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;

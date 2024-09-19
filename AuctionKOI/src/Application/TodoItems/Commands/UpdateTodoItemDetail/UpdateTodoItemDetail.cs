@@ -4,9 +4,9 @@ using AuctionKOI.Domain.Enums;
 namespace AuctionKOI.Application.TodoItems.Commands.UpdateTodoItemDetail;
 public record UpdateTodoItemDetailCommand : IRequest
 {
-    public int Id { get; init; }
+    public required string Id { get; init; }
 
-    public int ListId { get; init; }
+    public required string ListId { get; init; }
 
     public PriorityLevel Priority { get; init; }
 

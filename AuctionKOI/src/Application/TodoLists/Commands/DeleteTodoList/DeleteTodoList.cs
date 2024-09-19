@@ -1,7 +1,7 @@
 ﻿using AuctionKOI.Application.Common.Interfaces;
 
 namespace AuctionKOI.Application.TodoLists.Commands.DeleteTodoList;
-public record DeleteTodoListCommand(int Id) : IRequest;
+public record DeleteTodoListCommand(string Id) : IRequest;
 
 public class DeleteTodoListCommandHandler : IRequestHandler<DeleteTodoListCommand>
 {

@@ -2,12 +2,12 @@
 using AuctionKOI.Domain.Entities;
 
 namespace AuctionKOI.Application.TodoLists.Commands.CreateTodoList;
-public record CreateTodoListCommand : IRequest<int>
+public record CreateTodoListCommand : IRequest<string>
 {
     public string? Title { get; init; }
 }
 
-public class CreateTodoListCommandHandler : IRequestHandler<CreateTodoListCommand, int>
+public class CreateTodoListCommandHandler : IRequestHandler<CreateTodoListCommand, string>
 {
     private readonly IApplicationDbContext _context;
 
@@ -16,7 +16,7 @@ public class CreateTodoListCommandHandler : IRequestHandler<CreateTodoListComman
         _context = context;
     }
 
-    public async Task<int> Handle(CreateTodoListCommand request, CancellationToken cancellationToken)
+    public async Task<string> Handle(CreateTodoListCommand request, CancellationToken cancellationToken)
     {
         var entity = new TodoList();
 

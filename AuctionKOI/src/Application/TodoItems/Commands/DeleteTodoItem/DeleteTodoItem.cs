@@ -2,7 +2,7 @@
 using AuctionKOI.Domain.Events;
 
 namespace AuctionKOI.Application.TodoItems.Commands.DeleteTodoItem;
-public record DeleteTodoItemCommand(int Id) : IRequest;
+public record DeleteTodoItemCommand(string Id) : IRequest;
 
 public class DeleteTodoItemCommandHandler : IRequestHandler<DeleteTodoItemCommand>
 {

@@ -1,4 +1,5 @@
-﻿using AuctionKOI.Infrastructure.Identity;
+﻿using AuctionKOI.Domain.Entities;
+using AuctionKOI.Infrastructure.Identity;
 
 namespace AuctionKOI.Web.Endpoints;
 public class Users : EndpointGroupBase
