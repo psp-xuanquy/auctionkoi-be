@@ -20,6 +20,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IApplica
     public DbSet<KoiMedia> KoiMedias => Set<KoiMedia>();
 
     public DbSet<Auction> Auctions => Set<Auction>();
+    public DbSet<Auction> AuctionMethods => Set<AuctionMethod>();
 
     public DbSet<Bid> Bids => Set<Bid>();
 
