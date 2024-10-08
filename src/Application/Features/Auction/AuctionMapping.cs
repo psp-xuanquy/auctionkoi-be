@@ -1,9 +1,9 @@
-﻿using AutoMapper;
-using KoiAuction.Application.Features.Auction;
+﻿using Application.Features.Auction.Queries;
+using AutoMapper;
 using KoiAuction.Application.Features.Auction.Commands.Create;
 using KoiAuction.Domain.Entities;
 
-namespace AuctionAuction.Application.Features.Auction
+namespace KoiAuction.Application.Features.Auction
 {
     public static class AuctionMapping
     {

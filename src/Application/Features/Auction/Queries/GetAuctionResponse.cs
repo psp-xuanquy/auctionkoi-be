@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KoiAuction.Application.Features.Auction
+namespace Application.Features.Auction.Queries
 {
     public class GetAuctionResponse : IMapFrom<AuctionEntity>
     {
