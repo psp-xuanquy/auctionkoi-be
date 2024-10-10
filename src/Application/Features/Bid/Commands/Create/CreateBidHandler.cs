@@ -36,13 +36,15 @@ namespace KoiAuction.Application.Features.Bid.Commands.Create
             var bid = _mapper.Map<BidEntity>(request);
             if (bid != null)
             {
+                bid.BidTime = DateTimeOffset.UtcNow;
+                bid.IsAutoBid = false;
                 bid.CreatedBy = user.UserName;
-                bid.CreatedTime = DateTimeOffset.Now;
+                bid.CreatedTime = DateTimeOffset.UtcNow;
 
                 _bidRepository.Add(bid);
                 await _bidRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
 
-                return "Bid added successfully";
+                return "Bid created successfully";
             }
 
             return "Error occurred while adding the BidEntity";
