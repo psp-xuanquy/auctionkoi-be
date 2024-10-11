@@ -1,4 +1,6 @@
 ﻿using Application.Features.Auction.Queries;
+using Application.Features.KoiAuctionRequest;
+using Application.Features.KoiAuctionRequest.Command;
 using KoiAuction.API.Controllers.ResponseTypes;
 using KoiAuction.Application.Features.Auction.Commands.Create;
 using KoiAuction.Application.Features.Auction.Queries;
@@ -14,7 +16,6 @@ namespace KoiAuction.API.Controllers
     [ApiController]
     public class AuctionController : ControllerBase
     {
-
         private readonly ISender _mediator;
 
         public AuctionController(ISender mediator)
@@ -45,6 +46,16 @@ namespace KoiAuction.API.Controllers
         public async Task<ActionResult<JsonResponse<string>>> Create(
             [FromBody] CreateAuctionCommand command,
             CancellationToken cancellationToken = default)
+        {
+            var result = await _mediator.Send(command, cancellationToken);
+            return Ok(new JsonResponse<string>(result));
+        }
+
+        [HttpPost("request-auction")]
+        [Authorize(Roles = "Breeder, Staff")]
+        public async Task<IActionResult> RequestAuction(
+           [FromBody] KoiAuctionRequestCommand command,
+           CancellationToken cancellationToken = default)
         {
             var result = await _mediator.Send(command, cancellationToken);
             return Ok(new JsonResponse<string>(result));
