@@ -1,4 +1,5 @@
-﻿using KoiAuction.Domain.Entities.Base;
+﻿using Domain.Enums;
+using KoiAuction.Domain.Entities.Base;
 using KoiAuction.Domain.Enums;
 using System;
 using System.Collections.Generic;
@@ -12,27 +13,32 @@ namespace KoiAuction.Domain.Entities
     [Table("Koi")]
     public class KoiEntity : BaseEntity
     {
-        public required string AuctionID { get; set; }
-        public required string BreederID { get; set; }
+        
         public string? Name { get; set; }
         public Sex Sex { get; set; }
-        public double Length { get; set; }
+        public double Size { get; set; }
         public int Age { get; set; }
+        public string? Location { get; set; }
         public decimal InitialPrice { get; set; }
-        public double Rating { get; set; }
         public string? Description { get; set; }
         public string? ImageUrl { get; set; }
+        public AuctionRequestStatus AuctionRequestStatus { get; set; }
+        public AuctionStatus AuctionStatus { get; set; }
+        public DateTimeOffset StartTime { get; set; }
+        public DateTimeOffset EndTime { get; set; }
+        public bool AllowAutoBid { get; set; }
 
-        [ForeignKey("AuctionID")]
-        public virtual AuctionEntity? Auction { get; set; }
+        [ForeignKey("AuctionMethodID")]
+        public required string AuctionMethodID { get; set; }
+        public virtual AuctionMethodEntity? AuctionMethod { get; set; }
 
         [ForeignKey("BreederID")]
-        public virtual AspNetUser? Breeder { get; set; }
+        public required string BreederID { get; set; }
+        public virtual UserEntity? Breeder { get; set; }
 
         public virtual ICollection<AutoBidEntity>? AutoBids { get; set; }
         public virtual ICollection<BidEntity>? Bids { get; set; }
-
-        public virtual ICollection<KoiMediaEntity>? KoiMedias { get; set; }
+        public virtual ICollection<KoiImageEntity>? KoiImages { get; set; }
         public virtual ICollection<TransactionEntity>? Transactions { get; set; }
     }
 }

@@ -10,7 +10,7 @@ using System.Text;
 
 namespace KoiAuction.Infrastructure.Repositories
 {
-    public class UserRepository : RepositoryBase<AspNetUser, AspNetUser, ApplicationDbContext>, IUserRepository
+    public class UserRepository : RepositoryBase<UserEntity, UserEntity, ApplicationDbContext>, IUserRepository
     {
         public UserRepository(ApplicationDbContext dbContext, IMapper mapper) : base(dbContext, mapper)
         {

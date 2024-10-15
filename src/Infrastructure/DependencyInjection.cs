@@ -6,6 +6,8 @@ using KoiAuction.Infrastructure.Persistences;
 using KoiAuction.Domain.Repositories;
 using KoiAuction.Domain.IRepositories;
 using KoiAuction.Infrastructure.Repositories;
+using Domain.IRepositories;
+using Infrastructure.Repositories;
 
 namespace KoiAuction.Infrastructure;
 
@@ -28,16 +30,16 @@ public static class DependencyInjection
         services.AddSingleton(TimeProvider.System);
 
         services.AddScoped<IUnitOfWork>(provider => provider.GetRequiredService<ApplicationDbContext>());
-        services.AddTransient<IAuctionRepository, AuctionRepository>();
+
         services.AddTransient<IAutoBidRepository, AutoBidRepository>();
         services.AddTransient<IBidRepository, BidRepository>();            
         services.AddTransient<IBlogRepository, BlogRepository>();
-        services.AddTransient<IBillRepository, BillRepository>();
+        services.AddTransient<IKoiImageRepository, KoiImageRepository>();
         services.AddTransient<IKoiRepository, KoiRepository>();
-        services.AddTransient<IKoiMediaRepository, KoiMediaRepository>();
-        services.AddTransient<IPaymentRepository, PaymentRepository>();
+        services.AddTransient<IKoiBreederRepository, KoiBreederRepository>();
         services.AddTransient<ITransactionRepository, TransactionRepository>();
         services.AddTransient<IUserRepository, UserRepository>();
+        services.AddTransient<IAuctionMethodRepository, AuctionMethodRepository>();
 
         return services;
     }

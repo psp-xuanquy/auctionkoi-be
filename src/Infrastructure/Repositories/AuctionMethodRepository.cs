@@ -8,7 +8,7 @@ namespace KoiAuction.Infrastructure.Repositories
 {
     public class AuctionMethodRepository : RepositoryBase<AuctionMethodEntity, AuctionMethodEntity, ApplicationDbContext>, IAuctionMethodRepository
     {
-        public AuctionMethodRepository(ApplicationDbContext dbContext, IMapper mapper) : base(dbContext, mapper)
+        public AuctionMethodRepository(ApplicationDbContext context, IMapper mapper) : base(context, mapper)
         {
 
         }

@@ -1,4 +1,6 @@
-﻿using KoiAuction.Domain.Entities.Base;
+﻿using Domain.Entities;
+using Domain.Enums;
+using KoiAuction.Domain.Entities.Base;
 using KoiAuction.Domain.Enums;
 using System;
 using System.Collections.Generic;
@@ -13,24 +15,24 @@ namespace KoiAuction.Domain.Entities
     [Table("Transaction")]
     public class TransactionEntity : BaseEntity
     {
-        public required string KoiID { get; set; }
-        public required string BuyerID { get; set; }
-        public required string SellerID { get; set; }
-        public decimal CommissionRate { get; set; }
+        public TransactionType TransactionType { get; set; }
+        public PaymentStatus Status { get; set; }
         public decimal TotalAmount { get; set; }
-        public DateTimeOffset TransactionDate { get; set; }
-        public TransactionStatus TransactionStatus { get; set; }
-        public ShippingStatus ShippingStatus { get; set; }
+        public DateTimeOffset TransactionDate { get; set; }  
+        public string PaymentMethod { get; set; } = "Banking";
+        public decimal CommissionRate { get; set; }
+
+        [ForeignKey("BidID")]
+        public required string BidID { get; set; }
+        public virtual BidEntity? Bid { get; set; }
 
         [ForeignKey("KoiID")]
+        public required string KoiID { get; set; }
         public virtual KoiEntity? Koi { get; set; }
 
-        [ForeignKey("BuyerID")]
-        public virtual AspNetUser? Buyer { get; set; }
+        [ForeignKey("AuctionHistoryID")]
+        public required string AuctionHistoryId { get; set; }
+        public virtual AuctionHistory? AuctionHistory { get; set; }
 
-        [ForeignKey("SellerID")]
-        public virtual AspNetUser? Seller { get; set; }
-
-        public virtual ICollection<PaymentEntity>? Payments { get; set; }
     }
 }

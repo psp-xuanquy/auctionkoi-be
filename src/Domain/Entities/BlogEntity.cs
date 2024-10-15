@@ -11,14 +11,13 @@ namespace KoiAuction.Domain.Entities
 {
     [Table("Blog")]
     public class BlogEntity : BaseEntity
-    {
-        public required string AuthorID { get; set; }
+    {     
         public string? Title { get; set; }
         public string? Content { get; set; }
-        public DateTimeOffset PostedDate { get; set; }
-        public Status Status { get; set; }
-
+        public string? UrlImage { get; set; }
+        public DateTimeOffset PostedDate { get; set; }     
         [ForeignKey("AuthorID")]
-        public virtual AspNetUser? Author { get; set; }
+        public required string AuthorID { get; set; }
+        public virtual UserEntity? Author { get; set; }
     }
 }

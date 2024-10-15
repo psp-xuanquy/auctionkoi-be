@@ -17,7 +17,7 @@ namespace KoiAuction.API.Services
                 new(ClaimTypes.Role, roles)             //Vai trò người dùng
             };
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("This is KN Spices Website SecretKey"));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("This is Koi Auction Website SecretKey"));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var token = new JwtSecurityToken(

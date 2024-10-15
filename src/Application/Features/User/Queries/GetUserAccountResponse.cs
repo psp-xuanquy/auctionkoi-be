@@ -4,7 +4,7 @@ using KoiAuction.Domain.Entities;
 
 namespace KoiAuction.Application.User.Queries
 {
-    public class GetUserAccountResponse : IMapFrom<AspNetUser>
+    public class GetUserAccountResponse : IMapFrom<UserEntity>
     {
         public string? ID { get; set; }
         public string? UserName { get; set; }
@@ -14,7 +14,7 @@ namespace KoiAuction.Application.User.Queries
 
         public void Mapping(Profile profile)
         {
-            profile.CreateMap<AspNetUser, GetUserAccountResponse>();      
+            profile.CreateMap<UserEntity, GetUserAccountResponse>();      
         }
 
     }

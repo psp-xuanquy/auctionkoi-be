@@ -14,9 +14,9 @@ namespace KoiAuction.API.Controllers
     [ApiExplorerSettings(IgnoreApi = true)]
     public class ConfirmEmailController : ControllerBase
     {
-        private readonly UserManager<AspNetUser> _userManager;
+        private readonly UserManager<UserEntity> _userManager;
 
-        public ConfirmEmailController(UserManager<AspNetUser> userManager)
+        public ConfirmEmailController(UserManager<UserEntity> userManager)
         {
             _userManager = userManager;
         }
@@ -32,15 +32,16 @@ namespace KoiAuction.API.Controllers
             if (result.Succeeded)
             {
                 // Đăng nhập người dùng sau khi xác nhận email
-                await SignInUser(user);
-
-                return Redirect("http://localhost:5154/swagger/index.html"); // Redirect đến trang chính sau khi đăng nhập thành công
+            
+                return Ok("Confirm Email Success! Now you can Login");
+                //await SignInUser(user);
+                //return Redirect("http://localhost:5154/swagger/index.html"); // Redirect đến trang chính sau khi đăng nhập thành công
             }
 
             return BadRequest("Email confirms failed.");
         }
 
-        private async Task SignInUser(AspNetUser user)
+        private async Task SignInUser(UserEntity user)
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 

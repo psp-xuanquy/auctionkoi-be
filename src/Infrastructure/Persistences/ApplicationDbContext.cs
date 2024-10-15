@@ -4,42 +4,35 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using KoiAuction.Domain.Entities;
+using Domain.Entities;
 
 namespace KoiAuction.Infrastructure.Persistences;
 
-public class ApplicationDbContext : IdentityDbContext<AspNetUser, IdentityRole, string>, IUnitOfWork
+public class ApplicationDbContext : IdentityDbContext<UserEntity, IdentityRole, string>, IUnitOfWork
 {
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
     {
 
     }
     public DbSet<KoiEntity> Kois { get; set; }
-    public DbSet<KoiMediaEntity> KoiMedias { get; set; }
-    public DbSet<AuctionEntity> Auctions { get; set; }
+    public DbSet<KoiImageEntity> KoiImages { get; set; }
+    public DbSet<AuctionHistory> AuctionHistories { get; set; }
     public DbSet<AuctionMethodEntity> AuctionMethods { get; set; }
     public DbSet<AutoBidEntity> AutoBids { get; set; }
-    public DbSet<BidEntity> Bids { get; set; }
-    public DbSet<BillEntity> Bills { get; set; }
-    public DbSet<BlogEntity> Blogs { get; set; }
-    public DbSet<PaymentEntity> Payments { get; set; }
+    public DbSet<BidEntity> Bids { get; set; } 
+    public DbSet<KoiBreederEntity> Breeders { get; set; }
+    public DbSet<BlogEntity> Blogs { get; set; } 
     public DbSet<TransactionEntity> Transactions { get; set; }
-    public DbSet<AspNetUser> Users => Set<AspNetUser>();
+    public DbSet<UserEntity> Users => Set<UserEntity>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
 
         // AspNetUser - Unique Email
-        modelBuilder.Entity<AspNetUser>()
+        modelBuilder.Entity<UserEntity>()
             .HasIndex(u => u.Email)
             .IsUnique();
-
-        // AuctionEntity
-        modelBuilder.Entity<AuctionEntity>()
-            .HasMany(a => a.Kois)
-            .WithOne(k => k.Auction)
-            .HasForeignKey(k => k.AuctionID)
-            .OnDelete(DeleteBehavior.Restrict);
 
         // KoiEntity
         modelBuilder.Entity<KoiEntity>()
@@ -55,7 +48,7 @@ public class ApplicationDbContext : IdentityDbContext<AspNetUser, IdentityRole, 
             .OnDelete(DeleteBehavior.Restrict);
 
         modelBuilder.Entity<KoiEntity>()
-            .HasMany(k => k.KoiMedias)
+            .HasMany(k => k.KoiImages)
             .WithOne(km => km.Koi)
             .HasForeignKey(km => km.KoiID)
             .OnDelete(DeleteBehavior.Restrict);
@@ -64,25 +57,6 @@ public class ApplicationDbContext : IdentityDbContext<AspNetUser, IdentityRole, 
             .HasMany(k => k.Transactions)
             .WithOne(t => t.Koi)
             .HasForeignKey(t => t.KoiID)
-            .OnDelete(DeleteBehavior.Restrict);
-
-        // TransactionEntity
-        modelBuilder.Entity<TransactionEntity>()
-            .HasMany(t => t.Payments)
-            .WithOne(p => p.Transaction)
-            .HasForeignKey(p => p.TransactionID)
-            .OnDelete(DeleteBehavior.Restrict);
-
-        modelBuilder.Entity<TransactionEntity>()
-            .HasOne(t => t.Buyer)
-            .WithMany(u => u.BoughtTransactions)
-            .HasForeignKey(t => t.BuyerID)
-            .OnDelete(DeleteBehavior.Restrict);
-
-        modelBuilder.Entity<TransactionEntity>()
-            .HasOne(t => t.Seller)
-            .WithMany(u => u.SoldTransactions)
-            .HasForeignKey(t => t.SellerID)
             .OnDelete(DeleteBehavior.Restrict);
 
         // BidEntity
@@ -112,11 +86,31 @@ public class ApplicationDbContext : IdentityDbContext<AspNetUser, IdentityRole, 
             .HasForeignKey(b => b.AuthorID)
             .OnDelete(DeleteBehavior.Restrict);
 
-        // BillEntity
-        modelBuilder.Entity<BillEntity>()
-            .HasOne(b => b.Customer)
-            .WithMany(u => u.Bills)
-            .HasForeignKey(b => b.CustomerID)
+        // AuctionHistory
+        modelBuilder.Entity<AuctionHistory>()
+            .HasMany(ah => ah.Transactions)
+            .WithOne(t => t.AuctionHistory)
+            .HasForeignKey(t => t.AuctionHistoryId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        //Transaction
+        modelBuilder.Entity<TransactionEntity>()
+            .HasOne(t => t.Koi)
+            .WithMany(k => k.Transactions)
+            .HasForeignKey(t => t.KoiID)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<TransactionEntity>()
+            .HasOne(t => t.AuctionHistory)
+            .WithMany(ah => ah.Transactions)
+            .HasForeignKey(t => t.AuctionHistoryId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        // KoiBreederEntity
+        modelBuilder.Entity<KoiBreederEntity>()
+            .HasOne(kb => kb.User)
+            .WithMany(u => u.KoiBreeders)
+            .HasForeignKey(kb => kb.UserId)
             .OnDelete(DeleteBehavior.Restrict);
     }
 

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace KoiAuction.Infrastructure.Migrations
+namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
@@ -25,7 +25,466 @@ namespace KoiAuction.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("KoiAuction.Domain.Entities.AspNetUser", b =>
+            modelBuilder.Entity("Domain.Entities.AuctionHistory", b =>
+                {
+                    b.Property<string>("ID")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset?>("CreatedTime")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset?>("DeletedTime")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<int>("DeliveryStatus")
+                        .HasColumnType("int");
+
+                    b.Property<string>("LastUpdatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset?>("LastUpdatedTime")
+                        .HasColumnType("datetimeoffset");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("AuctionHistory");
+                });
+
+            modelBuilder.Entity("Domain.Entities.KoiBreederEntity", b =>
+                {
+                    b.Property<string>("ID")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset?>("CreatedTime")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset?>("DeletedTime")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("KoiFarmDescription")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("KoiFarmImage")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("KoiFarmLocation")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("KoiFarmName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastUpdatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset?>("LastUpdatedTime")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("RoleRequestDenyReason")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("RoleRequestStatus")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("KoiBreeder");
+                });
+
+            modelBuilder.Entity("KoiAuction.Domain.Entities.AuctionMethodEntity", b =>
+                {
+                    b.Property<string>("ID")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset?>("CreatedTime")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset?>("DeletedTime")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastUpdatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset?>("LastUpdatedTime")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("AuctionMethod");
+                });
+
+            modelBuilder.Entity("KoiAuction.Domain.Entities.AutoBidEntity", b =>
+                {
+                    b.Property<string>("ID")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTimeOffset>("BidTime")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("BidderID")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset?>("CreatedTime")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset?>("DeletedTime")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<decimal>("IncrementAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("KoiID")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("LastUpdatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset?>("LastUpdatedTime")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<decimal>("MaxBid")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("BidderID");
+
+                    b.HasIndex("KoiID");
+
+                    b.ToTable("AutoBid");
+                });
+
+            modelBuilder.Entity("KoiAuction.Domain.Entities.BidEntity", b =>
+                {
+                    b.Property<string>("ID")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<decimal>("BidAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTimeOffset>("BidTime")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("BidderID")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset?>("CreatedTime")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset?>("DeletedTime")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<bool>("IsAutoBid")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsWinningBid")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("KoiID")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("LastUpdatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset?>("LastUpdatedTime")
+                        .HasColumnType("datetimeoffset");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("BidderID");
+
+                    b.HasIndex("KoiID");
+
+                    b.ToTable("Bid");
+                });
+
+            modelBuilder.Entity("KoiAuction.Domain.Entities.BlogEntity", b =>
+                {
+                    b.Property<string>("ID")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("AuthorID")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Content")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset?>("CreatedTime")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset?>("DeletedTime")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("LastUpdatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset?>("LastUpdatedTime")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<DateTimeOffset>("PostedDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UrlImage")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("AuthorID");
+
+                    b.ToTable("Blog");
+                });
+
+            modelBuilder.Entity("KoiAuction.Domain.Entities.KoiEntity", b =>
+                {
+                    b.Property<string>("ID")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("Age")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("AllowAutoBid")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("AuctionMethodID")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("AuctionRequestStatus")
+                        .HasColumnType("int");
+
+                    b.Property<int>("AuctionStatus")
+                        .HasColumnType("int");
+
+                    b.Property<string>("BreederID")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset?>("CreatedTime")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset?>("DeletedTime")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset>("EndTime")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("InitialPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("LastUpdatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset?>("LastUpdatedTime")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("Location")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Sex")
+                        .HasColumnType("int");
+
+                    b.Property<double>("Size")
+                        .HasColumnType("float");
+
+                    b.Property<DateTimeOffset>("StartTime")
+                        .HasColumnType("datetimeoffset");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("AuctionMethodID");
+
+                    b.HasIndex("BreederID");
+
+                    b.ToTable("Koi");
+                });
+
+            modelBuilder.Entity("KoiAuction.Domain.Entities.KoiImageEntity", b =>
+                {
+                    b.Property<string>("ID")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset?>("CreatedTime")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset?>("DeletedTime")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("KoiID")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("LastUpdatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset?>("LastUpdatedTime")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("Url")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("KoiID");
+
+                    b.ToTable("KoiImage");
+                });
+
+            modelBuilder.Entity("KoiAuction.Domain.Entities.TransactionEntity", b =>
+                {
+                    b.Property<string>("ID")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("AuctionHistoryId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("BidID")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<decimal>("CommissionRate")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset?>("CreatedTime")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset?>("DeletedTime")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("KoiID")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("LastUpdatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset?>("LastUpdatedTime")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("PaymentMethod")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("TotalAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTimeOffset>("TransactionDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<int>("TransactionType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserEntityId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("AuctionHistoryId");
+
+                    b.HasIndex("BidID");
+
+                    b.HasIndex("KoiID");
+
+                    b.HasIndex("UserEntityId");
+
+                    b.ToTable("Transaction");
+                });
+
+            modelBuilder.Entity("KoiAuction.Domain.Entities.UserEntity", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -63,9 +522,6 @@ namespace KoiAuction.Infrastructure.Migrations
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
-
-                    b.Property<string>("FarmName")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FullName")
                         .HasColumnType("nvarchar(max)");
@@ -144,502 +600,6 @@ namespace KoiAuction.Infrastructure.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
-                });
-
-            modelBuilder.Entity("KoiAuction.Domain.Entities.AuctionEntity", b =>
-                {
-                    b.Property<string>("ID")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<bool>("AllowAutoBid")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("AuctionMethodID")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTimeOffset?>("CreatedTime")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("DeletedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTimeOffset?>("DeletedTime")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<DateTimeOffset>("EndTime")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("LastUpdatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTimeOffset?>("LastUpdatedTime")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<DateTimeOffset>("StartTime")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("AuctionMethodID");
-
-                    b.ToTable("Auction");
-                });
-
-            modelBuilder.Entity("KoiAuction.Domain.Entities.AuctionMethodEntity", b =>
-                {
-                    b.Property<string>("ID")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTimeOffset?>("CreatedTime")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("DeletedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTimeOffset?>("DeletedTime")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LastUpdatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTimeOffset?>("LastUpdatedTime")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("ID");
-
-                    b.ToTable("AuctionMethod");
-                });
-
-            modelBuilder.Entity("KoiAuction.Domain.Entities.AutoBidEntity", b =>
-                {
-                    b.Property<string>("ID")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTimeOffset>("BidTime")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("BidderID")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTimeOffset?>("CreatedTime")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("DeletedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTimeOffset?>("DeletedTime")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("KoiID")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("LastUpdatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTimeOffset?>("LastUpdatedTime")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<decimal>("MaxBid")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("BidderID");
-
-                    b.HasIndex("KoiID");
-
-                    b.ToTable("AutoBid");
-                });
-
-            modelBuilder.Entity("KoiAuction.Domain.Entities.BidEntity", b =>
-                {
-                    b.Property<string>("ID")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("AuctionEntityID")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<decimal>("BidAmount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<DateTimeOffset>("BidTime")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("BidderID")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTimeOffset?>("CreatedTime")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("DeletedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTimeOffset?>("DeletedTime")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<DateTimeOffset>("ExpireDate")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<decimal>("IncrementAmount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<bool>("IsAutoBid")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsLatest")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsWinningBid")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("KoiID")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("LastUpdatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTimeOffset?>("LastUpdatedTime")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<decimal>("MaxBidPrice")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("AuctionEntityID");
-
-                    b.HasIndex("BidderID");
-
-                    b.HasIndex("KoiID");
-
-                    b.ToTable("Bid");
-                });
-
-            modelBuilder.Entity("KoiAuction.Domain.Entities.BillEntity", b =>
-                {
-                    b.Property<string>("ID")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTimeOffset?>("CreatedTime")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("CustomerID")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("DeletedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTimeOffset?>("DeletedTime")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("LastUpdatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTimeOffset?>("LastUpdatedTime")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<DateTimeOffset>("PaymentDate")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<decimal>("TotalAmount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("CustomerID");
-
-                    b.ToTable("Bill");
-                });
-
-            modelBuilder.Entity("KoiAuction.Domain.Entities.BlogEntity", b =>
-                {
-                    b.Property<string>("ID")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("AuthorID")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Content")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTimeOffset?>("CreatedTime")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("DeletedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTimeOffset?>("DeletedTime")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("LastUpdatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTimeOffset?>("LastUpdatedTime")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<DateTimeOffset>("PostedDate")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Title")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("AuthorID");
-
-                    b.ToTable("Blog");
-                });
-
-            modelBuilder.Entity("KoiAuction.Domain.Entities.KoiEntity", b =>
-                {
-                    b.Property<string>("ID")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("Age")
-                        .HasColumnType("int");
-
-                    b.Property<string>("AuctionID")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("BreederID")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTimeOffset?>("CreatedTime")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("DeletedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTimeOffset?>("DeletedTime")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ImageUrl")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("InitialPrice")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("LastUpdatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTimeOffset?>("LastUpdatedTime")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<double>("Length")
-                        .HasColumnType("float");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<double>("Rating")
-                        .HasColumnType("float");
-
-                    b.Property<int>("Sex")
-                        .HasColumnType("int");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("AuctionID");
-
-                    b.HasIndex("BreederID");
-
-                    b.ToTable("Koi");
-                });
-
-            modelBuilder.Entity("KoiAuction.Domain.Entities.KoiMediaEntity", b =>
-                {
-                    b.Property<string>("ID")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTimeOffset?>("CreatedTime")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("DeletedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTimeOffset?>("DeletedTime")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("KoiID")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("LastUpdatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTimeOffset?>("LastUpdatedTime")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("Url")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UrlType")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("KoiID");
-
-                    b.ToTable("KoiMedia");
-                });
-
-            modelBuilder.Entity("KoiAuction.Domain.Entities.PaymentEntity", b =>
-                {
-                    b.Property<string>("ID")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTimeOffset?>("CreatedTime")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("DeletedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTimeOffset?>("DeletedTime")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("LastUpdatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTimeOffset?>("LastUpdatedTime")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<DateTimeOffset>("PaymentDate")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<int>("PaymentStatus")
-                        .HasColumnType("int");
-
-                    b.Property<string>("TransactionID")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("TransactionID");
-
-                    b.ToTable("Payment");
-                });
-
-            modelBuilder.Entity("KoiAuction.Domain.Entities.TransactionEntity", b =>
-                {
-                    b.Property<string>("ID")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("BuyerID")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<decimal>("CommissionRate")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTimeOffset?>("CreatedTime")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("DeletedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTimeOffset?>("DeletedTime")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("KoiID")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("LastUpdatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTimeOffset?>("LastUpdatedTime")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("SellerID")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("ShippingStatus")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("TotalAmount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<DateTimeOffset>("TransactionDate")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<int>("TransactionStatus")
-                        .HasColumnType("int");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("BuyerID");
-
-                    b.HasIndex("KoiID");
-
-                    b.HasIndex("SellerID");
-
-                    b.ToTable("Transaction");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -775,20 +735,20 @@ namespace KoiAuction.Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("KoiAuction.Domain.Entities.AuctionEntity", b =>
+            modelBuilder.Entity("Domain.Entities.KoiBreederEntity", b =>
                 {
-                    b.HasOne("KoiAuction.Domain.Entities.AuctionMethodEntity", "AuctionMethod")
-                        .WithMany()
-                        .HasForeignKey("AuctionMethodID")
-                        .OnDelete(DeleteBehavior.Cascade)
+                    b.HasOne("KoiAuction.Domain.Entities.UserEntity", "User")
+                        .WithMany("KoiBreeders")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("AuctionMethod");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("KoiAuction.Domain.Entities.AutoBidEntity", b =>
                 {
-                    b.HasOne("KoiAuction.Domain.Entities.AspNetUser", "Bidder")
+                    b.HasOne("KoiAuction.Domain.Entities.UserEntity", "Bidder")
                         .WithMany("AutoBids")
                         .HasForeignKey("BidderID")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -807,11 +767,7 @@ namespace KoiAuction.Infrastructure.Migrations
 
             modelBuilder.Entity("KoiAuction.Domain.Entities.BidEntity", b =>
                 {
-                    b.HasOne("KoiAuction.Domain.Entities.AuctionEntity", null)
-                        .WithMany("Bids")
-                        .HasForeignKey("AuctionEntityID");
-
-                    b.HasOne("KoiAuction.Domain.Entities.AspNetUser", "Bidder")
+                    b.HasOne("KoiAuction.Domain.Entities.UserEntity", "Bidder")
                         .WithMany("Bids")
                         .HasForeignKey("BidderID")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -828,20 +784,9 @@ namespace KoiAuction.Infrastructure.Migrations
                     b.Navigation("Koi");
                 });
 
-            modelBuilder.Entity("KoiAuction.Domain.Entities.BillEntity", b =>
-                {
-                    b.HasOne("KoiAuction.Domain.Entities.AspNetUser", "Customer")
-                        .WithMany("Bills")
-                        .HasForeignKey("CustomerID")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Customer");
-                });
-
             modelBuilder.Entity("KoiAuction.Domain.Entities.BlogEntity", b =>
                 {
-                    b.HasOne("KoiAuction.Domain.Entities.AspNetUser", "Author")
+                    b.HasOne("KoiAuction.Domain.Entities.UserEntity", "Author")
                         .WithMany("Blogs")
                         .HasForeignKey("AuthorID")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -852,27 +797,27 @@ namespace KoiAuction.Infrastructure.Migrations
 
             modelBuilder.Entity("KoiAuction.Domain.Entities.KoiEntity", b =>
                 {
-                    b.HasOne("KoiAuction.Domain.Entities.AuctionEntity", "Auction")
-                        .WithMany("Kois")
-                        .HasForeignKey("AuctionID")
-                        .OnDelete(DeleteBehavior.Restrict)
+                    b.HasOne("KoiAuction.Domain.Entities.AuctionMethodEntity", "AuctionMethod")
+                        .WithMany()
+                        .HasForeignKey("AuctionMethodID")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("KoiAuction.Domain.Entities.AspNetUser", "Breeder")
+                    b.HasOne("KoiAuction.Domain.Entities.UserEntity", "Breeder")
                         .WithMany("Kois")
                         .HasForeignKey("BreederID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Auction");
+                    b.Navigation("AuctionMethod");
 
                     b.Navigation("Breeder");
                 });
 
-            modelBuilder.Entity("KoiAuction.Domain.Entities.KoiMediaEntity", b =>
+            modelBuilder.Entity("KoiAuction.Domain.Entities.KoiImageEntity", b =>
                 {
                     b.HasOne("KoiAuction.Domain.Entities.KoiEntity", "Koi")
-                        .WithMany("KoiMedias")
+                        .WithMany("KoiImages")
                         .HasForeignKey("KoiID")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -880,23 +825,18 @@ namespace KoiAuction.Infrastructure.Migrations
                     b.Navigation("Koi");
                 });
 
-            modelBuilder.Entity("KoiAuction.Domain.Entities.PaymentEntity", b =>
+            modelBuilder.Entity("KoiAuction.Domain.Entities.TransactionEntity", b =>
                 {
-                    b.HasOne("KoiAuction.Domain.Entities.TransactionEntity", "Transaction")
-                        .WithMany("Payments")
-                        .HasForeignKey("TransactionID")
+                    b.HasOne("Domain.Entities.AuctionHistory", "AuctionHistory")
+                        .WithMany("Transactions")
+                        .HasForeignKey("AuctionHistoryId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("Transaction");
-                });
-
-            modelBuilder.Entity("KoiAuction.Domain.Entities.TransactionEntity", b =>
-                {
-                    b.HasOne("KoiAuction.Domain.Entities.AspNetUser", "Buyer")
-                        .WithMany("BoughtTransactions")
-                        .HasForeignKey("BuyerID")
-                        .OnDelete(DeleteBehavior.Restrict)
+                    b.HasOne("KoiAuction.Domain.Entities.BidEntity", "Bid")
+                        .WithMany()
+                        .HasForeignKey("BidID")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("KoiAuction.Domain.Entities.KoiEntity", "Koi")
@@ -905,17 +845,15 @@ namespace KoiAuction.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("KoiAuction.Domain.Entities.AspNetUser", "Seller")
-                        .WithMany("SoldTransactions")
-                        .HasForeignKey("SellerID")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                    b.HasOne("KoiAuction.Domain.Entities.UserEntity", null)
+                        .WithMany("Transactions")
+                        .HasForeignKey("UserEntityId");
 
-                    b.Navigation("Buyer");
+                    b.Navigation("AuctionHistory");
+
+                    b.Navigation("Bid");
 
                     b.Navigation("Koi");
-
-                    b.Navigation("Seller");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -929,7 +867,7 @@ namespace KoiAuction.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("KoiAuction.Domain.Entities.AspNetUser", null)
+                    b.HasOne("KoiAuction.Domain.Entities.UserEntity", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -938,7 +876,7 @@ namespace KoiAuction.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("KoiAuction.Domain.Entities.AspNetUser", null)
+                    b.HasOne("KoiAuction.Domain.Entities.UserEntity", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -953,7 +891,7 @@ namespace KoiAuction.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("KoiAuction.Domain.Entities.AspNetUser", null)
+                    b.HasOne("KoiAuction.Domain.Entities.UserEntity", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -962,35 +900,16 @@ namespace KoiAuction.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("KoiAuction.Domain.Entities.AspNetUser", null)
+                    b.HasOne("KoiAuction.Domain.Entities.UserEntity", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("KoiAuction.Domain.Entities.AspNetUser", b =>
+            modelBuilder.Entity("Domain.Entities.AuctionHistory", b =>
                 {
-                    b.Navigation("AutoBids");
-
-                    b.Navigation("Bids");
-
-                    b.Navigation("Bills");
-
-                    b.Navigation("Blogs");
-
-                    b.Navigation("BoughtTransactions");
-
-                    b.Navigation("Kois");
-
-                    b.Navigation("SoldTransactions");
-                });
-
-            modelBuilder.Entity("KoiAuction.Domain.Entities.AuctionEntity", b =>
-                {
-                    b.Navigation("Bids");
-
-                    b.Navigation("Kois");
+                    b.Navigation("Transactions");
                 });
 
             modelBuilder.Entity("KoiAuction.Domain.Entities.KoiEntity", b =>
@@ -999,14 +918,24 @@ namespace KoiAuction.Infrastructure.Migrations
 
                     b.Navigation("Bids");
 
-                    b.Navigation("KoiMedias");
+                    b.Navigation("KoiImages");
 
                     b.Navigation("Transactions");
                 });
 
-            modelBuilder.Entity("KoiAuction.Domain.Entities.TransactionEntity", b =>
+            modelBuilder.Entity("KoiAuction.Domain.Entities.UserEntity", b =>
                 {
-                    b.Navigation("Payments");
+                    b.Navigation("AutoBids");
+
+                    b.Navigation("Bids");
+
+                    b.Navigation("Blogs");
+
+                    b.Navigation("KoiBreeders");
+
+                    b.Navigation("Kois");
+
+                    b.Navigation("Transactions");
                 });
 #pragma warning restore 612, 618
         }

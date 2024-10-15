@@ -10,17 +10,17 @@ namespace KoiAuction.Domain.Entities
 {
     [Table("AutoBid")]
     public class AutoBidEntity : BaseEntity
-    {
-        public required string KoiID { get; set; }
-        public required string BidderID { get; set; }
+    {      
         public decimal MaxBid { get; set; }
         public decimal IncrementAmount { get; set; }
         public DateTimeOffset BidTime { get; set; }
 
         [ForeignKey("KoiID")]
+        public required string KoiID { get; set; }
         public virtual KoiEntity? Kois { get; set; }
 
         [ForeignKey("BidderID")]
-        public virtual AspNetUser? Bidder { get; set; }
+        public required string BidderID { get; set; }
+        public virtual UserEntity? Bidder { get; set; }
     }
 }

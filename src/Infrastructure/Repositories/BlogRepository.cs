@@ -8,7 +8,7 @@ namespace KoiAuction.Infrastructure.Repositories
 {
     public class BlogRepository : RepositoryBase<BlogEntity, BlogEntity, ApplicationDbContext>, IBlogRepository
     {
-        public BlogRepository(ApplicationDbContext dbContext, IMapper mapper) : base(dbContext, mapper)
+        public BlogRepository(ApplicationDbContext context, IMapper mapper) : base(context, mapper)
         {
 
         }

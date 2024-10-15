@@ -15,10 +15,10 @@ namespace KoiAuction.Application.Features.User.Commands.Login.Email
 {
     public class LoginUserAccountWithEmailHandler : IRequestHandler<LoginUserAccountWithEmailCommand, LoginUserAccountWithEmailResponse>
     {
-        private readonly UserManager<AspNetUser> _userManager;  //dùng để tương tác với bảng AspNetUserRoles
+        private readonly UserManager<UserEntity> _userManager;  //dùng để tương tác với bảng AspNetUserRoles
         private readonly IUserRepository _userRepository;
 
-        public LoginUserAccountWithEmailHandler(UserManager<AspNetUser> userManager, IUserRepository userRepository)
+        public LoginUserAccountWithEmailHandler(UserManager<UserEntity> userManager, IUserRepository userRepository)
         {
             _userManager = userManager;
             _userRepository = userRepository;

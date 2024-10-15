@@ -1,18 +1,18 @@
-﻿using FluentValidation;
-using KoiAuction.Application.Features.AutoBid.Commands.Create;
+﻿//using FluentValidation;
+//using KoiAuction.Application.Features.AutoBid.Commands.Create;
 
-namespace KoiAuction.Application.Features.AutoBid.Commands.Create
-{
-    public class CreateAutoBidValidator : AbstractValidator<CreateAutoBidCommand>
-    {
-        public CreateAutoBidValidator()
-        {
-            ConfigureValidationRules();
-        }
+//namespace KoiAuction.Application.Features.AutoBid.Commands.Create
+//{
+//    public class CreateAutoBidValidator : AbstractValidator<CreateAutoBidCommand>
+//    {
+//        public CreateAutoBidValidator()
+//        {
+//            ConfigureValidationRules();
+//        }
 
-        private void ConfigureValidationRules()
-        {
+//        private void ConfigureValidationRules()
+//        {
             
-        }
-    }
-}
+//        }
+//    }
+//}

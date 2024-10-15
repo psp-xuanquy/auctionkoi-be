@@ -60,7 +60,7 @@ namespace KoiAuction
 
 
             // Add Identity services
-            services.AddIdentity<AspNetUser, IdentityRole>()
+            services.AddIdentity<UserEntity, IdentityRole>()
              .AddEntityFrameworkStores<ApplicationDbContext>()
              .AddDefaultTokenProviders();
 
