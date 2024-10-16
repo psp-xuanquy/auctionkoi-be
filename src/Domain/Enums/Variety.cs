@@ -17,7 +17,7 @@ namespace KoiAuction.Domain.Enums
         Showa,
         [EnumMember(Value = "Tancho")]
         Tancho,
-        [EnumMember(Value = " Bekko")]
+        [EnumMember(Value = "Bekko")]
         Bekko,
         [EnumMember(Value = "Doitsu")]
         Doitsu,

@@ -30,7 +30,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\Manager\Commands\DenyRoleRequest\" />
+    <Folder Include="Features\KoiBreeder\Commands\" />
+    <Folder Include="Features\KoiBreeder\Queries\GetAllKoiAuction\" />
+    <Folder Include="Features\KoiBreeder\Queries\GetAllResultKoiAuction\" />
   </ItemGroup>
 
 </Project>

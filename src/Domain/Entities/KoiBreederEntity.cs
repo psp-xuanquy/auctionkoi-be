@@ -17,7 +17,7 @@ public class KoiBreederEntity : BaseEntity
     public string? KoiFarmLocation { get; set; }
     public string? KoiFarmImage { get; set; }
     public RoleRequestStatus? RoleRequestStatus { get; set; }
-    public string? RoleRequestDenyReason { get; set; }
+    public string? RequestResponse { get; set; }
 
     [ForeignKey("UserID")]
     public required string UserId { get; set; }

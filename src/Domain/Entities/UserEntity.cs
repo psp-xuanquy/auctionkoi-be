@@ -21,6 +21,7 @@ namespace KoiAuction.Domain.Entities
         public string? Gender { get; set; }
         public string? Address { get; set; }
         public bool Status { get; set; } = true;
+        public string? UrlAvatar { get; set; }
         public decimal Balance { get; set; }
         public string CreatedBy { get; set; } = string.Empty;
         public string LastUpdatedBy { get; set; } = string.Empty;
