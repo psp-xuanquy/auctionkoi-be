@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.ComponentModel;
+using AutoMapper;
 using KoiAuction.Application.Common.Mappings;
 using KoiAuction.Domain.Entities;
 using KoiAuction.Domain.Enums;
@@ -16,7 +17,8 @@ public class SendRequestKoiAuctionCommand : IRequest<string>, IMapFrom<KoiEntity
     public decimal InitialPrice { get; set; }
     public string? Description { get; set; }
     public string? ImageUrl { get; set; }
-    public bool? AllowAutoBid { get; set; }
+    [DefaultValue(false)]
+    public bool? AllowAutoBid { get; set; } 
     public DateTimeOffset StartTime { get; set; }
     public string? AuctionMethodID { get; set; }
     public void Mapping(Profile profile)

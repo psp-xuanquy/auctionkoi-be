@@ -35,6 +35,7 @@ namespace Application.Features.Authentication.Commands.RegisterManager
                 PasswordHash = _userRepository.HashPassword(request.Password),
                 UserName = "Manager_Koi",
                 CreatedTime = DateTime.Now,
+                EmailConfirmed = true,
                 CreatedBy = "System",
                 LastUpdatedBy = "System"
             };

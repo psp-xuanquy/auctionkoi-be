@@ -12,6 +12,7 @@ using Application.Features.Authentication.Commands.RegisterManager;
 using Application.Features.Authentication.Commands.RegisterKoiBreeder;
 using Application.Features.Authentication.Queries.GetAll;
 using Application.Features.Request.User.Queries.GetRequestCurrentUser;
+using Application.Features.Authentication.Commands.RegisterStaff;
 
 namespace KoiAuction.API.Controllers
 {
@@ -63,6 +64,15 @@ namespace KoiAuction.API.Controllers
         [HttpPost]
         [Route("register/manager")]
         public async Task<ActionResult<string>> CreateManagerAccount([FromBody] RegisterManagerAccountCommand command, CancellationToken cancellationToken = default)
+        {
+            var result = await _mediator.Send(command, cancellationToken);
+            return Ok(new JsonResponse<string>(result));
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "MANAGER")]
+        [Route("register/staff")]
+        public async Task<ActionResult<string>> CreateStaffAccount([FromBody] RegisterStaffAccountCommand command, CancellationToken cancellationToken = default)
         {
             var result = await _mediator.Send(command, cancellationToken);
             return Ok(new JsonResponse<string>(result));

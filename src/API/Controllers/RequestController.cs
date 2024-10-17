@@ -41,7 +41,7 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "MANAGER")]
+        [Authorize(Roles = "MANAGER, STAFF")]
         [Route("kois/pending")]
         public async Task<ActionResult<List<GetAllPendingKoisResponse>>> GetAllPendingKoisRequest(CancellationToken cancellationToken = default)
         {
@@ -68,7 +68,7 @@ namespace API.Controllers
         }
        
         [HttpPut]
-        [Authorize(Roles = "MANAGER")]
+        [Authorize(Roles = "MANAGER, STAFF")]
         [Route("koi/approval")]
         public async Task<ActionResult<string>> ApproveKoiRequest([FromBody] ApproveKoiRequestCommand command, CancellationToken cancellationToken = default)
         {
@@ -77,7 +77,7 @@ namespace API.Controllers
         }
        
         [HttpPut]
-        [Authorize(Roles = "MANAGER")]
+        [Authorize(Roles = "MANAGER, STAFF")]
         [Route("koi/denial")]
         public async Task<ActionResult<string>> DenyKoiRequest([FromBody] DenyKoiRequestCommand command, CancellationToken cancellationToken = default)
         {
