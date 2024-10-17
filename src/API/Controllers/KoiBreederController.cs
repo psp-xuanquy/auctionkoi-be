@@ -1,4 +1,5 @@
 ﻿using Application.Features.KoiBreeder.Queries.GetAllKoiFarmBreeder;
+using Application.Features.Request.User.Queries.GetRequestCurrentUser;
 using KoiAuction.API.Controllers.ResponseTypes;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -20,7 +21,7 @@ public class KoiBreederController : ControllerBase
     [HttpGet]
     [Authorize(Roles = "MANAGER")]
     [Route("koifarms")]
-    public async Task<IActionResult> GetAllKoiFarm(
+    public async Task<ActionResult<List<GetAllKoiFarmBreederResponse>>> GetAllKoiFarm(
           CancellationToken cancellationToken = default)
     {
         var result = await _mediator.Send(new GetAllKoiFarmBreederQuery(), cancellationToken);

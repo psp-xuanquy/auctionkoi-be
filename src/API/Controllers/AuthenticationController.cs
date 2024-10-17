@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 using Application.Features.Authentication.Commands.RegisterManager;
 using Application.Features.Authentication.Commands.RegisterKoiBreeder;
 using Application.Features.Authentication.Queries.GetAll;
+using Application.Features.Request.User.Queries.GetRequestCurrentUser;
 
 namespace KoiAuction.API.Controllers
 {
@@ -35,7 +36,7 @@ namespace KoiAuction.API.Controllers
  
         [HttpGet]
         [Route("accounts")]
-        public async Task<IActionResult> GetAll(
+        public async Task<ActionResult<List<GetUserAccountResponse>>> GetAll(
          CancellationToken cancellationToken = default)
         {
             var result = await _mediator.Send(new GetAllUserAccountQuery(), cancellationToken);
@@ -44,7 +45,7 @@ namespace KoiAuction.API.Controllers
 
         [HttpPost]
         [Route("register/customer")]
-        public async Task<IActionResult> CreateCustomerAccount([FromBody] RegisterCustomerAccountCommand command, CancellationToken cancellationToken = default)
+        public async Task<ActionResult<string>> CreateCustomerAccount([FromBody] RegisterCustomerAccountCommand command, CancellationToken cancellationToken = default)
         {
             var result = await _mediator.Send(command, cancellationToken);
             return CreatedAtAction(nameof(GetAll), new JsonResponse<string>(result));
@@ -53,7 +54,7 @@ namespace KoiAuction.API.Controllers
         [HttpPost]
         [Authorize(Roles = "CUSTOMER")]
         [Route("register/koibreeder")]
-        public async Task<IActionResult> CreateKoiBreederAccount([FromBody] RegisterKoiBreederAccountCommand command, CancellationToken cancellationToken = default)
+        public async Task<ActionResult<string>> CreateKoiBreederAccount([FromBody] RegisterKoiBreederAccountCommand command, CancellationToken cancellationToken = default)
         {
             var result = await _mediator.Send(command, cancellationToken);
             return Ok(new JsonResponse<string>(result));
@@ -61,7 +62,7 @@ namespace KoiAuction.API.Controllers
 
         [HttpPost]
         [Route("register/manager")]
-        public async Task<IActionResult> CreateManagerAccount([FromBody] RegisterManagerAccountCommand command, CancellationToken cancellationToken = default)
+        public async Task<ActionResult<string>> CreateManagerAccount([FromBody] RegisterManagerAccountCommand command, CancellationToken cancellationToken = default)
         {
             var result = await _mediator.Send(command, cancellationToken);
             return Ok(new JsonResponse<string>(result));
@@ -69,7 +70,7 @@ namespace KoiAuction.API.Controllers
 
         [HttpPost]
         [Route("login")]
-        public async Task<IActionResult> Login(
+        public async Task<ActionResult<string>> Login(
                       [FromBody] LoginUserAccountWithEmailCommand query,
                                  CancellationToken cancellationToken = default)
         {

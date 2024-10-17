@@ -17,6 +17,7 @@ namespace KoiAuction.Domain.Entities
         public Sex Sex { get; set; }
         public double Size { get; set; }
         public int Age { get; set; }
+        public string Location { get; set; }
         public Variety Variety { get; set; }
         public decimal InitialPrice { get; set; }
         public string? Description { get; set; }

@@ -33,6 +33,8 @@
     <Folder Include="Features\KoiBreeder\Commands\" />
     <Folder Include="Features\KoiBreeder\Queries\GetAllKoiAuction\" />
     <Folder Include="Features\KoiBreeder\Queries\GetAllResultKoiAuction\" />
+    <Folder Include="Features\Koi\Commands\" />
+    <Folder Include="Features\Koi\Queries\" />
   </ItemGroup>
 
 </Project>

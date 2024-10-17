@@ -44,14 +44,12 @@ public class ResendRegisterKoiBreederHandler : IRequestHandler<ResendRegisterKoi
         var existingRequest = await _koiBreederRepository.FindAsync(x => x.ID == request.KoiBreederID && x.UserId == _currentUserService.UserId && x.RoleRequestStatus != RoleRequestStatus.Approved);
         if (existingRequest == null)
         {
-            throw new DuplicationException("Your request does not exist or has already been approved.");
+            throw new NotFoundException("Your request does not exist or has already been approved.");
         }
-
-        // Map các thuộc tính từ request sang existingRequest
+  
         var koibreederUpdate = _mapper.Map(request, existingRequest);
         if (koibreederUpdate != null)
-        {
-            // Cập nhật trạng thái yêu cầu
+        {       
             koibreederUpdate.RoleRequestStatus = RoleRequestStatus.Pending;
             _koiBreederRepository.Update(koibreederUpdate);
             await _koiBreederRepository.UnitOfWork.SaveChangesAsync(cancellationToken);

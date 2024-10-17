@@ -9,7 +9,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
 namespace Application.Features.Request.KoiBreeder.Queries.GetAllKoiRequest;
-public class GetAllKoiRequestResponse : IMapFrom<KoiEntity>
+public class GetAllKoisRequestCurrentResponse : IMapFrom<KoiEntity>
 {
     public string? ID { get; set; }
     public string? Name { get; set; }
@@ -35,7 +35,7 @@ public class GetAllKoiRequestResponse : IMapFrom<KoiEntity>
     public string? AuctionMethod { get; set; }
     public void Mapping(Profile profile)
     {
-        profile.CreateMap<KoiEntity, GetAllKoiRequestResponse>()
+        profile.CreateMap<KoiEntity, GetAllKoisRequestCurrentResponse>()
             .ForMember(dest => dest.AuctionMethod, opt => opt.MapFrom(src => src.AuctionMethod.Name))
             .ForMember(dest => dest.StartTime, opt => opt.MapFrom(src => src.StartTime.ToString("dd-MM-yyyy HH:mm")))
             .ForMember(dest => dest.EndTime, opt => opt.MapFrom(src => src.EndTime.ToString("dd-MM-yyyy HH:mm"))); 

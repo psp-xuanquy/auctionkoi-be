@@ -43,7 +43,7 @@ public class DenyRoleRequestHandler : IRequestHandler<DenyRoleRequestCommand, st
         _koiBreederRepository.Update(koibreeder);
         await _koiBreederRepository.UnitOfWork.SaveChangesAsync();
 
-        return $"{koibreeder.KoiFarmName} request has been denied";
+        return $"You have denied the request from account {koibreeder.User.UserName}.";
 
     }
 }

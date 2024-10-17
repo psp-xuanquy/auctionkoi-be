@@ -39,6 +39,11 @@ namespace KoiAuction.Application.Features.User.Commands.Login.Email
                 throw new UnauthorizedException("Wrong password, please try again");
             }
 
+            if (!user.EmailConfirmed)
+            {
+                throw new UnauthorizedException("Email not confirmed. Please confirm your email before logging in.");
+            }
+
             var role = await _userManager.GetRolesAsync(user);
 
             var response = new LoginUserAccountWithEmailResponse

@@ -30,6 +30,9 @@ public class SendRequestKoiAuctionValidator : AbstractValidator<SendRequestKoiAu
             .GreaterThanOrEqualTo(1).WithMessage("Age must be at least 1 year.")
             .LessThanOrEqualTo(20).WithMessage("Age cannot exceed 20 years.");
 
+        RuleFor(x => x.Location)
+           .NotEmpty().WithMessage("Location cannot be empty.");
+
         RuleFor(x => x.Variety)
             .NotEmpty().WithMessage("Variety cannot be empty.")
             .Must(BeAValidVariety).WithMessage("Invalid Variety. Must be one of: " + string.Join(", ", Enum.GetNames(typeof(Variety))));

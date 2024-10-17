@@ -74,7 +74,6 @@ public class ApproveRoleRequestHandler : IRequestHandler<ApproveRoleRequestComma
         _koiBreederRepository.Update(koibreeder);
         await _koiBreederRepository.UnitOfWork.SaveChangesAsync();
 
-        return $"{koibreeder.KoiFarmName} request has been approved";
-
+        return $"You have approved the account {koibreeder.User.UserName} to become a new Koi Breeder with the name {koibreeder.KoiFarmName}.";
     }
 }

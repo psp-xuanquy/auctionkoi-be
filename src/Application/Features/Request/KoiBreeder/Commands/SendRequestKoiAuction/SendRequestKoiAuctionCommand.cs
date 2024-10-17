@@ -11,6 +11,7 @@ public class SendRequestKoiAuctionCommand : IRequest<string>, IMapFrom<KoiEntity
     public string? Sex { get; set; }
     public double Size { get; set; }
     public int Age { get; set; }
+    public string Location { get; set; }
     public string Variety { get; set; }
     public decimal InitialPrice { get; set; }
     public string? Description { get; set; }

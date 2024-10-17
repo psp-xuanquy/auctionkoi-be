@@ -7,10 +7,10 @@ using Application.Features.Request.Manager.Queries.GetAllPendingRoles;
 using KoiAuction.Application.Common.Interfaces;
 using MediatR;
 
-namespace Application.Features.Request.KoiBreeder.Queries.GetAllKoiRequest;
-public class GetAllKoiRequestQuery : IRequest<List<GetAllKoiRequestResponse>>, IQuery
+namespace Application.Features.Request.Manager.Queries.GetAllPendingKois;
+public class GetAllPendingKoisQuery : IRequest<List<GetAllPendingKoisResponse>>, IQuery
 {
-    public GetAllKoiRequestQuery()
+    public GetAllPendingKoisQuery()
     {
 
     }

@@ -276,6 +276,7 @@ namespace Infrastructure.Migrations
                     Sex = table.Column<int>(type: "int", nullable: false),
                     Size = table.Column<double>(type: "float", nullable: false),
                     Age = table.Column<int>(type: "int", nullable: false),
+                    Location = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Variety = table.Column<int>(type: "int", nullable: false),
                     InitialPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
