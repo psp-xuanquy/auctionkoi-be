@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241017075612_Init")]
-    partial class Init
+    [Migration("20241020171654_UpdateDb")]
+    partial class UpdateDb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -153,8 +153,8 @@ namespace Infrastructure.Migrations
                     b.Property<string>("ID")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<DateTimeOffset>("BidTime")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateTime>("BidTime")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("BidderID")
                         .IsRequired()
@@ -206,8 +206,8 @@ namespace Infrastructure.Migrations
                     b.Property<decimal>("BidAmount")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<DateTimeOffset>("BidTime")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateTime>("BidTime")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("BidderID")
                         .IsRequired()
@@ -339,8 +339,8 @@ namespace Infrastructure.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTimeOffset>("EndTime")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateTime>("EndTime")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("ImageUrl")
                         .HasColumnType("nvarchar(max)");
@@ -370,8 +370,8 @@ namespace Infrastructure.Migrations
                     b.Property<double>("Size")
                         .HasColumnType("float");
 
-                    b.Property<DateTimeOffset>("StartTime")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateTime>("StartTime")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("Variety")
                         .HasColumnType("int");
@@ -472,8 +472,8 @@ namespace Infrastructure.Migrations
                     b.Property<decimal>("TotalAmount")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<DateTimeOffset>("TransactionDate")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateTime>("TransactionDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("TransactionType")
                         .HasColumnType("int");
@@ -516,15 +516,15 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTimeOffset?>("CreatedTime")
+                    b.Property<DateTime?>("CreatedTime")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("datetimeoffset");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("DeletedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTimeOffset?>("DeletedTime")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateTime?>("DeletedTime")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
@@ -543,9 +543,9 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTimeOffset?>("LastUpdatedTime")
+                    b.Property<DateTime?>("LastUpdatedTime")
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("datetimeoffset");
+                        .HasColumnType("datetime2");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -573,8 +573,8 @@ namespace Infrastructure.Migrations
                     b.Property<string>("ResetToken")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTimeOffset?>("ResetTokenExpires")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateTime?>("ResetTokenExpires")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
@@ -595,8 +595,8 @@ namespace Infrastructure.Migrations
                     b.Property<string>("VerificationToken")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTimeOffset?>("VerificationTokenExpires")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateTime?>("VerificationTokenExpires")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 

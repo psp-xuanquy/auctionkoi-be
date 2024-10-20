@@ -13,15 +13,34 @@ namespace KoiAuction.Domain.Entities
     {    
         public decimal BidAmount { get; set; }
         public bool IsWinningBid { get; set; }
-        public DateTimeOffset BidTime { get; set; }
+        public DateTime BidTime { get; set; }
         public bool IsAutoBid { get; set; }
 
         [ForeignKey("KoiID")]
-        public required string KoiID { get; set; }
+        public string KoiID { get; set; }
         public virtual KoiEntity? Koi { get; set; }
 
         [ForeignKey("BidderID")]
-        public required string BidderID { get; set; }
+        public string BidderID { get; set; }
         public virtual UserEntity? Bidder { get; set; }
+
+        public BidEntity()
+        {
+            BidTime = DateTime.UtcNow;
+            IsWinningBid = false;
+            IsAutoBid = false;
+        }
+
+        public BidEntity(string koiId, decimal bidAmount, string bidderId) : this() 
+        {
+            KoiID = koiId ?? throw new ArgumentNullException(nameof(koiId));
+            BidAmount = bidAmount;
+            BidderID = bidderId ?? throw new ArgumentNullException(nameof(bidderId));
+        }
+
+        public void MarkAsWinningBid()
+        {
+            IsWinningBid = true;
+        }
     }
 }

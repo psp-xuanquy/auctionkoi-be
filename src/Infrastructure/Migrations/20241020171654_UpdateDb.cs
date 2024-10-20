@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class Init : Migration
+    public partial class UpdateDb : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -39,13 +39,13 @@ namespace Infrastructure.Migrations
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastUpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DeletedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreatedTime = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    DeletedTime = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    LastUpdatedTime = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    CreatedTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeletedTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    LastUpdatedTime = table.Column<DateTime>(type: "datetime2", nullable: true),
                     ResetToken = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ResetTokenExpires = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    ResetTokenExpires = table.Column<DateTime>(type: "datetime2", nullable: true),
                     VerificationToken = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    VerificationTokenExpires = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    VerificationTokenExpires = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -284,8 +284,8 @@ namespace Infrastructure.Migrations
                     RequestResponse = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     AuctionRequestStatus = table.Column<int>(type: "int", nullable: false),
                     AuctionStatus = table.Column<int>(type: "int", nullable: false),
-                    StartTime = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    EndTime = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    StartTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     AllowAutoBid = table.Column<bool>(type: "bit", nullable: false),
                     AuctionMethodID = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     BreederID = table.Column<string>(type: "nvarchar(450)", nullable: false),
@@ -320,7 +320,7 @@ namespace Infrastructure.Migrations
                     ID = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     MaxBid = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     IncrementAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    BidTime = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    BidTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     KoiID = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     BidderID = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -354,7 +354,7 @@ namespace Infrastructure.Migrations
                     ID = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     BidAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     IsWinningBid = table.Column<bool>(type: "bit", nullable: false),
-                    BidTime = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    BidTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsAutoBid = table.Column<bool>(type: "bit", nullable: false),
                     KoiID = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     BidderID = table.Column<string>(type: "nvarchar(450)", nullable: false),
@@ -415,7 +415,7 @@ namespace Infrastructure.Migrations
                     TransactionType = table.Column<int>(type: "int", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
                     TotalAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    TransactionDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    TransactionDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     PaymentMethod = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CommissionRate = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     BidID = table.Column<string>(type: "nvarchar(450)", nullable: false),

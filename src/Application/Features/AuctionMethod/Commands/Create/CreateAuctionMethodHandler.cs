@@ -26,7 +26,6 @@ public class CreateAuctionMethodHandler : IRequestHandler<CreateAuctionMethodCom
         _currentUserService = currentUserService;
         _userRepository = userRepository;
         _auctionMethodRepository = auctionMethodRepository;
-    
     }
 
     public async Task<string> Handle(CreateAuctionMethodCommand request, CancellationToken cancellationToken)

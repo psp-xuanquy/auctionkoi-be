@@ -13,5 +13,6 @@ namespace Domain.Entities;
 public class AuctionHistory : BaseEntity
 {
     public DeliveryStatus DeliveryStatus { get; set; }
+
     public virtual ICollection<TransactionEntity>? Transactions { get; set; }
 }

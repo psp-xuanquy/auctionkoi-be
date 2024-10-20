@@ -33,7 +33,6 @@ namespace KoiAuction.API.Controllers
             _emailService = emailService;
 
         }
-
  
         [HttpGet]
         [Route("accounts")]

@@ -28,14 +28,14 @@ namespace KoiAuction.Domain.Entities
         public string? DeletedBy { get; set; }
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [DefaultValue("GETDATE()")]
-        public DateTimeOffset? CreatedTime { get; set; } = DateTimeOffset.Now;
-        public DateTimeOffset? DeletedTime { get; set; }
+        public DateTime? CreatedTime { get; set; } = DateTime.UtcNow;
+        public DateTime? DeletedTime { get; set; }
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
-        public DateTimeOffset? LastUpdatedTime { get; set; }
+        public DateTime? LastUpdatedTime { get; set; }
         public string? ResetToken { get; set; }
-        public DateTimeOffset? ResetTokenExpires { get; set; }
+        public DateTime? ResetTokenExpires { get; set; }
         public string? VerificationToken { get; set; }
-        public DateTimeOffset? VerificationTokenExpires { get; set; }
+        public DateTime? VerificationTokenExpires { get; set; }
 
         public virtual ICollection<TransactionEntity>? Transactions { get; set; }
         public virtual ICollection<KoiBreederEntity>? KoiBreeders { get; set; }
@@ -43,5 +43,10 @@ namespace KoiAuction.Domain.Entities
         public virtual ICollection<KoiEntity>? Kois { get; set; }
         public virtual ICollection<BidEntity>? Bids { get; set; }
         public virtual ICollection<AutoBidEntity>? AutoBids { get; set; }
+
+        public bool HasSufficientBalance(decimal amount)
+        {
+            return Balance >= amount;
+        }
     }
 }

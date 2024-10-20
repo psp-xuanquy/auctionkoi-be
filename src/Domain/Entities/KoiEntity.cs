@@ -25,8 +25,8 @@ namespace KoiAuction.Domain.Entities
         public string? RequestResponse { get; set; }
         public AuctionRequestStatus AuctionRequestStatus { get; set; }
         public AuctionStatus AuctionStatus { get; set; }
-        public DateTimeOffset StartTime { get; set; }
-        public DateTimeOffset EndTime { get; set; }
+        public DateTime StartTime { get; set; }
+        public DateTime EndTime { get; set; }
         public bool AllowAutoBid { get; set; }
 
         [ForeignKey("AuctionMethodID")]
@@ -41,5 +41,35 @@ namespace KoiAuction.Domain.Entities
         public virtual ICollection<BidEntity>? Bids { get; set; }
         public virtual ICollection<KoiImageEntity>? KoiImages { get; set; }
         public virtual ICollection<TransactionEntity>? Transactions { get; set; }
+
+        public KoiEntity()
+        {
+            AuctionStatus = AuctionStatus.NotStarted;
+            AutoBids = new List<AutoBidEntity>();
+            Bids = new List<BidEntity>();
+            KoiImages = new List<KoiImageEntity>();
+            Transactions = new List<TransactionEntity>();
+        }
+
+        public KoiEntity(decimal initialPrice, string name, string auctionMethodId) : this() 
+        {
+            if (initialPrice < 50)
+                throw new ArgumentException("Price must be at least $50.");
+
+            InitialPrice = initialPrice;
+            Name = name;
+            AuctionMethodID = auctionMethodId;
+        }
+
+        public void StartAuction()
+        {
+            AuctionStatus = AuctionStatus.OnGoing;
+            EndTime = DateTime.UtcNow.AddMinutes(5);
+        }
+
+        public void EndAuction()
+        {
+            AuctionStatus = AuctionStatus.Ended;
+        }
     }
 }
