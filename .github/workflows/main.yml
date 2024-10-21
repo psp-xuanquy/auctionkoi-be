@@ -13,5 +13,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Log in to ACR
+        run: |
+          echo ${{ secrets.AZURE_LOGIN }} | docker login koiauctionwebapp.azurecr.io --username koiauctionwebapp --password-stdin
+
+      - name: Build Docker image
+        run: |
+          docker build -t koiauctionwebapp.azurecr.io/auctionkoi-be-server:latest .
+
+      - name: Push Docker image to ACR
+        run: |
+          docker push koiauctionwebapp.azurecr.io/auctionkoi-be-server:latest
+
       - name: Run `docker compose`
         run: docker compose up --build -d
