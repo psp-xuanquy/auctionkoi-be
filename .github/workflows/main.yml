@@ -13,10 +13,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Debug secrets
-        run: |
-          echo "Username: ${{ secrets.AZURE_USERNAME }}"  # Avoid printing passwords
-
       - name: Log in to ACR
         run: |
           echo "${{ secrets.AZURE_PASSWORD }}" | docker login koiauctionwebapp.azurecr.io --username "${{ secrets.AZURE_USERNAME }}" --password-stdin
