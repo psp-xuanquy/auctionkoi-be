@@ -11,11 +11,12 @@ jobs:
     environment: docker
     steps: 
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Log in to ACR
         run: |
-          echo ${{ secrets.AZURE_LOGIN }} | docker login koiauctionwebapp.azurecr.io --username koiauctionwebapp --password-stdin
+          echo ${{ secrets.AZURE_PASSWORD }} | docker login koiauctionwebapp.azurecr.io --username ${{ secrets.AZURE_USERNAME }} --password-stdin
+
 
       - name: Build Docker image
         run: |
