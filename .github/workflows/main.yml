@@ -13,10 +13,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Debug secrets
+        run: |
+          echo "Username: ${{ secrets.AZURE_USERNAME }}"  # Avoid printing passwords
+
       - name: Log in to ACR
         run: |
-          echo ${{ secrets.AZURE_PASSWORD }} | docker login koiauctionwebapp.azurecr.io --username ${{ secrets.AZURE_USERNAME }} --password-stdin
-
+          echo "${{ secrets.AZURE_PASSWORD }}" | docker login koiauctionwebapp.azurecr.io --username "${{ secrets.AZURE_USERNAME }}" --password-stdin
 
       - name: Build Docker image
         run: |
@@ -27,4 +30,5 @@ jobs:
           docker push koiauctionwebapp.azurecr.io/auctionkoi-be-server:latest
 
       - name: Run `docker compose`
-        run: docker compose up --build -d
+        run: |
+          docker compose up --build -d
