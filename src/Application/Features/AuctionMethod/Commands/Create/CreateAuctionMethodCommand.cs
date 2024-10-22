@@ -13,6 +13,7 @@ public class CreateAuctionMethodCommand : IRequest<string>, IMapFrom<AuctionMeth
 {
     public string? Name { get; set; }
     public string? Description { get; set; }
+
     public void Mapping(Profile profile)
     {
         profile.CreateMap<CreateAuctionMethodCommand, AuctionMethodEntity>();

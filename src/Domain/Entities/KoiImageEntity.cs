@@ -14,7 +14,7 @@ namespace KoiAuction.Domain.Entities
         public string? Url { get; set; }     
 
         [ForeignKey("KoiID")]
-        public required string KoiID { get; set; }
+        public string? KoiID { get; set; }
         public virtual KoiEntity? Koi { get; set; }
     }
 }

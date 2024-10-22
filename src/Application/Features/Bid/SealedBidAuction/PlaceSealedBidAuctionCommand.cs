@@ -5,17 +5,15 @@ using System.Text;
 using System.Threading.Tasks;
 using MediatR;
 
-namespace Application.Features.Auction.SealedBidAuction.Start;
+namespace Application.Features.Bid.SealedBidAuction;
 public class PlaceSealedBidAuctionCommand : IRequest<Unit>
 {
     public string KoiId { get; }
-    public string BidderId { get; }
     public decimal BidAmount { get; set; }
 
-    public PlaceSealedBidAuctionCommand(string koiId, string bidderId, decimal bidAmount)
+    public PlaceSealedBidAuctionCommand(string koiId, decimal bidAmount)
     {
-        KoiId = koiId;
-        BidderId = bidderId;
+        KoiId = koiId ?? throw new ArgumentNullException(nameof(koiId), "KoiId cannot be null.");
         BidAmount = bidAmount;
     }
 }

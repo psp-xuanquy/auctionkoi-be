@@ -16,11 +16,11 @@ namespace KoiAuction.Domain.Entities
         public DateTime BidTime { get; set; }
 
         [ForeignKey("KoiID")]
-        public required string KoiID { get; set; }
+        public string? KoiID { get; set; }
         public virtual KoiEntity? Kois { get; set; }
 
         [ForeignKey("BidderID")]
-        public required string BidderID { get; set; }
+        public string? BidderID { get; set; }
         public virtual UserEntity? Bidder { get; set; }
     }
 }

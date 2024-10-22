@@ -20,6 +20,6 @@ public class KoiBreederEntity : BaseEntity
     public string? RequestResponse { get; set; }
 
     [ForeignKey("UserID")]
-    public required string UserId { get; set; }
+    public string? UserId { get; set; }
     public virtual UserEntity User { get; set; }
 }

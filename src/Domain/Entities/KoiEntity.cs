@@ -30,11 +30,11 @@ namespace KoiAuction.Domain.Entities
         public bool AllowAutoBid { get; set; }
 
         [ForeignKey("AuctionMethodID")]
-        public required string AuctionMethodID { get; set; }
+        public string? AuctionMethodID { get; set; }
         public virtual AuctionMethodEntity? AuctionMethod { get; set; }
 
         [ForeignKey("BreederID")]
-        public required string BreederID { get; set; }
+        public string? BreederID { get; set; }
         public virtual UserEntity? Breeder { get; set; }
 
         public virtual ICollection<AutoBidEntity>? AutoBids { get; set; }
@@ -64,12 +64,18 @@ namespace KoiAuction.Domain.Entities
         public void StartAuction()
         {
             AuctionStatus = AuctionStatus.OnGoing;
-            EndTime = DateTime.UtcNow.AddMinutes(5);
+            StartTime = DateTime.UtcNow;
+            EndTime = StartTime.AddMinutes(5);
         }
 
         public void EndAuction()
         {
             AuctionStatus = AuctionStatus.Ended;
+        }
+
+        public bool IsAuctionExpired()
+        {
+            return (DateTime.UtcNow - StartTime).TotalMinutes >= 5; 
         }
     }
 }

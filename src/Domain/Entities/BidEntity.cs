@@ -31,9 +31,16 @@ namespace KoiAuction.Domain.Entities
             IsAutoBid = false;
         }
 
-        public BidEntity(string koiId, decimal bidAmount, string bidderId) : this() 
+        public BidEntity(string koiId, decimal bidAmount, string bidderId, decimal userBalance, decimal initialPrice) : this()
         {
             KoiID = koiId ?? throw new ArgumentNullException(nameof(koiId));
+
+            if (bidAmount < initialPrice)
+                throw new ArgumentException($"Bid amount must be at least the initial price of {initialPrice:C}");
+
+            if (bidAmount > userBalance)
+                throw new ArgumentException("Bid amount cannot exceed the user's balance.");
+
             BidAmount = bidAmount;
             BidderID = bidderId ?? throw new ArgumentNullException(nameof(bidderId));
         }

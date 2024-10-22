@@ -5,15 +5,15 @@ using System.Text;
 using System.Threading.Tasks;
 using MediatR;
 
-namespace Application.Features.Auction.FixedPriceBid.Start;
+namespace Application.Features.Bid.FixedPriceBid;
 public class PlaceFixedPriceBidCommand : IRequest<Unit>
 {
     public string KoiId { get; }
-    public string BidderId { get; }
+    public decimal BidAmount { get; }
 
-    public PlaceFixedPriceBidCommand(string koiId, string bidderId)
+    public PlaceFixedPriceBidCommand(string koiId, decimal bidAmount)
     {
         KoiId = koiId;
-        BidderId = bidderId;
+        BidAmount = bidAmount;
     }
 }

@@ -45,7 +45,7 @@ public class SendRequestKoiAuctionHandler : IRequestHandler<SendRequestKoiAuctio
         var auctionMethod = await _auctionMethodRepository.FindAsync(x => x.ID == request.AuctionMethodID, cancellationToken);
         if (auctionMethod == null)
         {
-            throw new NotFoundException("Auction method not found.");
+            throw new NotFoundException("Auction Method not found.");
         }
 
         var koi = _mapper.Map<KoiEntity>(request);

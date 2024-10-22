@@ -43,10 +43,5 @@ namespace KoiAuction.Domain.Entities
         public virtual ICollection<KoiEntity>? Kois { get; set; }
         public virtual ICollection<BidEntity>? Bids { get; set; }
         public virtual ICollection<AutoBidEntity>? AutoBids { get; set; }
-
-        public bool HasSufficientBalance(decimal amount)
-        {
-            return Balance >= amount;
-        }
     }
 }

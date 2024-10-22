@@ -7,8 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Features\AuctionMethod - Copy\**" />
     <Compile Remove="Models\**" />
+    <EmbeddedResource Remove="Features\AuctionMethod - Copy\**" />
     <EmbeddedResource Remove="Models\**" />
+    <None Remove="Features\AuctionMethod - Copy\**" />
     <None Remove="Models\**" />
   </ItemGroup>
 
@@ -40,8 +43,6 @@
     <Folder Include="Features\KoiBreeder\Commands\" />
     <Folder Include="Features\KoiBreeder\Queries\GetAllKoiAuction\" />
     <Folder Include="Features\KoiBreeder\Queries\GetAllResultKoiAuction\" />
-    <Folder Include="Features\Koi\Commands\" />
-    <Folder Include="Features\Koi\Queries\" />
   </ItemGroup>
 
 </Project>

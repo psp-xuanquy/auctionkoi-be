@@ -23,15 +23,15 @@ namespace KoiAuction.Domain.Entities
         public decimal CommissionRate { get; set; }
 
         [ForeignKey("BidID")]
-        public required string BidID { get; set; }
+        public string? BidID { get; set; }
         public virtual BidEntity? Bid { get; set; }
 
         [ForeignKey("KoiID")]
-        public required string KoiID { get; set; }
+        public string? KoiID { get; set; }
         public virtual KoiEntity? Koi { get; set; }
 
         [ForeignKey("AuctionHistoryID")]
-        public required string AuctionHistoryId { get; set; }
+        public string? AuctionHistoryId { get; set; }
         public virtual AuctionHistory? AuctionHistory { get; set; }
     }
 }

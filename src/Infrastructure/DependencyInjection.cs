@@ -23,6 +23,7 @@ public static class DependencyInjection
                 {
                     b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName);
                     b.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
+                    //b.EnableRetryOnFailure();
                 });
             options.UseLazyLoadingProxies();
         });
