@@ -25,63 +25,102 @@ namespace KoiAuction.API.Controllers
         private readonly IEmailService _emailService;
         private readonly UserManager<UserEntity> _userManager;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AuthenticationController"/> class.
+        /// </summary>
+        /// <param name="userManager">The UserManager instance used for managing user accounts.</param>
+        /// <param name="mediator">The mediator instance used for handling commands and queries.</param>
+        /// <param name="jwtService">The JWT service for token creation.</param>
+        /// <param name="emailService">The email service for sending confirmation and reset emails.</param>
         public AuthenticationController(UserManager<UserEntity> userManager, ISender mediator, IJwtService jwtService, IEmailService emailService)
         {
             _userManager = userManager;
             _mediator = mediator;
             _jwtService = jwtService;
             _emailService = emailService;
-
         }
- 
-        [HttpGet]
-        [Route("accounts")]
-        public async Task<ActionResult<List<GetUserAccountResponse>>> GetAll(
-         CancellationToken cancellationToken = default)
+
+        /// <summary>
+        /// Retrieves all user accounts.
+        /// </summary>
+        /// <param name="cancellationToken">Cancellation token for the request.</param>
+        /// <returns>A list of user accounts.</returns>
+        /// <response code="200">Returns the list of user accounts.</response>
+        [HttpGet("accounts")]
+        public async Task<ActionResult<List<GetUserAccountResponse>>> GetAll(CancellationToken cancellationToken = default)
         {
             var result = await _mediator.Send(new GetAllUserAccountQuery(), cancellationToken);
             return Ok(new JsonResponse<List<GetUserAccountResponse>>(result));
         }
 
-        [HttpPost]
-        [Route("register/customer")]
+        /// <summary>
+        /// Creates a new customer account.
+        /// </summary>
+        /// <param name="command">The command containing the details of the customer account to create.</param>
+        /// <param name="cancellationToken">Cancellation token for the request.</param>
+        /// <returns>The ID of the created customer account.</returns>
+        /// <response code="201">Returns the ID of the created customer account.</response>
+        [HttpPost("register/customer")]
         public async Task<ActionResult<string>> CreateCustomerAccount([FromBody] RegisterCustomerAccountCommand command, CancellationToken cancellationToken = default)
         {
             var result = await _mediator.Send(command, cancellationToken);
             return CreatedAtAction(nameof(GetAll), new JsonResponse<string>(result));
         }
 
-        [HttpPost]
+        /// <summary>
+        /// Creates a new koi breeder account.
+        /// </summary>
+        /// <param name="command">The command containing the details of the koi breeder account to create.</param>
+        /// <param name="cancellationToken">Cancellation token for the request.</param>
+        /// <returns>The ID of the created koi breeder account.</returns>
+        /// <response code="200">Returns the ID of the created koi breeder account.</response>
+        [HttpPost("register/koibreeder")]
         [Authorize(Roles = "CUSTOMER")]
-        [Route("register/koibreeder")]
         public async Task<ActionResult<string>> CreateKoiBreederAccount([FromBody] RegisterKoiBreederAccountCommand command, CancellationToken cancellationToken = default)
         {
             var result = await _mediator.Send(command, cancellationToken);
             return Ok(new JsonResponse<string>(result));
         }
 
-        [HttpPost]
-        [Route("register/manager")]
+        /// <summary>
+        /// Creates a new manager account.
+        /// </summary>
+        /// <param name="command">The command containing the details of the manager account to create.</param>
+        /// <param name="cancellationToken">Cancellation token for the request.</param>
+        /// <returns>The ID of the created manager account.</returns>
+        /// <response code="200">Returns the ID of the created manager account.</response>
+        [HttpPost("register/manager")]
         public async Task<ActionResult<string>> CreateManagerAccount([FromBody] RegisterManagerAccountCommand command, CancellationToken cancellationToken = default)
         {
             var result = await _mediator.Send(command, cancellationToken);
             return Ok(new JsonResponse<string>(result));
         }
 
-        [HttpPost]
+        /// <summary>
+        /// Creates a new staff account.
+        /// </summary>
+        /// <param name="command">The command containing the details of the staff account to create.</param>
+        /// <param name="cancellationToken">Cancellation token for the request.</param>
+        /// <returns>The ID of the created staff account.</returns>
+        /// <response code="200">Returns the ID of the created staff account.</response>
+        [HttpPost("register/staff")]
         [Authorize(Roles = "MANAGER")]
-        [Route("register/staff")]
         public async Task<ActionResult<string>> CreateStaffAccount([FromBody] RegisterStaffAccountCommand command, CancellationToken cancellationToken = default)
         {
             var result = await _mediator.Send(command, cancellationToken);
             return Ok(new JsonResponse<string>(result));
         }
 
-        [HttpPost]
-        [Route("login")]
-        public async Task<ActionResult<string>> Login(
-                      [FromBody] LoginUserAccountWithEmailCommand query,
-                                 CancellationToken cancellationToken = default)
+        /// <summary>
+        /// Logs in a user and returns a JWT token.
+        /// </summary>
+        /// <param name="query">The command containing login details.</param>
+        /// <param name="cancellationToken">Cancellation token for the request.</param>
+        /// <returns>A JWT token for the logged-in user.</returns>
+        /// <response code="200">Returns the JWT token.</response>
+        /// <response code="400">If the login details are invalid.</response>
+        [HttpPost("login")]
+        public async Task<ActionResult<string>> Login([FromBody] LoginUserAccountWithEmailCommand query, CancellationToken cancellationToken = default)
         {
             var result = await _mediator.Send(query, cancellationToken);
             var token = _jwtService.CreateToken(result.ID, result.Role);

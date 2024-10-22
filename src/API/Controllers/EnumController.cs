@@ -21,5 +21,4 @@ public class EnumController : ControllerBase
         var varieties = Enum.GetValues(typeof(Variety)).Cast<Variety>().ToList();
         return Ok(varieties);
     }
-
 }

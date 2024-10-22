@@ -16,11 +16,4 @@ public class CustomerController : ControllerBase
         _userManager = userManager;
         _mediator = mediator;
     }
-
-    
-
-   
-
-   
-
 }

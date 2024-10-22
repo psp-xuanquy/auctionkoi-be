@@ -31,6 +31,12 @@ namespace API.Controllers
             _mediator = mediator;
         }
 
+        /// <summary>
+        /// Gets all current koi requests for the authenticated koi breeder.
+        /// </summary>
+        /// <param name="cancellationToken">Cancellation token to cancel the request.</param>
+        /// <returns>A list of current koi requests.</returns>
+        /// <response code="200">Returns a list of current koi requests.</response>
         [HttpGet]
         [Authorize(Roles = "KOIBREEDER")]
         [Route("kois/current")]
@@ -40,6 +46,12 @@ namespace API.Controllers
             return Ok(new JsonResponse<List<GetAllKoisRequestCurrentResponse>>(result));
         }
 
+        /// <summary>
+        /// Gets all pending koi requests for managers and staff.
+        /// </summary>
+        /// <param name="cancellationToken">Cancellation token to cancel the request.</param>
+        /// <returns>A list of pending koi requests.</returns>
+        /// <response code="200">Returns a list of pending koi requests.</response>
         [HttpGet]
         [Authorize(Roles = "MANAGER, STAFF")]
         [Route("kois/pending")]
@@ -49,6 +61,13 @@ namespace API.Controllers
             return Ok(new JsonResponse<List<GetAllPendingKoisResponse>>(result));
         }
 
+        /// <summary>
+        /// Sends a koi auction request from a koi breeder.
+        /// </summary>
+        /// <param name="command">The command containing details of the koi auction request.</param>
+        /// <param name="cancellationToken">Cancellation token to cancel the request.</param>
+        /// <returns>A response indicating the result of the request.</returns>
+        /// <response code="200">Returns success message if the request is sent successfully.</response>
         [HttpPost]
         [Authorize(Roles = "KOIBREEDER")]
         [Route("koi")]
@@ -58,6 +77,13 @@ namespace API.Controllers
             return Ok(new JsonResponse<string>(result));
         }
 
+        /// <summary>
+        /// Resends a koi auction request from a koi breeder.
+        /// </summary>
+        /// <param name="command">The command containing details for resending the koi auction request.</param>
+        /// <param name="cancellationToken">Cancellation token to cancel the request.</param>
+        /// <returns>A response indicating the result of the resend request.</returns>
+        /// <response code="200">Returns success message if the request is resent successfully.</response>
         [HttpPut]
         [Authorize(Roles = "KOIBREEDER")]
         [Route("koi/resend")]
@@ -66,7 +92,14 @@ namespace API.Controllers
             var result = await _mediator.Send(command, cancellationToken);
             return Ok(new JsonResponse<string>(result));
         }
-       
+
+        /// <summary>
+        /// Approves a koi request by a manager or staff member.
+        /// </summary>
+        /// <param name="command">The command containing details for approving the koi request.</param>
+        /// <param name="cancellationToken">Cancellation token to cancel the request.</param>
+        /// <returns>A response indicating the result of the approval.</returns>
+        /// <response code="200">Returns success message if the request is approved successfully.</response>
         [HttpPut]
         [Authorize(Roles = "MANAGER, STAFF")]
         [Route("koi/approval")]
@@ -75,7 +108,14 @@ namespace API.Controllers
             var result = await _mediator.Send(command, cancellationToken);
             return Ok(new JsonResponse<string>(result));
         }
-       
+
+        /// <summary>
+        /// Denies a koi request by a manager or staff member.
+        /// </summary>
+        /// <param name="command">The command containing details for denying the koi request.</param>
+        /// <param name="cancellationToken">Cancellation token to cancel the request.</param>
+        /// <returns>A response indicating the result of the denial.</returns>
+        /// <response code="200">Returns success message if the request is denied successfully.</response>
         [HttpPut]
         [Authorize(Roles = "MANAGER, STAFF")]
         [Route("koi/denial")]
@@ -85,7 +125,12 @@ namespace API.Controllers
             return Ok(new JsonResponse<string>(result));
         }
 
-        // Customers can retrieve their own sent requests
+        /// <summary>
+        /// Gets all current role requests for the authenticated customer or koi breeder.
+        /// </summary>
+        /// <param name="cancellationToken">Cancellation token to cancel the request.</param>
+        /// <returns>A list of current role requests.</returns>
+        /// <response code="200">Returns a list of current role requests.</response>
         [HttpGet]
         [Authorize(Roles = "CUSTOMER, KOIBREEDER")]
         [Route("role/current")]
@@ -95,7 +140,12 @@ namespace API.Controllers
             return Ok(new JsonResponse<List<GetRequestCurrentUserResponse>>(result));
         }
 
-        // Managers can get all pending requests
+        /// <summary>
+        /// Gets all pending role requests for managers.
+        /// </summary>
+        /// <param name="cancellationToken">Cancellation token to cancel the request.</param>
+        /// <returns>A list of pending role requests.</returns>
+        /// <response code="200">Returns a list of pending role requests.</response>
         [HttpGet]
         [Authorize(Roles = "MANAGER")]
         [Route("role/pending")]
@@ -105,7 +155,13 @@ namespace API.Controllers
             return Ok(new JsonResponse<List<GetAllPendingRolesResponse>>(result));
         }
 
-        // Customers can review request response, edit their requests, and resend them
+        /// <summary>
+        /// Resends a role request from a customer.
+        /// </summary>
+        /// <param name="command">The command containing details for resending the role request.</param>
+        /// <param name="cancellationToken">Cancellation token to cancel the request.</param>
+        /// <returns>A response indicating the result of the resend request.</returns>
+        /// <response code="200">Returns success message if the request is resent successfully.</response>
         [HttpPut]
         [Authorize(Roles = "CUSTOMER")]
         [Route("role/resend")]
@@ -115,7 +171,13 @@ namespace API.Controllers
             return Ok(new JsonResponse<string>(result));
         }
 
-        // Managers can approve requests
+        /// <summary>
+        /// Approves a role request by a manager.
+        /// </summary>
+        /// <param name="command">The command containing details for approving the role request.</param>
+        /// <param name="cancellationToken">Cancellation token to cancel the request.</param>
+        /// <returns>A response indicating the result of the approval.</returns>
+        /// <response code="200">Returns success message if the request is approved successfully.</response>
         [HttpPut]
         [Authorize(Roles = "MANAGER")]
         [Route("role/approval")]
@@ -125,7 +187,13 @@ namespace API.Controllers
             return Ok(new JsonResponse<string>(result));
         }
 
-        // Managers can deny requests
+        /// <summary>
+        /// Denies a role request by a manager.
+        /// </summary>
+        /// <param name="command">The command containing details for denying the role request.</param>
+        /// <param name="cancellationToken">Cancellation token to cancel the request.</param>
+        /// <returns>A response indicating the result of the denial.</returns>
+        /// <response code="200">Returns success message if the request is denied successfully.</response>
         [HttpPut]
         [Authorize(Roles = "MANAGER")]
         [Route("role/denial")]
@@ -134,6 +202,5 @@ namespace API.Controllers
             var result = await _mediator.Send(command, cancellationToken);
             return Ok(new JsonResponse<string>(result));
         }
-
     }
 }

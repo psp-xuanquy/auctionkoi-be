@@ -16,11 +16,23 @@ namespace KoiAuction.API.Controllers
     {
         private readonly UserManager<UserEntity> _userManager;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ConfirmEmailController"/> class.
+        /// </summary>
+        /// <param name="userManager">The UserManager instance used for managing user accounts.</param>
         public ConfirmEmailController(UserManager<UserEntity> userManager)
         {
             _userManager = userManager;
         }
 
+        /// <summary>
+        /// Confirms the user's email using the provided user ID and token.
+        /// </summary>
+        /// <param name="userId">The ID of the user whose email is to be confirmed.</param>
+        /// <param name="token">The token for email confirmation.</param>
+        /// <returns>An IActionResult indicating the result of the email confirmation.</returns>
+        /// <response code="200">Returns success message if the email confirmation is successful.</response>
+        /// <response code="400">Returns error message if the user is not found or the confirmation fails.</response>
         [HttpGet("confirm-email")]
         public async Task<IActionResult> ConfirmEmail(string userId, string token)
         {
@@ -32,15 +44,18 @@ namespace KoiAuction.API.Controllers
             if (result.Succeeded)
             {
                 // Đăng nhập người dùng sau khi xác nhận email
-            
+                // await SignInUser(user);
                 return Ok("Confirm Email Success! Now you can Login");
-                //await SignInUser(user);
-                //return Redirect("http://localhost:5154/swagger/index.html"); // Redirect đến trang chính sau khi đăng nhập thành công
+                // return Redirect("http://localhost:5154/swagger/index.html"); // Redirect đến trang chính sau khi đăng nhập thành công
             }
 
             return BadRequest("Email confirms failed.");
         }
 
+        /// <summary>
+        /// Signs in the user with the provided claims.
+        /// </summary>
+        /// <param name="user">The user to sign in.</param>
         private async Task SignInUser(UserEntity user)
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
