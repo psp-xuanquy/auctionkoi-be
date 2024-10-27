@@ -43,6 +43,10 @@ public class RegisterStaffAccountHandler : IRequestHandler<RegisterStaffAccountC
             Address = request.Address,
             Gender = request.Gender,
             Status = true,
+            //EmailConfirmed = true,
+            CreatedTime = DateTime.Now,
+            CreatedBy = "Manager",
+            LastUpdatedBy = "Manager"
         };
 
         

@@ -49,7 +49,11 @@ namespace KoiAuction.Application.User.Commands.RegisterCustomer
                 Address = request.Address,
                 Gender = request.Gender,
                 Status = true,
-                Balance = 0
+                Balance = 1000,
+                EmailConfirmed = true,
+                CreatedTime = DateTime.Now,
+                CreatedBy = request.UserName,
+                LastUpdatedBy = request.UserName
             };
 
             // Add the new account to the database
@@ -81,7 +85,7 @@ namespace KoiAuction.Application.User.Commands.RegisterCustomer
 
             // Send confirmation email
             var token = await _userManager.GenerateEmailConfirmationTokenAsync(account);
-            var confirmationLink = $"https://localhost:7243/api/ConfirmEmail/confirm-email?userId={account.Id}&token={Uri.EscapeDataString(token)}";
+            var confirmationLink = $"https://koiauctionwebapp.azurewebsites.net/ConfirmEmail/confirm-email?userId={account.Id}&token={Uri.EscapeDataString(token)}";
             await _emailService.SendConfirmEmailAsync(request.Email, request.UserName, confirmationLink);
 
             return "Account created successfully. Please check your email to verify your account.";

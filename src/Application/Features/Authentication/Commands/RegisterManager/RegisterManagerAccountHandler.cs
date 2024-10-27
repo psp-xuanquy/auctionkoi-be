@@ -33,7 +33,7 @@ namespace Application.Features.Authentication.Commands.RegisterManager
             {
                 Email = request.Email,
                 PasswordHash = _userRepository.HashPassword(request.Password),
-                UserName = "Manager_Koi",
+                UserName = "Manager",
                 CreatedTime = DateTime.Now,
                 EmailConfirmed = true,
                 CreatedBy = "System",

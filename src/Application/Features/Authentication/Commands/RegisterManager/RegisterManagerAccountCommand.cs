@@ -11,7 +11,7 @@ namespace Application.Features.Authentication.Commands.RegisterManager
         {
             //Email = email;
             //Password = password;
-            Email = "koimanager@manager.com";
+            Email = "manager@manager.com";
             Password = "koimanager@123";
         }
     }
