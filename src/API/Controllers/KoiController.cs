@@ -84,7 +84,7 @@ namespace KoiAuction.API.Controllers
         /// <response code="200">Returns success message if the koi is created successfully.</response>
         [HttpPost]
         [Route("create")]
-        [Authorize(Roles = "Manager")]
+        [Authorize(Roles = "MANAGER")]
         public async Task<ActionResult<JsonResponse<string>>> Create(
             [FromBody] CreateKoiCommand command,
             CancellationToken cancellationToken = default)
@@ -101,7 +101,7 @@ namespace KoiAuction.API.Controllers
         /// <returns>A response indicating the result of the update.</returns>
         /// <response code="200">Returns success message if the koi is updated successfully.</response>
         [HttpPut]
-        [Authorize(Roles = "Manager")]
+        [Authorize(Roles = "MANAGER")]
         public async Task<ActionResult<string>> Update(
             [FromBody] UpdateKoiCommand command,
             CancellationToken cancellationToken = default)
@@ -118,7 +118,7 @@ namespace KoiAuction.API.Controllers
         /// <returns>A response indicating the result of the deletion.</returns>
         /// <response code="200">Returns success message if the koi is deleted successfully.</response>
         [HttpDelete("{id}")]
-        [Authorize(Roles = "Manager")]
+        [Authorize(Roles = "MANAGER")]
         public async Task<ActionResult<JsonResponse<string>>> Delete(
             [FromRoute] string id,
             CancellationToken cancellationToken = default)

@@ -19,7 +19,7 @@ public class SendRequestKoiAuctionCommand : IRequest<string>, IMapFrom<KoiEntity
     public string? ImageUrl { get; set; }
     [DefaultValue(false)]
     public bool? AllowAutoBid { get; set; } 
-    public DateTime StartTime { get; set; }
+    public DateTime? StartTime { get; set; }
     public string? AuctionMethodID { get; set; }
     public void Mapping(Profile profile)
     {

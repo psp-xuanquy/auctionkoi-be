@@ -14,7 +14,7 @@ namespace KoiAuction.Domain.Entities.Base
         protected BaseEntity()
         {
             ID = Guid.NewGuid().ToString("N");
-            CreatedTime = LastUpdatedTime = DateTimeOffset.Now;
+            CreatedTime = LastUpdatedTime = DateTime.Now;
         }
 
         [Key]
@@ -26,11 +26,11 @@ namespace KoiAuction.Domain.Entities.Base
 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [DefaultValue("GETDATE()")]
-        public DateTimeOffset? CreatedTime { get; set; } = DateTimeOffset.Now;
+        public DateTime? CreatedTime { get; set; } = DateTime.Now;
 
-        public DateTimeOffset? LastUpdatedTime { get; set; }
+        public DateTime? LastUpdatedTime { get; set; }
 
-        public DateTimeOffset? DeletedTime { get; set; }
+        public DateTime? DeletedTime { get; set; }
 
         [NotMapped]
         private bool IsDisposed { get; set; }

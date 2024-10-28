@@ -29,6 +29,7 @@ namespace Application.Features.Bid.FixedPriceBid
             var koi = await GetKoiForAuction(request.KoiId, "Fixed Price Sale", cancellationToken);
 
             await ValidateBid(request, bidder, koi, cancellationToken);
+
             var bid = new BidEntity(koi.ID, request.BidAmount, bidder.Id, bidder.Balance, koi.InitialPrice);
             _bidRepository.Add(bid);
 
@@ -48,16 +49,16 @@ namespace Application.Features.Bid.FixedPriceBid
         private async Task ValidateBid(PlaceFixedPriceBidCommand request, UserEntity bidder, KoiEntity koi, CancellationToken cancellationToken)
         {
             if (request.BidAmount != koi.InitialPrice)
-                throw new InvalidOperationException("Bid amount must be equal to the initial price.");
+                throw new Exception("Bid amount must be equal to the initial price.");
 
             if (request.BidAmount > bidder.Balance)
-                throw new InvalidOperationException("Bid amount cannot exceed the user's balance.");
+                throw new Exception("Bid amount cannot exceed the user's balance.");
 
             ValidateBidAmount(request.BidAmount, koi, bidder);
 
             var existingBid = await _bidRepository.GetUserBidForKoi(bidder.Id, request.KoiId);
             if (existingBid != null)
-                throw new InvalidOperationException("You have already placed a bid for this auction.");
+                throw new Exception("You have already placed a bid for this auction.");
         }
 
         private async Task HandleAuctionExpiry(KoiEntity koi, CancellationToken cancellationToken)
@@ -73,7 +74,7 @@ namespace Application.Features.Bid.FixedPriceBid
                 koi.EndAuction();
                 _koiRepository.Update(koi);
                 await _koiRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
-                throw new InvalidOperationException("The auction has already expired.");
+                throw new Exception("The auction has already expired.");
             }
         }
 

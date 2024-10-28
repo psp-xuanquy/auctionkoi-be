@@ -9,7 +9,7 @@ namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "Customer")]
+    [Authorize(Roles = "CUSTOMER")]
     public class BidController : ControllerBase
     {
         private readonly IMediator _mediator;

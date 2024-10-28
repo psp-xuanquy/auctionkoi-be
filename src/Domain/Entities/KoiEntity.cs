@@ -25,8 +25,8 @@ namespace KoiAuction.Domain.Entities
         public string? RequestResponse { get; set; }
         public AuctionRequestStatus AuctionRequestStatus { get; set; }
         public AuctionStatus AuctionStatus { get; set; }
-        public DateTime StartTime { get; set; }
-        public DateTime EndTime { get; set; }
+        public DateTime? StartTime { get; set; }
+        public DateTime? EndTime { get; set; }
         public bool AllowAutoBid { get; set; }
 
         [ForeignKey("AuctionMethodID")]
@@ -64,8 +64,8 @@ namespace KoiAuction.Domain.Entities
         public void StartAuction()
         {
             AuctionStatus = AuctionStatus.OnGoing;
-            StartTime = DateTime.UtcNow;
-            EndTime = StartTime.AddMinutes(5);
+            StartTime = DateTime.Now;
+            EndTime = StartTime?.AddMinutes(5);
         }
 
         public void EndAuction()
@@ -75,7 +75,7 @@ namespace KoiAuction.Domain.Entities
 
         public bool IsAuctionExpired()
         {
-            return (DateTime.UtcNow - StartTime).TotalMinutes >= 5; 
+            return StartTime.HasValue && (DateTime.Now - StartTime.Value).TotalMinutes >= 5;
         }
     }
 }

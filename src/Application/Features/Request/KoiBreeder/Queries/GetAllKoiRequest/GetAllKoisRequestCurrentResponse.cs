@@ -37,8 +37,12 @@ public class GetAllKoisRequestCurrentResponse : IMapFrom<KoiEntity>
     {
         profile.CreateMap<KoiEntity, GetAllKoisRequestCurrentResponse>()
             .ForMember(dest => dest.AuctionMethod, opt => opt.MapFrom(src => src.AuctionMethod.Name))
-            .ForMember(dest => dest.StartTime, opt => opt.MapFrom(src => src.StartTime.ToString("dd-MM-yyyy HH:mm")))
-            .ForMember(dest => dest.EndTime, opt => opt.MapFrom(src => src.EndTime.ToString("dd-MM-yyyy HH:mm"))); 
+            .ForMember(dest => dest.StartTime, opt => opt.MapFrom(src => FormatDateTime(src.StartTime)))
+            .ForMember(dest => dest.EndTime, opt => opt.MapFrom(src => FormatDateTime(src.EndTime)));
     }
 
+    private string FormatDateTime(DateTime? dateTime)
+    {
+        return dateTime.HasValue ? dateTime.Value.ToString("dd-MM-yyyy HH:mm") : "N/A";
+    }
 }

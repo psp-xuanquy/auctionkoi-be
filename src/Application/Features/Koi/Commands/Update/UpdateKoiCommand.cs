@@ -26,8 +26,8 @@ public class UpdateKoiCommand : IRequest<string>, IMapFrom<KoiEntity>
     public string? RequestResponse { get; set; }
     public AuctionRequestStatus AuctionRequestStatus { get; set; }
     public AuctionStatus AuctionStatus { get; set; }
-    public DateTime StartTime { get; set; }
-    public DateTime EndTime { get; set; }
+    public DateTime? StartTime { get; set; }
+    public DateTime? EndTime { get; set; }
     public bool AllowAutoBid { get; set; }
     public string? AuctionMethodID { get; set; }
     public string? BreederID { get; set; }

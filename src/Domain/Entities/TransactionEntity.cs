@@ -18,7 +18,7 @@ namespace KoiAuction.Domain.Entities
         public TransactionType TransactionType { get; set; }
         public PaymentStatus Status { get; set; }
         public decimal TotalAmount { get; set; }
-        public DateTime TransactionDate { get; set; }  
+        public DateTime? TransactionDate { get; set; }  
         public string PaymentMethod { get; set; } = "Banking";
         public decimal CommissionRate { get; set; }
 

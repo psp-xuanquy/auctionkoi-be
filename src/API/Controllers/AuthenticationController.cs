@@ -47,6 +47,7 @@ namespace KoiAuction.API.Controllers
         /// <returns>A list of user accounts.</returns>
         /// <response code="200">Returns the list of user accounts.</response>
         [HttpGet("accounts")]
+        [Authorize(Roles = "ADMIN")]
         public async Task<ActionResult<List<GetUserAccountResponse>>> GetAll(CancellationToken cancellationToken = default)
         {
             var result = await _mediator.Send(new GetAllUserAccountQuery(), cancellationToken);

@@ -13,7 +13,7 @@ namespace KoiAuction.Domain.Entities
     {    
         public decimal BidAmount { get; set; }
         public bool IsWinningBid { get; set; }
-        public DateTime BidTime { get; set; }
+        public DateTime? BidTime { get; set; }
         public bool IsAutoBid { get; set; }
 
         [ForeignKey("KoiID")]
@@ -26,7 +26,7 @@ namespace KoiAuction.Domain.Entities
 
         public BidEntity()
         {
-            BidTime = DateTime.UtcNow;
+            BidTime = DateTime.Now;
             IsWinningBid = false;
             IsAutoBid = false;
         }

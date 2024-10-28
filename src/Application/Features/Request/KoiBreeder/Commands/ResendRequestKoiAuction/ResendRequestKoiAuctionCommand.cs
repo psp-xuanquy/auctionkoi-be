@@ -17,7 +17,7 @@ public class ResendRequestKoiAuctionCommand : IRequest<string>, IMapFrom<KoiEnti
     public string? Description { get; set; }
     public string? ImageUrl { get; set; }
     public bool? AllowAutoBid { get; set; }
-    public DateTimeOffset StartTime { get; set; }
+    public DateTime? StartTime { get; set; }
     public string? AuctionMethodID { get; set; }
 
     public void Mapping(Profile profile)
