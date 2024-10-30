@@ -16,7 +16,7 @@ namespace KoiAuction.API.Services
             _emailSettings = emailSettings.Value;
         }
 
-        public async Task SendConfirmEmailAsync(string email, string userName, string confirmationLink)
+        public async Task SendConfirmEmailAsync(string email, string confirmationLink)
         {
             var fromAddress = new MailAddress(_emailSettings.SmtpUser, "Koi Auction");
             var toAddress = new MailAddress(email);
@@ -79,7 +79,7 @@ namespace KoiAuction.API.Services
                         <h1>Email Confirmation</h1>
                     </div>
                     <div class='email-body'>
-                        <p>Hello {userName},</p>
+                        <p>Hello,</p>
                         <p>Thank you for registering an account on Koi Auction. Please click the link below to confirm your email address:</p>
                         <p style='text-align: center;'>
                             <a href='{confirmationLink}' class='button'>Confirm Email</a>
