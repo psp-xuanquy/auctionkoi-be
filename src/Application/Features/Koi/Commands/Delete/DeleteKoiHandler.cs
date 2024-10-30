@@ -35,6 +35,7 @@ namespace Application.Features.Koi.Commands.Delete
             }
 
             _koiRepository.Remove(koi);
+
             var result = await _koiRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
             if (result > 0)
             {

@@ -1,8 +1,9 @@
-﻿using MediatR;
+﻿using KoiAuction.Application.Features.User.Commands.Login.Email;
+using MediatR;
 
 namespace Application.Features.Authentication.Commands.RegisterManager
 {
-    public class RegisterManagerAccountCommand : IRequest<string>
+    public class RegisterManagerAccountCommand : IRequest<LoginUserAccountWithEmailResponse>
     {
         public string Email { get; set; }
         public string Password { get; set; }

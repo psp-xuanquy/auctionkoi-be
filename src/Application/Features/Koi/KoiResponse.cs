@@ -4,17 +4,17 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Application.Features.AuctionMethod;
+using Application.Features.Koi.Commands.Create;
 using AutoMapper;
 using Domain.Enums;
-using KoiAuction.Application.Common.Mappings;
 using KoiAuction.Domain.Entities;
 using KoiAuction.Domain.Enums;
-using MediatR;
 
-namespace Application.Features.Koi.Commands.Create;
-public class CreateKoiCommand : IRequest<KoiResponse>, IMapFrom<KoiEntity>
+namespace Application.Features.Koi;
+
+public class KoiResponse
 {
+    public string Id { get; set; }
     public string? Name { get; set; }
     public Sex Sex { get; set; }
     public double Size { get; set; }
@@ -35,8 +35,6 @@ public class CreateKoiCommand : IRequest<KoiResponse>, IMapFrom<KoiEntity>
 
     public void Mapping(Profile profile)
     {
-        profile.CreateMap<CreateKoiCommand, KoiEntity>();
-        profile.CreateMap<KoiEntity, KoiResponse>();
+        profile.CreateMap<KoiResponse, KoiEntity>();
     }
 }
-

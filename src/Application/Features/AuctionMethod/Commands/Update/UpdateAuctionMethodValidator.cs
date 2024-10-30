@@ -16,8 +16,8 @@ public class UpdateAuctionMethodValidator : AbstractValidator<UpdateAuctionMetho
 
     private void ConfigureValidationRules()
     {
-        RuleFor(x => x.Id)
-           .NotEmpty().WithMessage("AuctionMethod Id cannot be empty");
+        //RuleFor(x => x.Id)
+        //   .NotEmpty().WithMessage("AuctionMethod Id cannot be empty");
         RuleFor(x => x.Name)
             .NotEmpty().WithMessage("AuctionMethod Name cannot be empty");
         RuleFor(x => x.Description)

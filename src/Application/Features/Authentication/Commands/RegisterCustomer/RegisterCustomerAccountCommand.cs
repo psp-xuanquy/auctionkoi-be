@@ -1,4 +1,5 @@
 ﻿using Domain.Enums;
+using KoiAuction.Application.Features.User.Commands.Login.Email;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace KoiAuction.Application.User.Commands.RegisterCustomer
 {
-    public class RegisterCustomerAccountCommand : IRequest<string>
+    public class RegisterCustomerAccountCommand : IRequest<LoginUserAccountWithEmailResponse>
     {    
         public string? Email { get; set; }
         public string? Password { get; set; }

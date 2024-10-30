@@ -1,6 +1,7 @@
 ﻿using Castle.Core.Resource;
 using Domain.Enums;
 using KoiAuction.Application.Common.Interfaces;
+using KoiAuction.Application.Features.User.Commands.Login.Email;
 using KoiAuction.Domain.Common.Exceptions;
 using KoiAuction.Domain.Entities;
 using KoiAuction.Domain.IRepositories;
@@ -12,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace KoiAuction.Application.User.Commands.RegisterCustomer
 {
-    public class RegisterCustomerAccountHandler : IRequestHandler<RegisterCustomerAccountCommand, string>
+    public class RegisterCustomerAccountHandler : IRequestHandler<RegisterCustomerAccountCommand, LoginUserAccountWithEmailResponse>
     {
         private readonly IUserRepository _userRepository;
         private readonly UserManager<UserEntity> _userManager;
@@ -31,7 +32,7 @@ namespace KoiAuction.Application.User.Commands.RegisterCustomer
             _emailService = emailService;         
         }
 
-        public async Task<string> Handle(RegisterCustomerAccountCommand request, CancellationToken cancellationToken)
+        public async Task<LoginUserAccountWithEmailResponse> Handle(RegisterCustomerAccountCommand request, CancellationToken cancellationToken)
         {
             var accountExists = await _userRepository.FindAsync(_ => _.Email == request.Email, cancellationToken);
             if (accountExists != null)
@@ -44,7 +45,7 @@ namespace KoiAuction.Application.User.Commands.RegisterCustomer
                 Email = request.Email,
                 PasswordHash = _userRepository.HashPassword(request.Password),
                 //FullName = request.FullName,
-                //UserName = request.UserName,             
+                UserName = request.Email,
                 //PhoneNumber = request.PhoneNumber,
                 //Address = request.Address,
                 //Gender = request.Gender,
@@ -60,7 +61,8 @@ namespace KoiAuction.Application.User.Commands.RegisterCustomer
             var createUserResult = await _userManager.CreateAsync(account);
             if (!createUserResult.Succeeded)
             {
-                return "Account creation failed.";
+                var errors = string.Join(", ", createUserResult.Errors.Select(e => e.Description));
+                throw new Exception($"Account creation failed: {errors}");
             }
 
             // Check if the role "Customer" exists
@@ -70,7 +72,7 @@ namespace KoiAuction.Application.User.Commands.RegisterCustomer
                 var createRoleResult = await _roleManager.CreateAsync(new IdentityRole { Name = Enum.GetName(typeof(Role), Role.CUSTOMER) });
                 if (!createRoleResult.Succeeded)
                 {
-                    return "Failed to create Customer role.";
+                    throw new Exception("Failed to create Customer role.");
                 }
             }
 
@@ -78,17 +80,28 @@ namespace KoiAuction.Application.User.Commands.RegisterCustomer
             var addToRoleResult = await _userManager.AddToRoleAsync(account, Role.CUSTOMER.ToString());
             if (!addToRoleResult.Succeeded)
             {
-                return "Failed to assign Customer role to the account.";
+                throw new Exception("Failed to assign Customer role to the account.");
             }
 
             await _userRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
 
-            // Send confirmation email
-            var token = await _userManager.GenerateEmailConfirmationTokenAsync(account);
-            var confirmationLink = $"https://koiauctionwebapp.azurewebsites.net/ConfirmEmail/confirm-email?userId={account.Id}&token={Uri.EscapeDataString(token)}";
-            await _emailService.SendConfirmEmailAsync(request.Email, confirmationLink);
+            var role = await _userManager.GetRolesAsync(account);
 
-            return "Account created successfully. Please check your email to verify your account.";
+            var response = new LoginUserAccountWithEmailResponse
+            {
+                Email = account.Email,
+                ID = account.Id,
+                Role = role.FirstOrDefault()
+            };
+
+            return response;
+
+            // Send confirmation email
+            //var token = await _userManager.GenerateEmailConfirmationTokenAsync(account);
+            //var confirmationLink = $"https://koiauctionwebapp.azurewebsites.net/ConfirmEmail/confirm-email?userId={account.Id}&token={Uri.EscapeDataString(token)}";
+            //await _emailService.SendConfirmEmailAsync(request.Email, confirmationLink);
+
+            //return "Account created successfully. Please check your email to verify your account.";
         }
     }
 }

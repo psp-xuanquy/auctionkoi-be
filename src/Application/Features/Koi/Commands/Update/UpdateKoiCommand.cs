@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Application.Features.AuctionMethod;
 using AutoMapper;
 using Domain.Enums;
 using KoiAuction.Application.Common.Mappings;
@@ -11,7 +12,7 @@ using KoiAuction.Domain.Enums;
 using MediatR;
 
 namespace Application.Features.Koi.Commands.Update;
-public class UpdateKoiCommand : IRequest<string>, IMapFrom<KoiEntity>
+public class UpdateKoiCommand : IRequest<KoiResponse>, IMapFrom<KoiEntity>
 {
     public string? Id { get; set; }
     public string? Name { get; set; }
@@ -35,5 +36,7 @@ public class UpdateKoiCommand : IRequest<string>, IMapFrom<KoiEntity>
     public void Mapping(Profile profile)
     {
         profile.CreateMap<UpdateKoiCommand, KoiEntity>();
+        profile.CreateMap<KoiEntity, KoiResponse>();
+
     }
 }
