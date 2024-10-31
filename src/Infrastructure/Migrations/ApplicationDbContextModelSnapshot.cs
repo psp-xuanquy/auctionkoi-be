@@ -33,15 +33,15 @@ namespace Infrastructure.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTimeOffset?>("CreatedTime")
+                    b.Property<DateTime?>("CreatedTime")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("datetimeoffset");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("DeletedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTimeOffset?>("DeletedTime")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateTime?>("DeletedTime")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("DeliveryStatus")
                         .HasColumnType("int");
@@ -49,8 +49,8 @@ namespace Infrastructure.Migrations
                     b.Property<string>("LastUpdatedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTimeOffset?>("LastUpdatedTime")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateTime?>("LastUpdatedTime")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("ID");
 
@@ -65,15 +65,15 @@ namespace Infrastructure.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTimeOffset?>("CreatedTime")
+                    b.Property<DateTime?>("CreatedTime")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("datetimeoffset");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("DeletedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTimeOffset?>("DeletedTime")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateTime?>("DeletedTime")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("KoiFarmDescription")
                         .HasColumnType("nvarchar(max)");
@@ -90,8 +90,8 @@ namespace Infrastructure.Migrations
                     b.Property<string>("LastUpdatedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTimeOffset?>("LastUpdatedTime")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateTime?>("LastUpdatedTime")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("RequestResponse")
                         .HasColumnType("nvarchar(max)");
@@ -117,15 +117,15 @@ namespace Infrastructure.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTimeOffset?>("CreatedTime")
+                    b.Property<DateTime?>("CreatedTime")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("datetimeoffset");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("DeletedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTimeOffset?>("DeletedTime")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateTime?>("DeletedTime")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -133,8 +133,8 @@ namespace Infrastructure.Migrations
                     b.Property<string>("LastUpdatedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTimeOffset?>("LastUpdatedTime")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateTime?>("LastUpdatedTime")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
@@ -149,7 +149,7 @@ namespace Infrastructure.Migrations
                     b.Property<string>("ID")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<DateTime>("BidTime")
+                    b.Property<DateTime?>("BidTime")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("BidderID")
@@ -158,15 +158,15 @@ namespace Infrastructure.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTimeOffset?>("CreatedTime")
+                    b.Property<DateTime?>("CreatedTime")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("datetimeoffset");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("DeletedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTimeOffset?>("DeletedTime")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateTime?>("DeletedTime")
+                        .HasColumnType("datetime2");
 
                     b.Property<decimal>("IncrementAmount")
                         .HasColumnType("decimal(18,2)");
@@ -177,8 +177,8 @@ namespace Infrastructure.Migrations
                     b.Property<string>("LastUpdatedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTimeOffset?>("LastUpdatedTime")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateTime?>("LastUpdatedTime")
+                        .HasColumnType("datetime2");
 
                     b.Property<decimal>("MaxBid")
                         .HasColumnType("decimal(18,2)");
@@ -200,7 +200,7 @@ namespace Infrastructure.Migrations
                     b.Property<decimal>("BidAmount")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<DateTime>("BidTime")
+                    b.Property<DateTime?>("BidTime")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("BidderID")
@@ -210,15 +210,15 @@ namespace Infrastructure.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTimeOffset?>("CreatedTime")
+                    b.Property<DateTime?>("CreatedTime")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("datetimeoffset");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("DeletedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTimeOffset?>("DeletedTime")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateTime?>("DeletedTime")
+                        .HasColumnType("datetime2");
 
                     b.Property<bool>("IsAutoBid")
                         .HasColumnType("bit");
@@ -233,8 +233,8 @@ namespace Infrastructure.Migrations
                     b.Property<string>("LastUpdatedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTimeOffset?>("LastUpdatedTime")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateTime?>("LastUpdatedTime")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("ID");
 
@@ -259,24 +259,24 @@ namespace Infrastructure.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTimeOffset?>("CreatedTime")
+                    b.Property<DateTime?>("CreatedTime")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("datetimeoffset");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("DeletedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTimeOffset?>("DeletedTime")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateTime?>("DeletedTime")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("LastUpdatedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTimeOffset?>("LastUpdatedTime")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateTime?>("LastUpdatedTime")
+                        .HasColumnType("datetime2");
 
-                    b.Property<DateTimeOffset>("PostedDate")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateTime?>("PostedDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
@@ -317,20 +317,20 @@ namespace Infrastructure.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTimeOffset?>("CreatedTime")
+                    b.Property<DateTime?>("CreatedTime")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("datetimeoffset");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("DeletedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTimeOffset?>("DeletedTime")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateTime?>("DeletedTime")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("EndTime")
+                    b.Property<DateTime?>("EndTime")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("ImageUrl")
@@ -342,8 +342,8 @@ namespace Infrastructure.Migrations
                     b.Property<string>("LastUpdatedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTimeOffset?>("LastUpdatedTime")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateTime?>("LastUpdatedTime")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Location")
                         .IsRequired()
@@ -361,7 +361,7 @@ namespace Infrastructure.Migrations
                     b.Property<double>("Size")
                         .HasColumnType("float");
 
-                    b.Property<DateTime>("StartTime")
+                    b.Property<DateTime?>("StartTime")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("Variety")
@@ -384,15 +384,15 @@ namespace Infrastructure.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTimeOffset?>("CreatedTime")
+                    b.Property<DateTime?>("CreatedTime")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("datetimeoffset");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("DeletedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTimeOffset?>("DeletedTime")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateTime?>("DeletedTime")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("KoiID")
                         .HasColumnType("nvarchar(450)");
@@ -400,8 +400,8 @@ namespace Infrastructure.Migrations
                     b.Property<string>("LastUpdatedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTimeOffset?>("LastUpdatedTime")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateTime?>("LastUpdatedTime")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Url")
                         .HasColumnType("nvarchar(max)");
@@ -430,15 +430,15 @@ namespace Infrastructure.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTimeOffset?>("CreatedTime")
+                    b.Property<DateTime?>("CreatedTime")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("datetimeoffset");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("DeletedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTimeOffset?>("DeletedTime")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateTime?>("DeletedTime")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("KoiID")
                         .HasColumnType("nvarchar(450)");
@@ -446,8 +446,8 @@ namespace Infrastructure.Migrations
                     b.Property<string>("LastUpdatedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTimeOffset?>("LastUpdatedTime")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateTime?>("LastUpdatedTime")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("PaymentMethod")
                         .IsRequired()
@@ -459,7 +459,7 @@ namespace Infrastructure.Migrations
                     b.Property<decimal>("TotalAmount")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<DateTime>("TransactionDate")
+                    b.Property<DateTime?>("TransactionDate")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("TransactionType")

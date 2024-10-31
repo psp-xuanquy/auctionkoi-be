@@ -46,7 +46,7 @@ namespace KoiAuction.API.Controllers
                 // Đăng nhập người dùng sau khi xác nhận email
                 // await SignInUser(user);
                 return Ok("Confirm Email Success! Now you can Login");
-                // return Redirect("http://localhost:5154/swagger/index.html"); // Redirect đến trang chính sau khi đăng nhập thành công
+                // return Redirect("https://koiauctionwebapp.azurewebsites.net/swagger/index.html"); // Redirect đến trang chính sau khi đăng nhập thành công
             }
 
             return BadRequest("Email confirms failed.");

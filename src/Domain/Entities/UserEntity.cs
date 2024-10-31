@@ -28,7 +28,7 @@ namespace KoiAuction.Domain.Entities
         public string? DeletedBy { get; set; }
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [DefaultValue("GETDATE()")]
-        public DateTime? CreatedTime { get; set; } = DateTime.UtcNow;
+        public DateTime? CreatedTime { get; set; } = DateTime.Now;
         public DateTime? DeletedTime { get; set; }
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime? LastUpdatedTime { get; set; }

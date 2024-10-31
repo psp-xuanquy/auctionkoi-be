@@ -1,4 +1,7 @@
-﻿using Application.Features.Koi.Commands.Create;
+﻿using Application.Features.AuctionMethod;
+using Application.Features.AuctionMethod.Commands.Update;
+using Application.Features.Koi;
+using Application.Features.Koi.Commands.Create;
 using Application.Features.Koi.Commands.Delete;
 using Application.Features.Koi.Commands.Update;
 using Application.Features.Koi.Queries.Filter;
@@ -36,7 +39,7 @@ namespace KoiAuction.API.Controllers
         public async Task<ActionResult<List<GetAllKoiResponse>>> GetAll(CancellationToken cancellationToken = default)
         {
             var result = await _mediator.Send(new GetAllKoiQuery(), cancellationToken);
-            return Ok(new JsonResponse<List<GetAllKoiResponse>>(result));
+            return Ok(new JsonResponse<List<GetAllKoiResponse>>("Get all Kois successfully", result));
         }
 
         /// <summary>
@@ -72,7 +75,7 @@ namespace KoiAuction.API.Controllers
         {
             var query = new FilterKoiQuery(name, minLength, maxLength, minAge, maxAge, minPrice, maxPrice, breederName, auctionMethodName, sex);
             var result = await _mediator.Send(query, cancellationToken);
-            return result != null ? Ok(new JsonResponse<List<GetAllKoiResponse>>(result)) : NotFound();
+            return result != null ? Ok(new JsonResponse<List<GetAllKoiResponse>>("Filter Koi successfully", result)) : NotFound();
         }
 
         /// <summary>
@@ -84,13 +87,13 @@ namespace KoiAuction.API.Controllers
         /// <response code="200">Returns success message if the koi is created successfully.</response>
         [HttpPost]
         [Route("create")]
-        [Authorize(Roles = "Manager")]
-        public async Task<ActionResult<JsonResponse<string>>> Create(
+        [Authorize(Roles = "MANAGER")]
+        public async Task<ActionResult<JsonResponse<KoiResponse>>> Create(
             [FromBody] CreateKoiCommand command,
             CancellationToken cancellationToken = default)
         {
             var result = await _mediator.Send(command, cancellationToken);
-            return Ok(new JsonResponse<string>(result));
+            return Ok(new JsonResponse<KoiResponse>("Create Koi successfully", result));
         }
 
         /// <summary>
@@ -101,13 +104,15 @@ namespace KoiAuction.API.Controllers
         /// <returns>A response indicating the result of the update.</returns>
         /// <response code="200">Returns success message if the koi is updated successfully.</response>
         [HttpPut]
-        [Authorize(Roles = "Manager")]
-        public async Task<ActionResult<string>> Update(
+        [Authorize(Roles = "MANAGER")]
+        public async Task<ActionResult<KoiResponse>> Update(
             [FromBody] UpdateKoiCommand command,
+            string id,
             CancellationToken cancellationToken = default)
         {
-            var result = await _mediator.Send(command, cancellationToken);
-            return Ok(new JsonResponse<string>(result));
+            var request = new UpdateKoiRequest(id, command);
+            var result = await _mediator.Send(request, cancellationToken);
+            return Ok(new JsonResponse<KoiResponse>("Update Koi successfully", result));
         }
 
         /// <summary>
@@ -118,13 +123,13 @@ namespace KoiAuction.API.Controllers
         /// <returns>A response indicating the result of the deletion.</returns>
         /// <response code="200">Returns success message if the koi is deleted successfully.</response>
         [HttpDelete("{id}")]
-        [Authorize(Roles = "Manager")]
+        [Authorize(Roles = "MANAGER")]
         public async Task<ActionResult<JsonResponse<string>>> Delete(
             [FromRoute] string id,
             CancellationToken cancellationToken = default)
         {
             var result = await _mediator.Send(new DeleteKoiCommand(id: id), cancellationToken);
-            return Ok(new JsonResponse<string>(result));
+            return Ok(new JsonResponse<string>("Delete Koi successfully", null));
         }
     }
 }

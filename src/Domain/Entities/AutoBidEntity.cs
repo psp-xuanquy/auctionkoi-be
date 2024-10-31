@@ -13,7 +13,7 @@ namespace KoiAuction.Domain.Entities
     {      
         public decimal MaxBid { get; set; }
         public decimal IncrementAmount { get; set; }
-        public DateTime BidTime { get; set; }
+        public DateTime? BidTime { get; set; }
 
         [ForeignKey("KoiID")]
         public string? KoiID { get; set; }

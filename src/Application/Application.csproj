@@ -7,12 +7,30 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Features\AuctionMethod - Copy\**" />
+    <Compile Remove="Features\User\**" />
     <Compile Remove="Models\**" />
-    <EmbeddedResource Remove="Features\AuctionMethod - Copy\**" />
+    <EmbeddedResource Remove="Features\User\**" />
     <EmbeddedResource Remove="Models\**" />
-    <None Remove="Features\AuctionMethod - Copy\**" />
+    <None Remove="Features\User\**" />
     <None Remove="Models\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="Features\User\CurrentUser\Queries\GetCurrentUser\GetCurrentUserHandler.cs" />
+    <Compile Include="Features\User\CurrentUser\Queries\GetCurrentUser\GetCurrentUserQuery.cs" />
+    <Compile Include="Features\User\CurrentUser\Queries\GetCurrentUser\GetCurrentUserResponse.cs" />
+    <Compile Include="Features\User\Manager\Commands\DeleteUserByManager\DeleteUserByManagerCommand.cs" />
+    <Compile Include="Features\User\Manager\Commands\DeleteUserByManager\DeleteUserByManagerHandler.cs" />
+    <Compile Include="Features\User\Manager\Commands\UpdateUserByManager\UpdateUserByManagerRequest.cs" />
+    <Compile Include="Features\User\Manager\Commands\UpdateUserByManager\UpdateUserByManagerCommand.cs" />
+    <Compile Include="Features\User\Manager\Commands\UpdateUserByManager\UpdateUserByManagerHandler.cs" />
+    <Compile Include="Features\User\UserResponse.cs" />
+    <Compile Include="Features\User\CurrentUser\Commands\Update\UpdateCurrentUserCommand.cs" />
+    <Compile Include="Features\User\CurrentUser\Commands\Update\UpdateCurrentUserHandler.cs" />
+    <Compile Include="Features\User\CurrentUser\Commands\Update\UpdateCurrentUserValidator.cs" />
+    <Compile Include="Features\User\Manager\Queries\GetAllCurrentUsers\GetAllCurrentUsersHandler.cs" />
+    <Compile Include="Features\User\Manager\Queries\GetAllCurrentUsers\GetAllCurrentUsersQuery.cs" />
+    <Compile Include="Features\User\Manager\Queries\GetAllCurrentUsers\GetAllCurrentUsersResponse.cs" />
   </ItemGroup>
 
   <ItemGroup>

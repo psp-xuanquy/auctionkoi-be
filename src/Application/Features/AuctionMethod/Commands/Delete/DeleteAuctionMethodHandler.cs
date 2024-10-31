@@ -25,25 +25,26 @@ public class DeleteAuctionMethodHandler : IRequestHandler<DeleteAuctionMethodCom
 
     public async Task<string> Handle(DeleteAuctionMethodCommand request, CancellationToken cancellationToken)
     {
-        var user = await _userRepository.FindAsync(x => x.Id == _currentUserService.UserId, cancellationToken);
+        var user = await _userRepository.FindAsync(x => x.Id == _currentUserService.UserId && x.DeletedTime == null, cancellationToken);
         if (user == null)
         {
             throw new NotFoundException("Please login again");
         }
 
-        var auctionMethod = await _auctionMethodRepository.FindAsync(x => x.ID == request.Id, cancellationToken);
+        var auctionMethod = await _auctionMethodRepository.FindAsync(x => x.ID == request.Id && x.DeletedTime == null, cancellationToken);
         if (auctionMethod == null)
         {
-            throw new NotFoundException("AuctionMethod not found.");
-        }
- 
-        _auctionMethodRepository.Remove(auctionMethod);
-        var result = await _auctionMethodRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
-        if (result > 0) 
-        {
-            return "AuctionMethod deleted successfully";
+            throw new NotFoundException("Auction Method not found.");
         }
 
-        return "Fail to delete AuctionMethod";
+        _auctionMethodRepository.Remove(auctionMethod);
+
+        var result = await _auctionMethodRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
+        if (result > 0)
+        {
+            return "Successfully deleted Auction Method";
+        }
+
+        return "Failed to delete Auction Method";
     }
 }

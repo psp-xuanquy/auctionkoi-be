@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using MediatR;
 
 namespace Application.Features.Bid.FixedPriceBid;
-public class PlaceFixedPriceBidCommand : IRequest<Unit>
+public class PlaceFixedPriceBidCommand : IRequest<string>
 {
     public string KoiId { get; }
     public decimal BidAmount { get; }

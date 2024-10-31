@@ -57,9 +57,9 @@ public class SendRequestKoiAuctionValidator : AbstractValidator<SendRequestKoiAu
     }
 
     // Kiểm tra xem StartTime có cách thời gian hiện tại ít nhất 5 phút không
-    private bool BeAValidStartTime(DateTime startTime)
+    private bool BeAValidStartTime(DateTime? startTime)
     {
-        var currentTime = DateTime.UtcNow;
+        var currentTime = DateTime.Now;
         return startTime > currentTime.AddMinutes(5);  
     }
 }

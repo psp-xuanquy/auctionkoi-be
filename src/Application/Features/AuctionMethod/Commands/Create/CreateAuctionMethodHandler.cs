@@ -11,9 +11,10 @@ using KoiAuction.Domain.Entities;
 using KoiAuction.Domain.IRepositories;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using RabbitMQ.Client;
 
 namespace Application.Features.AuctionMethod.Commands.Create;
-public class CreateAuctionMethodHandler : IRequestHandler<CreateAuctionMethodCommand, string>
+public class CreateAuctionMethodHandler : IRequestHandler<CreateAuctionMethodCommand, AuctionMethodResponse>
 {
     private readonly IMapper _mapper;
     private readonly ICurrentUserService _currentUserService;
@@ -28,26 +29,31 @@ public class CreateAuctionMethodHandler : IRequestHandler<CreateAuctionMethodCom
         _auctionMethodRepository = auctionMethodRepository;
     }
 
-    public async Task<string> Handle(CreateAuctionMethodCommand request, CancellationToken cancellationToken)
+    public async Task<AuctionMethodResponse> Handle(CreateAuctionMethodCommand request, CancellationToken cancellationToken)
     {
-        var user = await _userRepository.FindAsync(x => x.Id == _currentUserService.UserId, cancellationToken);
+        var user = await _userRepository.FindAsync(x => x.Id == _currentUserService.UserId && x.DeletedTime == null, cancellationToken);
         if (user == null)
         {
             throw new NotFoundException("Please login again");
         }
 
-        var existAuctionMethod = await _auctionMethodRepository.FindAsync(x => x.Name == request.Name, cancellationToken);
+        var existAuctionMethod = await _auctionMethodRepository.FindAsync(x => x.Name == request.Name && x.DeletedTime == null, cancellationToken);
         if (existAuctionMethod != null)
         {
             throw new DuplicationException("This AuctionMethod does exist");
         }
 
-        var trip = _mapper.Map<AuctionMethodEntity>(request);
-        
-        _auctionMethodRepository.Add(trip);
+        var auctionMethod = new AuctionMethodEntity
+        {
+            Name = request.Name,
+            Description = request.Description,
+            CreatedBy = user.UserName,
+            CreatedTime = DateTime.Now,
+        };
+
+        _auctionMethodRepository.Add(auctionMethod);
         await _auctionMethodRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
 
-        return "Create AuctionMethod success";
-
+        return _mapper.Map<AuctionMethodResponse>(auctionMethod);
     }
 }

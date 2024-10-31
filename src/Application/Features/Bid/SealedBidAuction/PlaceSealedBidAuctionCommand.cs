@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using MediatR;
 
 namespace Application.Features.Bid.SealedBidAuction;
-public class PlaceSealedBidAuctionCommand : IRequest<Unit>
+public class PlaceSealedBidAuctionCommand : IRequest<string>
 {
     public string KoiId { get; }
     public decimal BidAmount { get; set; }

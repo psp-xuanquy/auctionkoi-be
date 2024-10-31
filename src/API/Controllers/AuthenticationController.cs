@@ -47,10 +47,11 @@ namespace KoiAuction.API.Controllers
         /// <returns>A list of user accounts.</returns>
         /// <response code="200">Returns the list of user accounts.</response>
         [HttpGet("accounts")]
+        [Authorize(Roles = "ADMIN")]
         public async Task<ActionResult<List<GetUserAccountResponse>>> GetAll(CancellationToken cancellationToken = default)
         {
             var result = await _mediator.Send(new GetAllUserAccountQuery(), cancellationToken);
-            return Ok(new JsonResponse<List<GetUserAccountResponse>>(result));
+            return Ok(new JsonResponse<List<GetUserAccountResponse>>("Get all User successfully.", result));
         }
 
         /// <summary>
@@ -64,7 +65,9 @@ namespace KoiAuction.API.Controllers
         public async Task<ActionResult<string>> CreateCustomerAccount([FromBody] RegisterCustomerAccountCommand command, CancellationToken cancellationToken = default)
         {
             var result = await _mediator.Send(command, cancellationToken);
-            return CreatedAtAction(nameof(GetAll), new JsonResponse<string>(result));
+            var token = _jwtService.CreateToken(result.ID, result.Role);
+            var response = new JsonResponse<string>("Account created successfully", token); 
+            return CreatedAtAction(nameof(GetAll), response);
         }
 
         /// <summary>
@@ -79,7 +82,7 @@ namespace KoiAuction.API.Controllers
         public async Task<ActionResult<string>> CreateKoiBreederAccount([FromBody] RegisterKoiBreederAccountCommand command, CancellationToken cancellationToken = default)
         {
             var result = await _mediator.Send(command, cancellationToken);
-            return Ok(new JsonResponse<string>(result));
+            return Ok(new JsonResponse<string>("Register to become Koi Breeder success. Please wait to be approved.", result));
         }
 
         /// <summary>
@@ -93,7 +96,9 @@ namespace KoiAuction.API.Controllers
         public async Task<ActionResult<string>> CreateManagerAccount([FromBody] RegisterManagerAccountCommand command, CancellationToken cancellationToken = default)
         {
             var result = await _mediator.Send(command, cancellationToken);
-            return Ok(new JsonResponse<string>(result));
+            var token = _jwtService.CreateToken(result.ID, result.Role);
+            var response = new JsonResponse<string>("Account created successfully", token);
+            return CreatedAtAction(nameof(GetAll), response);
         }
 
         /// <summary>
@@ -108,7 +113,9 @@ namespace KoiAuction.API.Controllers
         public async Task<ActionResult<string>> CreateStaffAccount([FromBody] RegisterStaffAccountCommand command, CancellationToken cancellationToken = default)
         {
             var result = await _mediator.Send(command, cancellationToken);
-            return Ok(new JsonResponse<string>(result));
+            var token = _jwtService.CreateToken(result.ID, result.Role);
+            var response = new JsonResponse<string>("Account created successfully", token);
+            return CreatedAtAction(nameof(GetAll), response);
         }
 
         /// <summary>
@@ -124,7 +131,7 @@ namespace KoiAuction.API.Controllers
         {
             var result = await _mediator.Send(query, cancellationToken);
             var token = _jwtService.CreateToken(result.ID, result.Role);
-            return Ok(new JsonResponse<string>(token));
+            return Ok(new JsonResponse<string>("Login successfully", token));
         }
 
         //[HttpPost]

@@ -9,7 +9,7 @@ using KoiAuction.Domain.Entities;
 using MediatR;
 
 namespace Application.Features.AuctionMethod.Commands.Create;
-public class CreateAuctionMethodCommand : IRequest<string>, IMapFrom<AuctionMethodEntity>
+public class CreateAuctionMethodCommand : IRequest<AuctionMethodResponse>, IMapFrom<AuctionMethodEntity>
 {
     public string? Name { get; set; }
     public string? Description { get; set; }
@@ -17,6 +17,7 @@ public class CreateAuctionMethodCommand : IRequest<string>, IMapFrom<AuctionMeth
     public void Mapping(Profile profile)
     {
         profile.CreateMap<CreateAuctionMethodCommand, AuctionMethodEntity>();
+        profile.CreateMap<AuctionMethodEntity, AuctionMethodResponse>();
     }
 }
 

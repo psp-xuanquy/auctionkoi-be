@@ -10,7 +10,7 @@ namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "Customer")]
+    [Authorize(Roles = "CUSTOMER")]
     public class BidController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -40,7 +40,7 @@ namespace API.Controllers
             }
 
             var result = await _mediator.Send(command);
-            return Ok(result);
+            return Ok(new { Message = result });
         }
 
         /// <summary>
@@ -59,7 +59,7 @@ namespace API.Controllers
             }
 
             var result = await _mediator.Send(command);
-            return Ok(result);
+            return Ok(new { Message = result });
         }
 
         /// <summary>

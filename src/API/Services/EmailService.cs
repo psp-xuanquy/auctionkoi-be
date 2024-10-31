@@ -16,7 +16,7 @@ namespace KoiAuction.API.Services
             _emailSettings = emailSettings.Value;
         }
 
-        public async Task SendConfirmEmailAsync(string email, string userName, string confirmationLink)
+        public async Task SendConfirmEmailAsync(string email, string confirmationLink)
         {
             var fromAddress = new MailAddress(_emailSettings.SmtpUser, "Koi Auction");
             var toAddress = new MailAddress(email);
@@ -79,7 +79,7 @@ namespace KoiAuction.API.Services
                         <h1>Email Confirmation</h1>
                     </div>
                     <div class='email-body'>
-                        <p>Hello {userName},</p>
+                        <p>Hello,</p>
                         <p>Thank you for registering an account on Koi Auction. Please click the link below to confirm your email address:</p>
                         <p style='text-align: center;'>
                             <a href='{confirmationLink}' class='button'>Confirm Email</a>
@@ -201,6 +201,91 @@ namespace KoiAuction.API.Services
                 Subject = subject,
                 Body = body,
                 IsBodyHtml = true
+            };
+
+            await smtpClient.SendMailAsync(mailMessage);
+        }
+
+        public async Task SendWinningEmail(string userEmail, string koiName, decimal bidAmount)
+        {
+            var fromAddress = new MailAddress(_emailSettings.SmtpUser, "Koi Auction");
+            var toAddress = new MailAddress(userEmail);
+            const string subject = "Congratulations! You've won the auction!";
+            var body = $@"
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <meta charset='utf-8' />
+                <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+                <title>Auction Win Notification</title>
+                <style>
+                    body {{
+                        font-family: Arial, sans-serif;
+                        background-color: #f4f4f4;
+                        margin: 0;
+                        padding: 0;
+                        color: #333;
+                    }}
+                    .email-container {{
+                        max-width: 600px;
+                        margin: 0 auto;
+                        background-color: #ffffff;
+                        padding: 20px;
+                        border-radius: 8px;
+                        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                    }}
+                    .email-header {{
+                        text-align: center;
+                        padding-bottom: 20px;
+                        border-bottom: 1px solid #ddd;
+                    }}
+                    .email-header h1 {{
+                        font-size: 24px;
+                        margin: 0;
+                    }}
+                    .email-body {{
+                        padding: 20px;
+                        line-height: 1.6;
+                    }}
+                    .email-footer {{
+                        text-align: center;
+                        font-size: 12px;
+                        color: #888;
+                        padding: 20px;
+                        border-top: 1px solid #ddd;
+                    }}
+                </style>
+            </head>
+            <body>
+                <div class='email-container'>
+                    <div class='email-header'>
+                        <h1>Congratulations!</h1>
+                    </div>
+                    <div class='email-body'>
+                        <p>Hello,</p>
+                        <p>You have won the auction for the <strong>{koiName}</strong> fish with the amount of <strong>{bidAmount}</strong>.</p>
+                        <p>Thank you for participating in our auction!</p>
+                        <p>Best regards,<br />The Koi Auction Support Team</p>
+                    </div>
+                    <div class='email-footer'>
+                        <p>&copy; 2024 Koi Auction. All rights reserved.</p>
+                    </div>
+                </div>
+            </body>
+            </html>";
+
+            var smtpClient = new SmtpClient(_emailSettings.SmtpHost)
+            {
+                Port = _emailSettings.SmtpPort,
+                Credentials = new NetworkCredential(_emailSettings.SmtpUser, _emailSettings.SmtpPass),
+                EnableSsl = true,
+            };
+
+            var mailMessage = new MailMessage(fromAddress, toAddress)
+            {
+                Subject = subject,
+                Body = body,
+                IsBodyHtml = true,
             };
 
             await smtpClient.SendMailAsync(mailMessage);

@@ -15,7 +15,7 @@ namespace KoiAuction.Domain.Entities
         public string? Title { get; set; }
         public string? Content { get; set; }
         public string? UrlImage { get; set; }
-        public DateTimeOffset PostedDate { get; set; }     
+        public DateTime? PostedDate { get; set; }     
         [ForeignKey("AuthorID")]
         public string? AuthorID { get; set; }
         public virtual UserEntity? Author { get; set; }

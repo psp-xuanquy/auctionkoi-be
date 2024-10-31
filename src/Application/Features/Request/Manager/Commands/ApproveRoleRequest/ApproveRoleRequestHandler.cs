@@ -70,7 +70,7 @@ public class ApproveRoleRequestHandler : IRequestHandler<ApproveRoleRequestComma
         }
 
         koibreeder.RoleRequestStatus = RoleRequestStatus.Approved;
-        koibreeder.RequestResponse = "Your request has been approved";
+        koibreeder.RequestResponse = "Your request as a Koi Breeder has been approved";
         _koiBreederRepository.Update(koibreeder);
         await _koiBreederRepository.UnitOfWork.SaveChangesAsync();
 

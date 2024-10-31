@@ -37,7 +37,7 @@ namespace API.Controllers
             CancellationToken cancellationToken = default)
         {
             var result = await _mediator.Send(new GetAllKoiFarmBreederQuery(), cancellationToken);
-            return Ok(new JsonResponse<List<GetAllKoiFarmBreederResponse>>(result));
+            return Ok(new JsonResponse<List<GetAllKoiFarmBreederResponse>>("Get all Koi Farm Breeder successfully.", result));
         }
     }
 }

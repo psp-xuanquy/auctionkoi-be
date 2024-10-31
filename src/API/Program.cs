@@ -59,7 +59,7 @@ namespace KoiAuction
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Koi Auction API", Version = "v1" });
+                //c.SwaggerDoc("v1", new OpenApiInfo { Title = "Koi Auction API", Version = "v1" });
 
                 //var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 //var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
@@ -72,9 +72,12 @@ namespace KoiAuction
                 .AddDefaultTokenProviders();
 
             // Additional service configurations
+            services.AddHttpContextAccessor();
+            services.AddEndpointsApiExplorer();
             services.ConfigureApplicationSecurity(configuration);
             services.ConfigureProblemDetails();
             services.ConfigureApiVersioning();
+            services.ConfigureSwagger(configuration);
 
             // Add Application and Infrastructure (Important)
             services.AddApplication(configuration);
@@ -98,21 +101,15 @@ namespace KoiAuction
             app.UseCors("CorsPolicy");
             app.UseExceptionHandler();
             app.UseHttpsRedirection();
+            app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
-
-            // Kích hoạt Swagger
-            app.UseSwagger();
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Koi Auction API V1");
-                //c.RoutePrefix = string.Empty; 
-            });
-
             app.UseEndpoints(endpoints =>
             {
+                //endpoints.MapDefaultHealthChecks();
                 endpoints.MapControllers();
             });
+            app.UseSwashbuckle(configuration);
         }
     }
 }
