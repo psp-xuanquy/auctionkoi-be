@@ -1,4 +1,5 @@
-﻿using Application.Features.Bid.FixedPriceBid;
+﻿using Application.Features.Bid.AscendingBidAuction;
+using Application.Features.Bid.FixedPriceBid;
 using Application.Features.Bid.SealedBidAuction;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -61,24 +62,24 @@ namespace API.Controllers
             return Ok(result);
         }
 
-        ///// <summary>
-        ///// Places an Ascending bid on a koi.
-        ///// </summary>
-        ///// <param name="command">The command containing the KoiId and BidAmount.</param>
-        ///// <returns>A response indicating the result of the bid placement.</returns>
-        ///// <response code="200">Returns the result of the bid placement.</response>
-        ///// <response code="400">If the command is invalid.</response>
-        //[HttpPost("ascending-bid")]
-        //public async Task<IActionResult> PlaceAscendingBidAuction([FromBody] PlaceAscendingBidAuctionCommand command)
-        //{
-        //    if (command == null)
-        //    {
-        //        return BadRequest("Invalid command.");
-        //    }
-        //
-        //    var result = await _mediator.Send(command);
-        //    return Ok(result);
-        //}
+        /// <summary>
+        /// Places an Ascending bid on a koi.
+        /// </summary>
+        /// <param name="command">The command containing the KoiId and BidAmount.</param>
+        /// <returns>A response indicating the result of the bid placement.</returns>
+        /// <response code="200">Returns the result of the bid placement.</response>
+        /// <response code="400">If the command is invalid.</response>
+        [HttpPost("ascending-bid")]
+        public async Task<IActionResult> PlaceAscendingBidAuction([FromBody] AscendingBidAuctionCommand command)
+        {
+            if (command == null)
+            {
+                return BadRequest("Invalid command.");
+            }
+
+            var result = await _mediator.Send(command);
+            return Ok(result);
+        }
 
         ///// <summary>
         ///// Places a Descending bid on a koi.
