@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Domain.Enums;
 using KoiAuction.Application.Common.Interfaces;
@@ -56,15 +57,35 @@ public abstract class BaseAuctionHandler
         return koi;
     }
 
-    protected void ValidateBidAmount(decimal bidAmount, KoiEntity koi, UserEntity bidder)
+    protected async Task ValidateBidAmount(decimal bidAmount, string koiId, string bidderId, CancellationToken cancellation)
     {
-        if (bidAmount <= koi.InitialPrice)
+        var koi = await _koiRepository.FindAsync(k => k.ID == koiId, cancellation);
+        if (koi == null)
+        {
+            throw new Exception("Koi not found.");
+        }
+
+        if (bidAmount < koi.InitialPrice)
         {
             throw new Exception($"Bid amount must be greater than the starting price of {koi.InitialPrice:C}.");
         }
+
+        var bidder = await _userRepository.FindAsync(b => b.Id == bidderId, cancellation);
+        if (bidder == null)
+        {
+            throw new Exception("Bidder not found.");
+        }
+
         if (bidAmount > bidder.Balance)
         {
             throw new Exception("Bid amount exceeds available balance.");
         }
+
+        var existingBid = await _bidRepository.GetUserBidForKoi(koiId, bidderId, cancellation);
+        if (existingBid != null)
+        {
+            throw new Exception("You have already placed a bid for this auction.");
+        }
     }
+
 }
