@@ -47,7 +47,7 @@ namespace KoiAuction.API.Controllers
             return Ok(new JsonResponse<GetCurrentUserResponse>("Get Current User successfully.", result));
         }
 
-        [HttpGet("get-all-current-user-by-manager")]
+        [HttpGet("get-all-current-users-by-manager")]
         [Authorize(Roles = "MANAGER")]
         public async Task<ActionResult<JsonResponse<List<GetAllCurrentUsersResponse>>>> GetAllCurrentUser(CancellationToken cancellationToken = default)
         {
