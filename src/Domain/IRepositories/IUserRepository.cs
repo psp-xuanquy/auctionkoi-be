@@ -8,5 +8,7 @@ namespace KoiAuction.Domain.IRepositories
         string HashPassword(string password);
         bool VerifyPassword(string password, string passwordHash);
         string GeneratePassword();
+
+        Task<int> GetTotalUsersAsync(CancellationToken cancellationToken);
     }
 }

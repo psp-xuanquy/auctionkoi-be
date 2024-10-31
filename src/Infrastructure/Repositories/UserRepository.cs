@@ -12,9 +12,11 @@ namespace KoiAuction.Infrastructure.Repositories
 {
     public class UserRepository : RepositoryBase<UserEntity, UserEntity, ApplicationDbContext>, IUserRepository
     {
+        private readonly ApplicationDbContext _context;
+
         public UserRepository(ApplicationDbContext dbContext, IMapper mapper) : base(dbContext, mapper)
         {
-
+            _context = dbContext;
         }
 
         public string GeneratePassword()
@@ -48,6 +50,11 @@ namespace KoiAuction.Infrastructure.Repositories
         public bool VerifyPassword(string password, string passwordHash)
         {
             return BCrypt.Net.BCrypt.Verify(password, passwordHash);
+        }
+
+        public async Task<int> GetTotalUsersAsync(CancellationToken cancellationToken)
+        {
+            return await _context.Users.CountAsync(cancellationToken);
         }
     }
 }

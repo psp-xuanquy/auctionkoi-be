@@ -28,5 +28,26 @@ namespace KoiAuction.API.Services
         {
             return await Task.FromResult(_claimsPrincipal?.IsInRole(role) ?? false);
         }
+
+        //public string GetCurrentUserId()
+        //{
+        //    if (_claimsPrincipal == null)
+        //    {
+        //        throw new Exception("Http context is null. Please Login.");
+        //    }
+
+        //    if (!_claimsPrincipal.Identity.IsAuthenticated)
+        //    {
+        //        throw new UnauthorizedAccessException("User is not Authenticated");
+        //    }
+
+        //    var currentUserId = _claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier);
+        //    if (string.IsNullOrEmpty(currentUserId))
+        //    {
+        //        throw new UnauthorizedAccessException("User ID claim is not found");
+        //    }
+
+        //    return currentUserId;
+        //}
     }
 }
