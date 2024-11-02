@@ -59,7 +59,7 @@ public class AscendingBidAuctionHandler : BaseAuctionHandler, IRequestHandler<As
         if (request.BidAmount > bidder.Balance)
             throw new InvalidOperationException("Bid amount cannot exceed the user's balance.");
 
-        ValidateBidAmount(request.BidAmount, koi, bidder);
+        await ValidateBidAmount(request.BidAmount, koi.ID, bidder.Id, cancellationToken);
 
         var bids = await _bidRepository.GetBidsForKoi(koi.ID, cancellationToken);
         if (bids.Count() > 0)
