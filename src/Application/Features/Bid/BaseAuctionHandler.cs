@@ -57,35 +57,25 @@ public abstract class BaseAuctionHandler
         return koi;
     }
 
-    protected async Task ValidateBidAmount(decimal bidAmount, string koiId, string bidderId, CancellationToken cancellation)
+    protected async Task ValidateBidAmount(decimal bidAmount, string koiId, string bidderId, CancellationToken cancellationToken)
     {
-        var koi = await _koiRepository.FindAsync(k => k.ID == koiId, cancellation);
+        var koi = await _koiRepository.FindAsync(k => k.ID == koiId, cancellationToken);
         if (koi == null)
-        {
-            throw new Exception("Koi not found.");
-        }
+            throw new NotFoundException($"Koi with ID '{koiId}' not found.");
 
-        if (bidAmount < koi.InitialPrice)
-        {
-            throw new Exception($"Bid amount must be greater than the starting price of {koi.InitialPrice:C}.");
-        }
-
-        var bidder = await _userRepository.FindAsync(b => b.Id == bidderId, cancellation);
+        var bidder = await _userRepository.FindAsync(b => b.Id == bidderId, cancellationToken);
         if (bidder == null)
-        {
-            throw new Exception("Bidder not found.");
-        }
+            throw new NotFoundException("Bidder not found.");
+
+        //if (bidAmount < koi.InitialPrice)
+        //    throw new Exception($"Bid amount must be greater than the starting price of {koi.InitialPrice:C}.");
 
         if (bidAmount > bidder.Balance)
-        {
             throw new Exception("Bid amount exceeds available balance.");
-        }
 
-        var existingBid = await _bidRepository.GetUserBidForKoi(koiId, bidderId, cancellation);
+        var existingBid = await _bidRepository.GetUserBidForKoi(koiId, bidderId, cancellationToken);
         if (existingBid != null)
-        {
             throw new Exception("You have already placed a bid for this auction.");
-        }
     }
 
 }

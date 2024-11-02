@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -16,12 +15,7 @@ namespace Application.Features.Bid.FixedPriceBid
     {
         private readonly IEmailService _emailService;
 
-        public FixedPriceAuctionHandler(
-            ICurrentUserService currentUserService,
-            IKoiRepository koiRepository,
-            IBidRepository bidRepository,
-            IUserRepository userRepository,
-            IEmailService emailService)
+        public FixedPriceAuctionHandler(ICurrentUserService currentUserService, IKoiRepository koiRepository, IBidRepository bidRepository, IUserRepository userRepository, IEmailService emailService)
             : base(koiRepository, bidRepository, userRepository, currentUserService)
         {
             _emailService = emailService;
@@ -33,6 +27,12 @@ namespace Application.Features.Bid.FixedPriceBid
             var koi = await GetKoiForAuction(request.KoiId, "Fixed Price Sale", cancellationToken);
 
             await ValidateBid(request.BidAmount, koi.ID, bidder.Id, cancellationToken);
+
+            if (koi.IsAuctionExpired())
+            {
+                await HandleAuctionExpiry(koi, cancellationToken);
+                throw new Exception("The auction has already expired.");
+            }
 
             bidder.Balance -= request.BidAmount;
             _userRepository.Update(bidder);
@@ -54,51 +54,37 @@ namespace Application.Features.Bid.FixedPriceBid
 
         private async Task HandleAuctionExpiry(KoiEntity koi, CancellationToken cancellationToken)
         {
-            if (koi.IsAuctionExpired())
-            {
-                var bids = await _bidRepository.GetBidsForKoi(koi.ID, cancellationToken);
-                if (bids.Count() > 0)
-                {
-                    var winningBid = MarkWinningBid(bids);
-                    await _emailService.SendWinningEmail(winningBid.BidderID, koi.Name, winningBid.BidAmount);
-                }
-                else
-                {
-                    // Hoàn tiền cho người đã đặt cược
-                    foreach (var bid in bids)
-                    {
-                        var bidder = await _userRepository.FindAsync(x => x.Id == bid.BidderID, cancellationToken);
-                        bidder.Balance += bid.BidAmount;
-                        _userRepository.Update(bidder);
-                    }
-                }
+            if (!koi.IsAuctionExpired()) return;
 
-                koi.EndAuction();
-                _koiRepository.Update(koi);
-                await _koiRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
-                throw new Exception("The auction has already expired.");
+            var bids = await _bidRepository.GetBidsForKoi(koi.ID, cancellationToken);
+            if (bids.Any())
+            {
+                var winningBid = MarkWinningBid(bids);
+                await _emailService.SendWinningEmail(winningBid.Bidder.Email, koi.Name, winningBid.BidAmount);
             }
+            else
+            {
+                // Hoàn tiền cho người đã đặt cược
+                foreach (var bid in bids)
+                {
+                    var bidder = await _userRepository.FindAsync(x => x.Id == bid.BidderID, cancellationToken);
+                    bidder.Balance += bid.BidAmount;
+                    _userRepository.Update(bidder);
+                }
+            }
+
+            koi.EndAuction();
+            _koiRepository.Update(koi);
+            await _koiRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
         }
 
         private async Task ValidateBid(decimal bidAmount, string koiId, string bidderId, CancellationToken cancellationToken)
         {
             var koi = await _koiRepository.FindAsync(k => k.ID == koiId, cancellationToken);
-            if (koi == null)
-                throw new NotFoundException($"Koi with ID '{koiId}' not found.");
-
             if (bidAmount != koi.InitialPrice)
                 throw new Exception("Bid amount must be equal to the initial price.");
 
-            var bidder = await _userRepository.FindAsync(b => b.Id == bidderId, cancellationToken);
-            if (bidder == null)
-                throw new NotFoundException("Bidder not found.");
-
-            if (bidAmount > bidder.Balance)
-                throw new Exception("Bid amount cannot exceed the user's balance.");
-
-            var existingBid = await _bidRepository.GetUserBidForKoi(koiId, bidderId, cancellationToken);
-            if (existingBid != null)
-                throw new Exception("You have already placed a bid for this auction.");
+            await ValidateBidAmount(bidAmount, koiId, bidderId, cancellationToken);
         }
 
         private BidEntity MarkWinningBid(IEnumerable<BidEntity> bids)

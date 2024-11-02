@@ -14,6 +14,13 @@ using KoiAuction.Application.Common.Interfaces;
 using KoiAuction.Application.Common.Email;
 using Newtonsoft.Json.Converters;
 using KoiAuction.Domain.Entities;
+using API.Services;
+using Microsoft.Extensions.Hosting;
+using Domain.IRepositories.IBaseRepositories;
+using Infrastructure.Repositories.BaseRepositories;
+using KoiAuction.Domain.IRepositories;
+using KoiAuction.Domain.Repositories;
+using KoiAuction.Infrastructure.Repositories;
 
 namespace KoiAuction
 {
@@ -85,6 +92,16 @@ namespace KoiAuction
 
             services.Configure<EmailSettings>(configuration.GetSection("EmailSettings"));
             services.AddTransient<IEmailService, EmailService>();
+
+            services.AddScoped<IRepositoryFactory, RepositoryFactory>();
+
+            // Register your repositories as well
+            services.AddScoped<IKoiRepository, KoiRepository>();
+            services.AddScoped<IBidRepository, BidRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
+
+            //services.AddTransient   <AuctionExpiryService>();
+            services.AddHostedService<AuctionExpiryService>();
 
             System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
         }

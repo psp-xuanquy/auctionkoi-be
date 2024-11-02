@@ -65,7 +65,7 @@ namespace KoiAuction.Domain.Entities
         {
             AuctionStatus = AuctionStatus.OnGoing;
             StartTime = DateTime.Now;
-            EndTime = StartTime?.AddMinutes(5);
+            EndTime = StartTime?.AddMinutes(1);
         }
 
         public void EndAuction()
@@ -75,7 +75,7 @@ namespace KoiAuction.Domain.Entities
 
         public bool IsAuctionExpired()
         {
-            return StartTime.HasValue && (DateTime.Now - StartTime.Value).TotalMinutes >= 5;
+            return EndTime.HasValue && DateTime.Now >= EndTime.Value;
         }
     }
 }

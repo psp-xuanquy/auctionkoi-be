@@ -60,6 +60,6 @@ public class SendRequestKoiAuctionValidator : AbstractValidator<SendRequestKoiAu
     private bool BeAValidStartTime(DateTime? startTime)
     {
         var currentTime = DateTime.Now;
-        return startTime > currentTime.AddMinutes(5);  
+        return startTime > currentTime.AddMinutes(1);  
     }
 }
