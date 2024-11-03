@@ -24,7 +24,7 @@ namespace Application.Features.Bid.FixedPriceBid
         public async Task<string> Handle(PlaceFixedPriceBidCommand request, CancellationToken cancellationToken)
         {
             var bidder = await GetCurrentBidder(cancellationToken);
-            var koi = await GetKoiForAuction(request.KoiId, "Fixed Price Sale", cancellationToken);
+            var koi = await GetKoiForAuction(request.KoiId, "Method 1: Fixed Price Sale", cancellationToken);
 
             await ValidateBid(request.BidAmount, koi.ID, bidder.Id, cancellationToken);
 

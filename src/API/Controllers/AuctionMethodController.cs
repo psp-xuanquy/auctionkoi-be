@@ -81,13 +81,13 @@ namespace API.Controllers
         {
             switch (auctionMethodName)
             {
-                case "Fixed Price Sale":
+                case "Method 1: Fixed Price Sale":
                     return 1;
-                case "Sealed Bid Auction":
+                case "Method 2: Sealed Bid Auction":
                     return 2;
-                case "Ascending Bid Auction":
+                case "Method 3: Ascending Bid Auction":
                     return 3;
-                case "Descending Bid Auction":
+                case "Method 4: Descending Bid Auction":
                     return 4;
                 default:
                     return 5; 

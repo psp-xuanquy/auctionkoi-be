@@ -25,7 +25,7 @@ public class DescendingBidAuctionHandler : BaseAuctionHandler, IRequestHandler<D
     public async Task<Unit> Handle(DescendingBidAuctionCommand request, CancellationToken cancellationToken)
     {
         var bidder = await GetCurrentBidder(cancellationToken);
-        var koi = await GetKoiForAuction(request.KoiId, "Descending Bid Auction", cancellationToken);
+        var koi = await GetKoiForAuction(request.KoiId, "Method 4: Descending Bid Auction", cancellationToken);
 
         await ValidateBid(request, bidder, koi, cancellationToken);
 

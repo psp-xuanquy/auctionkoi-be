@@ -24,7 +24,7 @@ namespace Application.Features.Bid.SealedBidAuction
         public async Task<string> Handle(PlaceSealedBidAuctionCommand request, CancellationToken cancellationToken)
         {
             var bidder = await GetCurrentBidder(cancellationToken);
-            var koi = await GetKoiForAuction(request.KoiId, "Sealed Bid Auction", cancellationToken);
+            var koi = await GetKoiForAuction(request.KoiId, "Method 2: Sealed Bid Auction", cancellationToken);
 
             await ValidateBid(request.BidAmount, koi.ID, bidder.Id, cancellationToken);
 
