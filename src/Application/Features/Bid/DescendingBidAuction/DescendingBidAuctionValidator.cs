@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Features.Bid.AscendingBidAuction;
-public class AscendingBidAuctionValidator
+namespace Application.Features.Bid.DescendingBidAuction;
+public class DescendingBidAuctionValidator
 {
 }
