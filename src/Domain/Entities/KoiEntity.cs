@@ -26,6 +26,7 @@ namespace KoiAuction.Domain.Entities
         public int? DescendingRate { get; set; }
         public decimal? LowestDescendedPrice { get; set; }
         public int? DescendingTimeInMinute { get; set; }
+        public int? CurrentDescendedPrice { get; set; }
         public AuctionRequestStatus AuctionRequestStatus { get; set; }
         public AuctionStatus AuctionStatus { get; set; }
         public DateTime? StartTime { get; set; }
