@@ -13,7 +13,7 @@ using KoiAuction.Domain.Entities;
 namespace Application.Features.KoiBreeder.Queries.GetAllKoiFarmBreeder;
 public class GetAllKoiFarmBreederResponse : IMapFrom<KoiBreederEntity>
 {
-    public string? ID { get; set; }
+    //public string? ID { get; set; }
     public string? KoiFarmName { get; set; }
     public string? KoiFarmDescription { get; set; }
     public string? KoiFarmLocation { get; set; }
