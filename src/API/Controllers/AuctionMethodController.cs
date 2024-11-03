@@ -30,7 +30,10 @@ namespace API.Controllers
         public async Task<ActionResult<JsonResponse<List<GetAllAuctionMethodResponse>>>> GetAll(CancellationToken cancellationToken = default)
         {
             var result = await _mediator.Send(new GetAllAuctionMethodQuery(), cancellationToken);
-            return Ok(new JsonResponse<List<GetAllAuctionMethodResponse>>("Successfully retrieved all Auction Methods.", result));
+
+            var sortedResult = result.OrderBy(method => GetAuctionMethodOrder(method.Name)).ToList();
+
+            return Ok(new JsonResponse<List<GetAllAuctionMethodResponse>>("Successfully retrieved all Auction Methods.", sortedResult));
         }
 
         [HttpPost]
@@ -72,6 +75,23 @@ namespace API.Controllers
         {
             var result = await _mediator.Send(new GetPercentageUserForEachMethodQuery(year, month), cancellationToken);
             return Ok(new JsonResponse<List<GetPercentageUserForEachMethodResponse>>($"Successfully retrieved percentage of users for month {month} of year {year} for Auction Methods.", result));
+        }
+
+        private int GetAuctionMethodOrder(string auctionMethodName)
+        {
+            switch (auctionMethodName)
+            {
+                case "Fixed Price Sale":
+                    return 1;
+                case "Sealed Bid Auction":
+                    return 2;
+                case "Ascending Bid Auction":
+                    return 3;
+                case "Descending Bid Auction":
+                    return 4;
+                default:
+                    return 5; 
+            }
         }
     }
 }

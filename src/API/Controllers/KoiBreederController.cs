@@ -1,5 +1,8 @@
-﻿using Application.Features.KoiBreeder.Queries.GetAllKoiFarmBreeder;
+﻿using System.Net.Mime;
+using Application.Features.AuctionMethod.Queries.GetRevenueForEachMethod;
+using Application.Features.KoiBreeder.Queries.GetAllKoiFarmBreeder;
 using Application.Features.Request.User.Queries.GetRequestCurrentUser;
+using KN_EXE201.Application.Features.Category.Queries.GetById;
 using KoiAuction.API.Controllers.ResponseTypes;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -32,12 +35,24 @@ namespace API.Controllers
         /// <response code="400">If there is an error in the request.</response>
         [HttpGet]
         //[Authorize(Roles = "MANAGER")]
-        [Route("koifarms")]
+        [Route("get-all-breeders")]
         public async Task<ActionResult<List<GetAllKoiFarmBreederResponse>>> GetAllKoiFarm(
             CancellationToken cancellationToken = default)
         {
             var result = await _mediator.Send(new GetAllKoiFarmBreederQuery(), cancellationToken);
             return Ok(new JsonResponse<List<GetAllKoiFarmBreederResponse>>("Get all Koi Farm Breeder successfully.", result));
         }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<JsonResponse<GetAllKoiFarmBreederResponse>>> GetKoiFarmBreederById([FromRoute] string id, CancellationToken cancellationToken = default)
+        {
+            var result = await _mediator.Send(new GetKoiFarmBreederByIdQuery(id), cancellationToken);
+            if (result == null)
+            {
+                return NotFound();
+            }
+            return Ok(new JsonResponse<GetAllKoiFarmBreederResponse>("Get Koi Farm Breeder successfully.", result));
+        }
+
     }
 }
