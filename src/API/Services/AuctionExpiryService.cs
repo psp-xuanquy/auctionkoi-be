@@ -67,13 +67,14 @@ namespace API.Services
             var bids = await repositories.BidRepository.GetBidsForKoi(koi.ID, cancellationToken);
             if (bids.Any())
             {
-                BidEntity winningBid;
+                BidEntity? winningBid;
                 try
                 {
                     winningBid = koi.AuctionMethod.Name switch
                     {
                         "Fixed Price Sale" => MarkWinningBid(bids, repositories.BidRepository),
                         "Sealed Bid Auction" => bids.OrderByDescending(b => b.BidAmount).First(),
+                        "Ascending Bid Auction" => bids.FirstOrDefault(b => b.IsWinningBid == true),
                         _ => throw new Exception("Unknown auction method.")
                     };
 
