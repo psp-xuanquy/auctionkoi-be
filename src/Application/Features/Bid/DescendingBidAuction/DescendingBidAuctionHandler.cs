@@ -51,9 +51,19 @@ public class DescendingBidAuctionHandler : BaseAuctionHandler, IRequestHandler<D
 
         await ValidateBidAmount(request.BidAmount, koi.ID, bidder.Id, cancellationToken);
 
-        if (koi.InitialPrice != request.BidAmount)
+        if (koi.CurrentDescendedPrice == null || koi.CurrentDescendedPrice == 0)
         {
-            throw new InvalidOperationException("You must accept the current price to bid.");
+            if (koi.InitialPrice != request.BidAmount)
+            {
+                throw new InvalidOperationException("You must accept the current price to bid.");
+            }
+        }
+        else
+        {
+            if (koi.CurrentDescendedPrice != request.BidAmount)
+            {
+                throw new InvalidOperationException("You must accept the current price to bid.");
+            }
         }
 
         if (koi.IsAuctionExpired())
