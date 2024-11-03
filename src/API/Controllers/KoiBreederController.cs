@@ -31,7 +31,7 @@ namespace API.Controllers
         /// <response code="200">Returns a list of koi farms successfully retrieved.</response>
         /// <response code="400">If there is an error in the request.</response>
         [HttpGet]
-        [Authorize(Roles = "MANAGER")]
+        //[Authorize(Roles = "MANAGER")]
         [Route("koifarms")]
         public async Task<ActionResult<List<GetAllKoiFarmBreederResponse>>> GetAllKoiFarm(
             CancellationToken cancellationToken = default)
