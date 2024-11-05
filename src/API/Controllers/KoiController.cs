@@ -10,6 +10,7 @@ using Application.Features.Koi.Queries.GetAll;
 using Application.Features.Koi.Queries.GetAllActiveAuctions;
 using Application.Features.KoiBreeder.Queries.GetAllKoiFarmBreeder;
 using KN_EXE201.Application.Features.Category.Queries.GetById;
+using KN_EXE201.Application.Features.Koi.Queries.GetActiveAuctionByKoiId;
 using KoiAuction.API.Controllers.ResponseTypes;
 using KoiAuction.Domain.Enums;
 using MediatR;
@@ -46,6 +47,17 @@ namespace KoiAuction.API.Controllers
                 return NotFound();
             }
             return base.Ok(new JsonResponse<List<KoiResponse>>("Get all Active Auctions successfully.", result));
+        }
+
+        [HttpGet("get-active-auction-by-koi-id/{id}")]
+        public async Task<ActionResult<JsonResponse<KoiResponse>>> GetActiveAuctionByKoiId([FromRoute] string id, CancellationToken cancellationToken = default)
+        {
+            var result = await _mediator.Send(new GetActiveAuctionByKoiIdQuery(id), cancellationToken);
+            if (result == null)
+            {
+                return NotFound();
+            }
+            return Ok(new JsonResponse<KoiResponse>("Get Active Auction by KoiID successfully.", result));
         }
 
         [HttpGet("filter")]
