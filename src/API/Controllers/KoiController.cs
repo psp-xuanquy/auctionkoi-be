@@ -1,11 +1,15 @@
 ﻿using Application.Features.AuctionMethod;
 using Application.Features.AuctionMethod.Commands.Update;
+using Application.Features.AuctionMethod.Queries.GetRevenueForEachMethod;
 using Application.Features.Koi;
 using Application.Features.Koi.Commands.Create;
 using Application.Features.Koi.Commands.Delete;
 using Application.Features.Koi.Commands.Update;
 using Application.Features.Koi.Queries.Filter;
 using Application.Features.Koi.Queries.GetAll;
+using Application.Features.Koi.Queries.GetAllActiveAuctions;
+using Application.Features.KoiBreeder.Queries.GetAllKoiFarmBreeder;
+using KN_EXE201.Application.Features.Category.Queries.GetById;
 using KoiAuction.API.Controllers.ResponseTypes;
 using KoiAuction.Domain.Enums;
 using MediatR;
@@ -35,11 +39,22 @@ namespace KoiAuction.API.Controllers
         /// <param name="cancellationToken">A cancellation token to cancel the request.</param>
         /// <returns>A list of all koi.</returns>
         /// <response code="200">Returns a list of koi successfully retrieved.</response>
-        [HttpGet]
+        [HttpGet("get-all-kois")]
         public async Task<ActionResult<List<GetAllKoiResponse>>> GetAll(CancellationToken cancellationToken = default)
         {
             var result = await _mediator.Send(new GetAllKoiQuery(), cancellationToken);
             return Ok(new JsonResponse<List<GetAllKoiResponse>>("Get all Kois successfully", result));
+        }
+
+        [HttpGet("all-active-auctions")]
+        public async Task<ActionResult<JsonResponse<List<KoiResponse>>>> GetAllActiveAuctions(CancellationToken cancellationToken = default)
+        {
+            var result = await _mediator.Send(new GetAllActiveAuctionsQuery(), cancellationToken);
+            if (result == null)
+            {
+                return NotFound();
+            }
+            return Ok(new JsonResponse<List<KoiResponse>>("Get all Active Auctions successfully.", result));
         }
 
         /// <summary>

@@ -77,9 +77,9 @@ namespace API.Services
                 {
                     winningBid = koi.AuctionMethod.Name switch
                     {
-                        "Fixed Price Sale" => MarkWinningBid(bids, repositories.BidRepository),
-                        "Sealed Bid Auction" => bids.OrderByDescending(b => b.BidAmount).First(),
-                        "Ascending Bid Auction" => bids.FirstOrDefault(b => b.IsWinningBid == true),
+                        "Method 1: Fixed Price Sale" => MarkWinningBid(bids, repositories.BidRepository),
+                        "Method 2: Sealed Bid Auction" => bids.OrderByDescending(b => b.BidAmount).First(),
+                        "Method 3: Ascending Bid Auction" => bids.FirstOrDefault(b => b.IsWinningBid == true),
                         _ => throw new Exception("Unknown auction method.")
                     };
 
