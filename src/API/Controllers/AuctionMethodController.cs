@@ -62,15 +62,15 @@ namespace API.Controllers
         }
 
         [HttpGet("revenue/{year}")]
-        [Authorize(Roles = "MANAGER, STAFF")]
-        public async Task<ActionResult<JsonResponse<List<GetRevenueForEachMethodResponse>>>> GetRevenueForEachMethod(int year, CancellationToken cancellationToken = default)
+        //[Authorize(Roles = "MANAGER, STAFF")]
+        public async Task<ActionResult<JsonResponse<List<GetRevenueForEachMethodResponse>>>> GetRevenueForEachMethod(int year, [FromQuery] int month, CancellationToken cancellationToken = default)
         {
-            var result = await _mediator.Send(new GetRevenueForEachMethodQuery(year), cancellationToken);
+            var result = await _mediator.Send(new GetRevenueForEachMethodQuery(year, month), cancellationToken);
             return Ok(new JsonResponse<List<GetRevenueForEachMethodResponse>>($"Successfully retrieved Revenue for year {year} for each Auction Method.", result));
         }
 
         [HttpGet("percentage-users")]
-        [Authorize(Roles = "MANAGER, STAFF")]
+        //[Authorize(Roles = "MANAGER, STAFF")]
         public async Task<ActionResult<JsonResponse<List<GetPercentageUserForEachMethodResponse>>>> GetPercentageUserForEachMethod([FromQuery] int year, [FromQuery] int month, CancellationToken cancellationToken = default)
         {
             var result = await _mediator.Send(new GetPercentageUserForEachMethodQuery(year, month), cancellationToken);

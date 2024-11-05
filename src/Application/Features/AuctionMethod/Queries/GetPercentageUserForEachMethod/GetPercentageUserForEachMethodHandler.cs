@@ -35,16 +35,23 @@ public class GetPercentageUserForEachMethodHandler : IRequestHandler<GetPercenta
         }
 
         var transactions = await _transactionRepository.FindAllAsync(cancellationToken);
-        var totalUsers = await _userRepository.GetTotalUsersAsync(cancellationToken);
+        var filteredTransactions = transactions
+            .Where(t => t.TransactionDate.HasValue
+                        && t.TransactionDate.Value.Year == request.Year
+                        && t.TransactionDate.Value.Month == request.Month)
+            .ToList();
+
+        //var totalUsers = await _userRepository.GetTotalUsersAsync(cancellationToken);
+        var totalUsers = filteredTransactions
+            .Select(t => t.Bid?.BidderID)
+            .Distinct()
+            .Count();
 
         var percentageData = auctionMethods.Select(method =>
         {
-            var numberUsers = transactions
-                .Where(t => t.Bid?.Koi?.AuctionMethodID == method.ID
-                             && t.TransactionDate.HasValue
-                             && t.TransactionDate.Value.Year == request.Year
-                             && t.TransactionDate.Value.Month == request.Month)
-                .Select(t => t.Bid?.BidderID) 
+            var numberUsers = filteredTransactions
+                .Where(t => t.Bid?.Koi?.AuctionMethodID == method.ID)
+                .Select(t => t.Bid?.BidderID)
                 .Distinct()
                 .Count();
 
@@ -58,5 +65,5 @@ public class GetPercentageUserForEachMethodHandler : IRequestHandler<GetPercenta
         }).ToList();
 
         return percentageData;
-    }
+    }        
 }

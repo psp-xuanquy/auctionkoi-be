@@ -35,41 +35,39 @@ public class GetRevenueForEachMethodHandler : IRequestHandler<GetRevenueForEachM
         }
 
         var transactions = await _transactionRepository.FindAllAsync(cancellationToken);
+        var filteredTransactions = transactions
+            .Where(t => t.TransactionDate.HasValue
+                        && t.TransactionDate.Value.Year == request.Year)
+            .ToList();
 
-        var revenueData = auctionMethods.Select(method =>
+        var response = auctionMethods.Select(method =>
         {
-            var monthlyRevenue = new decimal[12];
-            var monthlyLabels = new string[12];
+            var methodTransactions = filteredTransactions
+                .Where(t => t.Bid?.Koi?.AuctionMethodID == method.ID)
+                .ToList();
 
-            for (int i = 0; i < 12; i++)
+            decimal totalRevenue = methodTransactions.Sum(t => t.TotalAmount);
+
+            var monthlyRevenue = new Dictionary<string, decimal>();
+            for (int month = 1; month <= 12; month++)
             {
-                monthlyLabels[i] = $"Tháng {i + 1}";
+                var monthlyTotal = methodTransactions
+                    .Where(t => t.TransactionDate.Value.Month == month)
+                    .Sum(t => t.TotalAmount);
+
+                monthlyRevenue.Add($"Tháng {month}", monthlyTotal);
             }
 
-            foreach (var transaction in transactions.Where(t => t.Bid?.Koi?.AuctionMethodID == method.ID))
-            {
-                if (transaction.TransactionDate.HasValue && transaction.TransactionDate.Value.Year == request.Year)
-                {
-                    var month = transaction.TransactionDate.Value.Month - 1; // Tháng bắt đầu từ 0
-                    if (month >= 0 && month < 12)
-                    {
-                        monthlyRevenue[month] += transaction.TotalAmount;
-                    }
-                }
-            }
-
-            var totalRevenue = monthlyRevenue.Sum();
-
+            // Create the response object
             return new GetRevenueForEachMethodResponse
             {
                 AuctionMethodId = method.ID,
                 AuctionMethodName = method.Name,
                 TotalRevenue = totalRevenue,
-                MonthlyRevenue = monthlyRevenue,
-                MonthlyLabels = monthlyLabels 
+                MonthlyRevenue = monthlyRevenue
             };
         }).ToList();
 
-        return revenueData;
+        return response;
     }
 }

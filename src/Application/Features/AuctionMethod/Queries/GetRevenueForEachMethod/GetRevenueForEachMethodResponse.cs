@@ -13,8 +13,7 @@ public class GetRevenueForEachMethodResponse : IMapFrom<AuctionMethodEntity>
     public string AuctionMethodId { get; set; }
     public string AuctionMethodName { get; set; }
     public decimal TotalRevenue { get; set; }
-    public decimal[] MonthlyRevenue { get; set; } = new decimal[12];
-    public string[] MonthlyLabels { get; set; } = new string[12];
+    public Dictionary<string, decimal> MonthlyRevenue { get; set; }
 
     public void Mapping(Profile profile)
     {

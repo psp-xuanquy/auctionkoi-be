@@ -59,6 +59,18 @@ public class ApplicationDbContext : IdentityDbContext<UserEntity, IdentityRole, 
             .HasForeignKey(t => t.KoiID)
             .OnDelete(DeleteBehavior.Restrict);
 
+        modelBuilder.Entity<KoiEntity>()
+            .HasOne(k => k.AuctionMethod)
+            .WithMany()
+            .HasForeignKey(k => k.AuctionMethodID)
+            .OnDelete(DeleteBehavior.Restrict); 
+
+        modelBuilder.Entity<KoiEntity>()
+            .HasOne(k => k.Breeder)
+            .WithMany()
+            .HasForeignKey(k => k.BreederID)
+            .OnDelete(DeleteBehavior.Restrict);
+
         // BidEntity
         modelBuilder.Entity<BidEntity>()
             .HasOne(b => b.Bidder)

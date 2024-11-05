@@ -9,25 +9,26 @@ using KoiAuction.Domain.IRepositories;
 using MediatR;
 
 namespace Application.Features.Koi.Queries.GetAll;
-public class GetAllKoiHandler : IRequestHandler<GetAllKoiQuery, List<GetAllKoiResponse>>
+public class GetAllKoiHandler : IRequestHandler<GetAllKoiQuery, List<KoiResponse>>
 {
-    private readonly IKoiRepository _KoiRepository;
+    private readonly IKoiRepository _koiRepository;
     private readonly IMapper _mapper;
 
-    public GetAllKoiHandler(IKoiRepository KoiRepository, IMapper mapper)
+    public GetAllKoiHandler(IKoiRepository koiRepository, IMapper mapper)
     {
-        _KoiRepository = KoiRepository;
+        _koiRepository = koiRepository;
         _mapper = mapper;
     }
 
-    public async Task<List<GetAllKoiResponse>> Handle(GetAllKoiQuery request, CancellationToken cancellationToken)
+    public async Task<List<KoiResponse>> Handle(GetAllKoiQuery request, CancellationToken cancellationToken)
     {
 
-        var list = await _KoiRepository.FindAllAsync(cancellationToken);
+        var list = await _koiRepository.FindAllAsync(cancellationToken)
+            ;
         if (list is null)
         {
             throw new NotFoundException("Empty list");
         }
-        return _mapper.Map<List<GetAllKoiResponse>>(list);
+        return _mapper.Map<List<KoiResponse>>(list);
     }
 }

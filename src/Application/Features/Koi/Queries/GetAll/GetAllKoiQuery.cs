@@ -7,7 +7,7 @@ using KoiAuction.Application.Common.Interfaces;
 using MediatR;
 
 namespace Application.Features.Koi.Queries.GetAll;
-public class GetAllKoiQuery : IRequest<List<GetAllKoiResponse>>, IQuery
+public class GetAllKoiQuery : IRequest<List<KoiResponse>>, IQuery
 {
     public GetAllKoiQuery()
     {

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace KoiAuction.Domain.Entities
 {
-    [Table("AuctionMethod")]
+       [Table("AuctionMethod")]
     public class AuctionMethodEntity : BaseEntity
     {
         public string? Name { get; set; }

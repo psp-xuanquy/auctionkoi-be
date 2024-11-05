@@ -15,7 +15,7 @@ namespace KoiAuction.Domain.Repositories
 
         public KoiRepository(ApplicationDbContext context, IMapper mapper) : base(context, mapper)
         {
-            _context = context;
+            _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
         public async Task<IEnumerable<KoiEntity>> GetActiveAuctions(CancellationToken cancellationToken)

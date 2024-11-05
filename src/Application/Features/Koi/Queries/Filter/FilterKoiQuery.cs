@@ -8,7 +8,7 @@ using KoiAuction.Domain.Enums;
 using MediatR;
 
 namespace Application.Features.Koi.Queries.Filter;
-public class FilterKoiQuery : IRequest<List<GetAllKoiResponse>>
+public class FilterKoiQuery : IRequest<List<KoiResponse>>
 {
     public string? Name { get; }
     public double? MinLength { get; }

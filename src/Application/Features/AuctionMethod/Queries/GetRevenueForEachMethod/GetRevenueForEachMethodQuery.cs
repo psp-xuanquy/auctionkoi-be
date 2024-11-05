@@ -9,10 +9,12 @@ using MediatR;
 namespace Application.Features.AuctionMethod.Queries.GetRevenueForEachMethod;
 public class GetRevenueForEachMethodQuery : IRequest<List<GetRevenueForEachMethodResponse>>, IQuery
 {
-    public int Year { get; }
+    public int Year { get; set; }
+    public int Month { get; set; }
 
-    public GetRevenueForEachMethodQuery(int year)
+    public GetRevenueForEachMethodQuery(int year, int month)
     {
         Year = year;
+        Month = month;
     }
 }

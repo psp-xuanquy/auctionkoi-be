@@ -40,10 +40,10 @@ namespace KoiAuction.API.Controllers
         /// <returns>A list of all koi.</returns>
         /// <response code="200">Returns a list of koi successfully retrieved.</response>
         [HttpGet("get-all-kois")]
-        public async Task<ActionResult<List<GetAllKoiResponse>>> GetAll(CancellationToken cancellationToken = default)
+        public async Task<ActionResult<List<KoiResponse>>> GetAll(CancellationToken cancellationToken = default)
         {
             var result = await _mediator.Send(new GetAllKoiQuery(), cancellationToken);
-            return Ok(new JsonResponse<List<GetAllKoiResponse>>("Get all Kois successfully", result));
+            return base.Ok(new JsonResponse<List<KoiResponse>>("Get all Kois successfully", result));
         }
 
         [HttpGet("all-active-auctions")]
@@ -54,7 +54,7 @@ namespace KoiAuction.API.Controllers
             {
                 return NotFound();
             }
-            return Ok(new JsonResponse<List<KoiResponse>>("Get all Active Auctions successfully.", result));
+            return base.Ok(new JsonResponse<List<KoiResponse>>("Get all Active Auctions successfully.", result));
         }
 
         /// <summary>
@@ -75,7 +75,7 @@ namespace KoiAuction.API.Controllers
         /// <response code="200">Returns a list of filtered koi.</response>
         /// <response code="404">If no koi match the filter criteria.</response>
         [HttpGet("filter")]
-        public async Task<ActionResult<JsonResponse<List<GetAllKoiResponse>>>> Filter(
+        public async Task<ActionResult<JsonResponse<List<KoiResponse>>>> Filter(
             [FromQuery] string? name,
             [FromQuery] double? minLength,
             [FromQuery] double? maxLength,
@@ -90,7 +90,7 @@ namespace KoiAuction.API.Controllers
         {
             var query = new FilterKoiQuery(name, minLength, maxLength, minAge, maxAge, minPrice, maxPrice, breederName, auctionMethodName, sex);
             var result = await _mediator.Send(query, cancellationToken);
-            return result != null ? Ok(new JsonResponse<List<GetAllKoiResponse>>("Filter Koi successfully", result)) : NotFound();
+            return result != null ? base.Ok(new JsonResponse<List<KoiResponse>>("Filter Koi successfully", result)) : base.NotFound();
         }
 
         /// <summary>
@@ -108,7 +108,7 @@ namespace KoiAuction.API.Controllers
             CancellationToken cancellationToken = default)
         {
             var result = await _mediator.Send(command, cancellationToken);
-            return Ok(new JsonResponse<KoiResponse>("Create Koi successfully", result));
+            return base.Ok(new JsonResponse<KoiResponse>("Create Koi successfully", result));
         }
 
         /// <summary>
@@ -127,7 +127,7 @@ namespace KoiAuction.API.Controllers
         {
             var request = new UpdateKoiRequest(id, command);
             var result = await _mediator.Send(request, cancellationToken);
-            return Ok(new JsonResponse<KoiResponse>("Update Koi successfully", result));
+            return base.Ok(new JsonResponse<KoiResponse>("Update Koi successfully", result));
         }
 
         /// <summary>

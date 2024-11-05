@@ -10,7 +10,7 @@ using MediatR;
 
 namespace Application.Features.Koi.Queries.Filter
 {
-    public class FilterKoiHandler : IRequestHandler<FilterKoiQuery, List<GetAllKoiResponse>>
+    public class FilterKoiHandler : IRequestHandler<FilterKoiQuery, List<KoiResponse>>
     {
         private readonly IKoiRepository _koiRepository;
         private readonly IMapper _mapper;
@@ -21,7 +21,7 @@ namespace Application.Features.Koi.Queries.Filter
             _mapper = mapper;
         }
 
-        public async Task<List<GetAllKoiResponse>> Handle(FilterKoiQuery request, CancellationToken cancellationToken)
+        public async Task<List<KoiResponse>> Handle(FilterKoiQuery request, CancellationToken cancellationToken)
         {
             var koiList = await _koiRepository.FindAllAsync(cancellationToken);
 
@@ -66,7 +66,7 @@ namespace Application.Features.Koi.Queries.Filter
                 koiList = koiList.Where(k => k.Sex == request.Sex.Value).ToList();
             }
 
-            return _mapper.Map<List<GetAllKoiResponse>>(koiList);
+            return _mapper.Map<List<KoiResponse>>(koiList);
         }
     }
 }

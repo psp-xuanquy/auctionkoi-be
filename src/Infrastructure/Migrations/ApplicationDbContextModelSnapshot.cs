@@ -376,6 +376,9 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime?>("StartTime")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("UserEntityId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<int>("Variety")
                         .HasColumnType("int");
 
@@ -384,6 +387,8 @@ namespace Infrastructure.Migrations
                     b.HasIndex("AuctionMethodID");
 
                     b.HasIndex("BreederID");
+
+                    b.HasIndex("UserEntityId");
 
                     b.ToTable("Koi");
                 });
@@ -807,11 +812,17 @@ namespace Infrastructure.Migrations
                 {
                     b.HasOne("KoiAuction.Domain.Entities.AuctionMethodEntity", "AuctionMethod")
                         .WithMany()
-                        .HasForeignKey("AuctionMethodID");
+                        .HasForeignKey("AuctionMethodID")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("KoiAuction.Domain.Entities.UserEntity", "Breeder")
+                        .WithMany()
+                        .HasForeignKey("BreederID")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("KoiAuction.Domain.Entities.UserEntity", null)
                         .WithMany("Kois")
-                        .HasForeignKey("BreederID");
+                        .HasForeignKey("UserEntityId");
 
                     b.Navigation("AuctionMethod");
 

@@ -55,7 +55,7 @@ namespace KoiAuction.Domain.Entities
             Transactions = new List<TransactionEntity>();
         }
 
-        public KoiEntity(decimal initialPrice, string name, string auctionMethodId) : this() 
+        public KoiEntity(decimal initialPrice, string name, string auctionMethodId, string breederId) : this() 
         {
             if (initialPrice < 50)
                 throw new ArgumentException("Price must be at least $50.");
@@ -63,6 +63,7 @@ namespace KoiAuction.Domain.Entities
             InitialPrice = initialPrice;
             Name = name;
             AuctionMethodID = auctionMethodId;
+            BreederID = breederId;
         }
 
         public void StartAuction()
