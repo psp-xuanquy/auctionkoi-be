@@ -52,6 +52,8 @@ public class ResendRequestKoiAuctionHandler : IRequestHandler<ResendRequestKoiAu
         if (koiUpdate != null)
         {
             koiUpdate.AuctionRequestStatus = AuctionRequestStatus.Pending;
+            koiUpdate.LastUpdatedTime = DateTime.UtcNow;
+            koiUpdate.LastUpdatedBy = user.UserName;
             _koiRepository.Update(koiUpdate);
             await _koiRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
             return "Resend request success. Please wait to be approved.";

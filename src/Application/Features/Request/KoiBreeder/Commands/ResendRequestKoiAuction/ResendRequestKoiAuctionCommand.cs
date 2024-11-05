@@ -9,14 +9,11 @@ public class ResendRequestKoiAuctionCommand : IRequest<string>, IMapFrom<KoiEnti
     public string? KoiID { get; set; }
     public string? Name { get; set; }
     public string? Sex { get; set; }
-    public double Size { get; set; }
     public int Age { get; set; }
     public string Location { get; set; }
     public string Variety { get; set; }
     public decimal InitialPrice { get; set; }
-    public string? Description { get; set; }
     public string? ImageUrl { get; set; }
-    public bool? AllowAutoBid { get; set; }
     public DateTime? StartTime { get; set; }
     public string? AuctionMethodID { get; set; }
 

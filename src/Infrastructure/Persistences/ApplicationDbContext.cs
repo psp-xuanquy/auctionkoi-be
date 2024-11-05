@@ -23,6 +23,8 @@ public class ApplicationDbContext : IdentityDbContext<UserEntity, IdentityRole, 
     public DbSet<KoiBreederEntity> Breeders { get; set; }
     public DbSet<BlogEntity> Blogs { get; set; } 
     public DbSet<TransactionEntity> Transactions { get; set; }
+    public DbSet<NotificationEntity> Notifications { get; set; }
+
     public DbSet<UserEntity> Users => Set<UserEntity>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -123,6 +125,13 @@ public class ApplicationDbContext : IdentityDbContext<UserEntity, IdentityRole, 
             .HasOne(kb => kb.User)
             .WithMany(u => u.KoiBreeders)
             .HasForeignKey(kb => kb.UserId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        //NotificationEntity
+        modelBuilder.Entity<NotificationEntity>()
+            .HasOne(kb => kb.User)
+            .WithMany(u => u.Notifications)
+            .HasForeignKey(kb => kb.UserID)
             .OnDelete(DeleteBehavior.Restrict);
     }
 

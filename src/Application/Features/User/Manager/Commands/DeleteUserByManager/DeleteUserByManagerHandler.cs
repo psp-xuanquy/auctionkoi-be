@@ -25,7 +25,7 @@ public class DeleteUserByManagerHandler : IRequestHandler<DeleteUserByManagerCom
 
     public async Task<string> Handle(DeleteUserByManagerCommand request, CancellationToken cancellationToken)
     {
-        var user = await _userRepository.FindAsync(x => x.Id == _currentUserService.UserId);
+        var user = await _userRepository.FindAsync(x => x.Id == request.UserId);
         if (user == null)
         {
             throw new NotFoundException("Please login again");

@@ -4,8 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Application.Features.Request.Manager.Commands.ApproveRoleRequest;
+using Domain.Entities;
 using Domain.Enums;
 using Domain.IRepositories;
+using Infrastructure.Repositories;
 using KoiAuction.Application.Common.Interfaces;
 using KoiAuction.Domain.Common.Exceptions;
 using KoiAuction.Domain.Entities;
@@ -19,12 +21,14 @@ public class ApproveKoiRequestHandler : IRequestHandler<ApproveKoiRequestCommand
     private readonly ICurrentUserService _currentUserService;
     private readonly IUserRepository _userRepository;
     private readonly IKoiRepository _koiRepository;
-   
-    public ApproveKoiRequestHandler(ICurrentUserService currentUserService, IUserRepository userRepository, IKoiRepository koiRepository)
+    private readonly INotificationRepository _notificationRepository;
+
+    public ApproveKoiRequestHandler(ICurrentUserService currentUserService, IUserRepository userRepository, IKoiRepository koiRepository, INotificationRepository notificationRepository)
     {    
         _currentUserService = currentUserService;
         _userRepository = userRepository;
-        _koiRepository = koiRepository;    
+        _koiRepository = koiRepository;  
+        _notificationRepository = notificationRepository;
     }
 
     public async Task<string> Handle(ApproveKoiRequestCommand request, CancellationToken cancellationToken)
@@ -45,6 +49,17 @@ public class ApproveKoiRequestHandler : IRequestHandler<ApproveKoiRequestCommand
         koi.RequestResponse = "Your KoiAuction request has been approved and is now listed on the official auction page.";
         _koiRepository.Update(koi);
         await _koiRepository.UnitOfWork.SaveChangesAsync();
+
+        var notification = new NotificationEntity
+        {
+            UserID = koi.BreederID,
+            Message = "Your Koi request has been approved. You can now track it on the main page.",
+            MarkAsRead = false,
+            CreatedTime = DateTime.UtcNow,
+            CreatedBy = "System"
+        };
+        _notificationRepository.Add(notification);
+        await _notificationRepository.UnitOfWork.SaveChangesAsync();
 
         return $"You have successfully approved the Koi Auction name {koi.Name}.";
     }

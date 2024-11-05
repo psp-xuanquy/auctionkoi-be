@@ -44,6 +44,7 @@ public static class DependencyInjection
         services.AddTransient<IKoiBreederRepository, KoiBreederRepository>();
         services.AddTransient<ITransactionRepository, TransactionRepository>();
         services.AddTransient<IUserRepository, UserRepository>();
+        services.AddTransient<INotificationRepository, NotificationRepository>();
         services.AddTransient<IAuctionMethodRepository, AuctionMethodRepository>();
 
         return services;

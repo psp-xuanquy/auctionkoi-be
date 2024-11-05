@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Domain.Entities;
 using Domain.Enums;
 using Domain.IRepositories;
 using KoiAuction.Application.Common.Interfaces;
@@ -20,14 +21,16 @@ public class ApproveRoleRequestHandler : IRequestHandler<ApproveRoleRequestComma
     private readonly IUserRepository _userRepository;
     private readonly IKoiBreederRepository _koiBreederRepository;
     private readonly RoleManager<IdentityRole> _roleManager;
+    private readonly INotificationRepository _notificationRepository;
 
-    public ApproveRoleRequestHandler(UserManager<UserEntity> userManager, ICurrentUserService currentUserService, IUserRepository userRepository, IKoiBreederRepository koiBreederRepository, RoleManager<IdentityRole> roleManager)
+    public ApproveRoleRequestHandler(UserManager<UserEntity> userManager, ICurrentUserService currentUserService, IUserRepository userRepository, IKoiBreederRepository koiBreederRepository, RoleManager<IdentityRole> roleManager, INotificationRepository notificationRepository)
     {
         _userManager = userManager;
         _currentUserService = currentUserService;
         _userRepository = userRepository;
         _koiBreederRepository = koiBreederRepository;
         _roleManager = roleManager;
+        _notificationRepository = notificationRepository;
     }
 
     public async Task<string> Handle(ApproveRoleRequestCommand request, CancellationToken cancellationToken)
@@ -73,6 +76,18 @@ public class ApproveRoleRequestHandler : IRequestHandler<ApproveRoleRequestComma
         koibreeder.RequestResponse = "Your request as a Koi Breeder has been approved";
         _koiBreederRepository.Update(koibreeder);
         await _koiBreederRepository.UnitOfWork.SaveChangesAsync();
+
+        var notification = new NotificationEntity
+        {
+            UserID = koibreeder.UserId,
+            Message = "Congratulations on becoming a KoiBreeder! You can now create auctions.",
+            MarkAsRead = false,
+            CreatedTime = DateTime.UtcNow,
+            CreatedBy = "System"
+        };
+        _notificationRepository.Add(notification);
+        await _notificationRepository.UnitOfWork.SaveChangesAsync();
+
 
         return $"You have approved the account {koibreeder.User.UserName} to become a new Koi Breeder with the name {koibreeder.KoiFarmName}.";
     }

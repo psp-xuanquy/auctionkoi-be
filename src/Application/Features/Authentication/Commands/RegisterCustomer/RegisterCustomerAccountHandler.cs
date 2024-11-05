@@ -1,5 +1,8 @@
 ﻿using Castle.Core.Resource;
+using Domain.Entities;
 using Domain.Enums;
+using Domain.IRepositories;
+using ExcelDataReader.Log;
 using KoiAuction.Application.Common.Interfaces;
 using KoiAuction.Application.Features.User.Commands.Login.Email;
 using KoiAuction.Domain.Common.Exceptions;
@@ -19,17 +22,19 @@ namespace KoiAuction.Application.User.Commands.RegisterCustomer
         private readonly UserManager<UserEntity> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IEmailService _emailService;
-       
+        private readonly INotificationRepository _notificationRepository;
 
         public RegisterCustomerAccountHandler(IUserRepository userRepository,
                                           UserManager<UserEntity> userManager,
                                           RoleManager<IdentityRole> roleManager,
+                                          INotificationRepository notificationRepository,
                                           IEmailService emailService)                                 
         {
             _userRepository = userRepository;
             _userManager = userManager;
             _roleManager = roleManager;
             _emailService = emailService;         
+            _notificationRepository = notificationRepository;
         }
 
         public async Task<LoginUserAccountWithEmailResponse> Handle(RegisterCustomerAccountCommand request, CancellationToken cancellationToken)
@@ -94,9 +99,20 @@ namespace KoiAuction.Application.User.Commands.RegisterCustomer
                 Role = role.FirstOrDefault()
             };
 
+            var notification = new NotificationEntity
+            {
+                UserID = account.Id,
+                Message = "Welcome to the most reputable Koi fish auction site in Vietnam. For any inquiries, please contact the Administrator for assistance.",
+                MarkAsRead = false,
+                CreatedTime = DateTime.UtcNow,
+                CreatedBy = "System"  
+            };
+            _notificationRepository.Add(notification);
+            await _notificationRepository.UnitOfWork.SaveChangesAsync();
+
             return response;
 
-            // Send confirmation email
+           // Send confirmation email
             //var token = await _userManager.GenerateEmailConfirmationTokenAsync(account);
             //var confirmationLink = $"https://koiauctionwebapp.azurewebsites.net/ConfirmEmail/confirm-email?userId={account.Id}&token={Uri.EscapeDataString(token)}";
             //await _emailService.SendConfirmEmailAsync(request.Email, confirmationLink);

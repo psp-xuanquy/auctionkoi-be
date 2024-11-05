@@ -26,11 +26,6 @@ public class ResendRequestKoiAuctionValidator : AbstractValidator<ResendRequestK
             .Must(g => g == "Male" || g == "Female")
             .WithMessage("Please select valid Sex for Koi: 'Male' or 'Female'");
 
-        RuleFor(x => x.Size)
-            .NotEmpty().WithMessage("Size cannot be empty.")
-            .GreaterThanOrEqualTo(10).WithMessage("Size must be at least 10 cm.")
-            .LessThanOrEqualTo(100).WithMessage("Size cannot exceed 100 cm.");
-
         RuleFor(x => x.Age)
             .NotEmpty().WithMessage("Age cannot be empty.")
             .GreaterThanOrEqualTo(1).WithMessage("Age must be at least 1 year.")
@@ -42,9 +37,6 @@ public class ResendRequestKoiAuctionValidator : AbstractValidator<ResendRequestK
         RuleFor(x => x.Variety)
             .NotEmpty().WithMessage("Variety cannot be empty.")
             .Must(BeAValidVariety).WithMessage("Invalid Variety. Must be one of: " + string.Join(", ", Enum.GetNames(typeof(Variety))));
-
-        RuleFor(x => x.Description)
-            .NotEmpty().WithMessage("You should provide a brief description of your Koi.");
 
         RuleFor(x => x.StartTime)
             .Must(BeAValidStartTime).WithMessage("StartTime cannot be in the past and must be at least 5 minutes from the current time.");
