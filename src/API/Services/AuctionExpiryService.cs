@@ -45,6 +45,11 @@ namespace API.Services
                             {
                                 await HandleAuctionExpiry(koi, repositories, stoppingToken);
                             }
+
+                            if (koi.AuctionMethod.Name == "Descending Bid Auction")
+                            {
+                                await HandleDescendingAuction(koi, repositories, stoppingToken);
+                            }
                         }
                     }
                     catch (Exception ex)
@@ -120,6 +125,27 @@ namespace API.Services
             bidRepository.Update(winningBid);
 
             return winningBid;
+        }
+
+        private async Task HandleDescendingAuction(KoiEntity koi, IRepositoryFactory repositories, CancellationToken cancellationToken)
+        {
+            _logger.LogInformation("Handling descending auction for koi: {koiId}", koi.ID);
+
+            if (koi.AuctionStatus == Domain.Enums.AuctionStatus.OnGoing)
+            {
+                if (koi.LowestDescendedPrice >= koi.CurrentDescendedPrice * (100 - koi.DescendingRate)/100)
+                {
+                    if (koi.CurrentDescendedPrice == null || koi.CurrentDescendedPrice == 0)
+                    {
+                        koi.CurrentDescendedPrice = koi.InitialPrice * (100 - koi.DescendingRate) / 100;
+                    }
+                    else
+                    {
+                        koi.CurrentDescendedPrice = koi.CurrentDescendedPrice * (100 - koi.DescendingRate) / 100;
+                    }
+                    repositories.KoiRepository.Update(koi);
+                }
+            }
         }
     }
 }
