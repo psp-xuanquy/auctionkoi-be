@@ -18,9 +18,13 @@ namespace KoiAuction.Domain.Repositories
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public async Task<IEnumerable<KoiEntity>> GetActiveAuctions(CancellationToken cancellationToken)
+        public async Task<List<KoiEntity>> GetActiveAuctions(CancellationToken cancellationToken)
         {
             return await _context.Kois
+                .Include(k => k.AuctionMethod)
+                .Include(koi => koi.Breeder)  
+                .Include(koi => koi.Bids)    
+                    .ThenInclude(bid => bid.Bidder)
                 .Where(k => k.AuctionStatus == AuctionStatus.OnGoing)
                 .ToListAsync(cancellationToken);
         }

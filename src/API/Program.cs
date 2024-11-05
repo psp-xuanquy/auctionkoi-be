@@ -93,14 +93,6 @@ namespace KoiAuction
             services.Configure<EmailSettings>(configuration.GetSection("EmailSettings"));
             services.AddTransient<IEmailService, EmailService>();
 
-            services.AddScoped<IRepositoryFactory, RepositoryFactory>();
-
-            // Register your repositories as well
-            services.AddScoped<IKoiRepository, KoiRepository>();
-            services.AddScoped<IBidRepository, BidRepository>();
-            services.AddScoped<IUserRepository, UserRepository>();
-
-            //services.AddTransient   <AuctionExpiryService>();
             services.AddHostedService<AuctionExpiryService>();
 
             System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);

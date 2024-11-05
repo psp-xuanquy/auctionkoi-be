@@ -8,6 +8,8 @@ using KoiAuction.Domain.IRepositories;
 using KoiAuction.Infrastructure.Repositories;
 using Domain.IRepositories;
 using Infrastructure.Repositories;
+using Domain.IRepositories.IBaseRepositories;
+using Infrastructure.Repositories.BaseRepositories;
 
 namespace KoiAuction.Infrastructure;
 
@@ -31,6 +33,8 @@ public static class DependencyInjection
         services.AddSingleton(TimeProvider.System);
 
         services.AddScoped<IUnitOfWork>(provider => provider.GetRequiredService<ApplicationDbContext>());
+
+        services.AddScoped<IRepositoryFactory, RepositoryFactory>();
 
         services.AddTransient<IAutoBidRepository, AutoBidRepository>();
         services.AddTransient<IBidRepository, BidRepository>();            

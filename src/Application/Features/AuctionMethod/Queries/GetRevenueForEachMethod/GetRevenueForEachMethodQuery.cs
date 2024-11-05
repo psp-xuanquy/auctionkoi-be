@@ -10,11 +10,9 @@ namespace Application.Features.AuctionMethod.Queries.GetRevenueForEachMethod;
 public class GetRevenueForEachMethodQuery : IRequest<List<GetRevenueForEachMethodResponse>>, IQuery
 {
     public int Year { get; set; }
-    public int Month { get; set; }
 
-    public GetRevenueForEachMethodQuery(int year, int month)
+    public GetRevenueForEachMethodQuery(int year)
     {
         Year = year;
-        Month = month;
     }
 }

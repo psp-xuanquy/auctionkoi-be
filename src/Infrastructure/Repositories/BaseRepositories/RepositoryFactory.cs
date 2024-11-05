@@ -11,38 +11,17 @@ namespace Infrastructure.Repositories.BaseRepositories
 {
     public class RepositoryFactory : IRepositoryFactory
     {
-        private readonly IServiceScopeFactory _serviceScopeFactory;
+        private readonly IServiceProvider _serviceProvider;
 
-        public RepositoryFactory(IServiceScopeFactory serviceScopeFactory)
+        public RepositoryFactory(IServiceProvider serviceProvider)
         {
-            _serviceScopeFactory = serviceScopeFactory;
+            _serviceProvider = serviceProvider;
         }
 
-        public IKoiRepository KoiRepository
-        {
-            get
-            {
-                using var scope = _serviceScopeFactory.CreateScope();
-                return scope.ServiceProvider.GetRequiredService<IKoiRepository>();
-            }
-        }
+        public IKoiRepository KoiRepository => _serviceProvider.GetRequiredService<IKoiRepository>();
 
-        public IBidRepository BidRepository
-        {
-            get
-            {
-                using var scope = _serviceScopeFactory.CreateScope();
-                return scope.ServiceProvider.GetRequiredService<IBidRepository>();
-            }
-        }
+        public IBidRepository BidRepository => _serviceProvider.GetRequiredService<IBidRepository>();
 
-        public IUserRepository UserRepository
-        {
-            get
-            {
-                using var scope = _serviceScopeFactory.CreateScope();
-                return scope.ServiceProvider.GetRequiredService<IUserRepository>();
-            }
-        }
+        public IUserRepository UserRepository => _serviceProvider.GetRequiredService<IUserRepository>();
     }
 }

@@ -6,6 +6,6 @@ namespace KoiAuction.Domain.IRepositories
 {
     public interface IKoiRepository : IEFRepository<KoiEntity, KoiEntity>
     {
-        Task<IEnumerable<KoiEntity>> GetActiveAuctions(CancellationToken cancellationToken);
+        Task<List<KoiEntity>> GetActiveAuctions(CancellationToken cancellationToken);
     }
 }

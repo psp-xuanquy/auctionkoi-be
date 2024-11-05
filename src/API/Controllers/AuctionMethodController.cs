@@ -63,9 +63,9 @@ namespace API.Controllers
 
         [HttpGet("revenue/{year}")]
         //[Authorize(Roles = "MANAGER, STAFF")]
-        public async Task<ActionResult<JsonResponse<List<GetRevenueForEachMethodResponse>>>> GetRevenueForEachMethod(int year, [FromQuery] int month, CancellationToken cancellationToken = default)
+        public async Task<ActionResult<JsonResponse<List<GetRevenueForEachMethodResponse>>>> GetRevenueForEachMethod(int year, CancellationToken cancellationToken = default)
         {
-            var result = await _mediator.Send(new GetRevenueForEachMethodQuery(year, month), cancellationToken);
+            var result = await _mediator.Send(new GetRevenueForEachMethodQuery(year), cancellationToken);
             return Ok(new JsonResponse<List<GetRevenueForEachMethodResponse>>($"Successfully retrieved Revenue for year {year} for each Auction Method.", result));
         }
 

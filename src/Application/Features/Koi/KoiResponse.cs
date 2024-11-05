@@ -25,7 +25,6 @@ public class KoiResponse
     public decimal ReservePrice { get; set; }
     public string? Description { get; set; }
     public string? ImageUrl { get; set; }
-    public string? RequestResponse { get; set; }
     public AuctionRequestStatus AuctionRequestStatus { get; set; }
     public AuctionStatus AuctionStatus { get; set; }
     public DateTime? StartTime { get; set; }
@@ -34,15 +33,20 @@ public class KoiResponse
     public string? AuctionMethodName { get; set; }
     public string? BreederName { get; set; }
     public string? Contact { get; set; }
-
     public List<BidderDto> Bidders { get; set; } = new List<BidderDto>();
 
     public void Mapping(Profile profile)
     {
         profile.CreateMap<KoiEntity, KoiResponse>()
-            .ForMember(dest => dest.ReservePrice, opt => opt.MapFrom(src => src.InitialPrice))
-            .ForMember(dest => dest.AuctionMethodName, opt => opt.MapFrom(src => src.AuctionMethod.Name))
-            .ForMember(dest => dest.BreederName, opt => opt.MapFrom(src => src.Breeder.UserName))
-            .ForMember(dest => dest.Contact, opt => opt.MapFrom(src => src.Breeder.PhoneNumber));
+        .ForMember(dest => dest.ReservePrice, opt => opt.MapFrom(src => src.InitialPrice))
+        .ForMember(dest => dest.AuctionMethodName, opt => opt.MapFrom(src => src.AuctionMethod.Name))
+        .ForMember(dest => dest.BreederName, opt => opt.MapFrom(src => src.Breeder.UserName))
+        .ForMember(dest => dest.Contact, opt => opt.MapFrom(src => src.Breeder.PhoneNumber))
+        .ForMember(dest => dest.Bidders, opt => opt.MapFrom(src => src.Bids.Select(bid => new BidderDto
+        {
+            BidderName = bid.Bidder.UserName,
+            BidAmount = bid.BidAmount,
+            BidTime = bid.BidTime.GetValueOrDefault()
+        }).ToList()));
     }
 }

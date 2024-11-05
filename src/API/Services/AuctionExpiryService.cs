@@ -46,7 +46,7 @@ namespace API.Services
                                 await HandleAuctionExpiry(koi, repositories, stoppingToken);
                             }
 
-                            if (koi.AuctionMethod.Name == "Descending Bid Auction")
+                            if (koi.AuctionMethod != null && koi.AuctionMethod.Name == "Descending Bid Auction")
                             {
                                 await HandleDescendingAuction(koi, repositories, stoppingToken);
                             }
