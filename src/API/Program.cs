@@ -95,6 +95,8 @@ namespace KoiAuction
 
             services.AddHostedService<AuctionExpiryService>();
 
+            services.AddHttpContextAccessor();
+
             System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
         }
 

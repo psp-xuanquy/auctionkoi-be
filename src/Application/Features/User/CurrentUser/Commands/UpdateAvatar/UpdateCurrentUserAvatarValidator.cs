@@ -5,10 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using FluentValidation;
 
-namespace Application.Features.User.CurrentUser.Commands.Update;
-public class UpdateCurrentUserValidator : AbstractValidator<UpdateCurrentUserCommand>
+namespace Application.Features.User.CurrentUser.Commands.UpdateAvatar;
+public class UpdateCurrentUserAvatarValidator : AbstractValidator<UpdateCurrentUserAvatarCommand>
 {
-    public UpdateCurrentUserValidator()
+    public UpdateCurrentUserAvatarValidator()
     {
         ConfigureValidationRules();
     }

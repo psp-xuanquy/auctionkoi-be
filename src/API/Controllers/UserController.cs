@@ -14,6 +14,8 @@ using Application.Features.AuctionMethod.Commands.Update;
 using Application.Features.User.Manager.Commands.Update;
 using Application.Features.AuctionMethod.Commands.Delete;
 using Application.Features.AuctionMethod;
+using Application.Features.User.CurrentUser.Commands.UpdateInfo;
+using Application.Features.User.CurrentUser.Commands.UpdateAvatar;
 
 namespace KoiAuction.API.Controllers
 {
@@ -55,15 +57,20 @@ namespace KoiAuction.API.Controllers
             return Ok(new JsonResponse<List<GetAllCurrentUsersResponse>>("Get all Current User successfully.", result));
         }
 
-        [HttpPut("update-current-user")]
+        [HttpPut("update-current-user-info")]
         [Authorize]
-        public async Task<ActionResult<JsonResponse<UserResponse>>> UpdateUser(UpdateCurrentUserCommand command, CancellationToken cancellationToken = default)
+        public async Task<ActionResult<JsonResponse<UserResponse>>> UpdateUserInfo(UpdateCurrentUserInfoCommand command, CancellationToken cancellationToken = default)
         {
-            // Set UserId from claims
-            command.UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
             var result = await _mediator.Send(command, cancellationToken);
-            return Ok(new JsonResponse<UserResponse>("User updated successfully.", result));
+            return Ok(new JsonResponse<UserResponse>("Info User updated successfully.", result));
+        }
+
+        [HttpPut("update-current-user-avatar")]
+        [Authorize]
+        public async Task<ActionResult<JsonResponse<UserResponse>>> UpdateUserAvatar(UpdateCurrentUserAvatarCommand command, CancellationToken cancellationToken = default)
+        {
+            var result = await _mediator.Send(command, cancellationToken);
+            return Ok(new JsonResponse<UserResponse>("Avatar User updated successfully.", result));
         }
 
         [HttpPut("update-user-by-manager/{userId}")]

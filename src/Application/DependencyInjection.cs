@@ -23,6 +23,7 @@ namespace KoiAuction.Application
             });
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
             services.AddScoped<IValidatorProvider, ValidatorProvider>();
+            services.AddHttpContextAccessor();
 
             return services;
         }

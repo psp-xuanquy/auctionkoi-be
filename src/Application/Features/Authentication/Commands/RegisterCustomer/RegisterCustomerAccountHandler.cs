@@ -49,9 +49,8 @@ namespace KoiAuction.Application.User.Commands.RegisterCustomer
             {
                 Email = request.Email,
                 PasswordHash = _userRepository.HashPassword(request.Password),
-                //FullName = request.FullName,
-                UserName = request.Email,
-                //PhoneNumber = request.PhoneNumber,
+                FullName = request.Email.Split('@')[0],
+                UserName = request.Email.Split('@')[0],
                 //Address = request.Address,
                 //Gender = request.Gender,
                 Status = true,

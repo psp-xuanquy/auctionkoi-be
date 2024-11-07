@@ -16,6 +16,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Include="Features\User\CurrentUser\Commands\UpdateAvatar\UpdateCurrentUserAvaterCommand.cs" />
+    <Compile Include="Features\User\CurrentUser\Commands\UpdateAvatar\UpdateCurrentUserAvatarHandler.cs" />
+    <Compile Include="Features\User\CurrentUser\Commands\UpdateAvatar\UpdateCurrentUserAvatarValidator.cs" />
     <Compile Include="Features\User\CurrentUser\Queries\GetCurrentUser\GetCurrentUserHandler.cs" />
     <Compile Include="Features\User\CurrentUser\Queries\GetCurrentUser\GetCurrentUserQuery.cs" />
     <Compile Include="Features\User\CurrentUser\Queries\GetCurrentUser\GetCurrentUserResponse.cs" />
@@ -25,9 +28,9 @@
     <Compile Include="Features\User\Manager\Commands\UpdateUserByManager\UpdateUserByManagerCommand.cs" />
     <Compile Include="Features\User\Manager\Commands\UpdateUserByManager\UpdateUserByManagerHandler.cs" />
     <Compile Include="Features\User\UserResponse.cs" />
-    <Compile Include="Features\User\CurrentUser\Commands\Update\UpdateCurrentUserCommand.cs" />
-    <Compile Include="Features\User\CurrentUser\Commands\Update\UpdateCurrentUserHandler.cs" />
-    <Compile Include="Features\User\CurrentUser\Commands\Update\UpdateCurrentUserValidator.cs" />
+    <Compile Include="Features\User\CurrentUser\Commands\UpdateInfo\UpdateCurrentUserInfoCommand.cs" />
+    <Compile Include="Features\User\CurrentUser\Commands\UpdateInfo\UpdateCurrentUserInfoHandler.cs" />
+    <Compile Include="Features\User\CurrentUser\Commands\UpdateInfo\UpdateCurrentUserValidator.cs" />
     <Compile Include="Features\User\Manager\Queries\GetAllCurrentUsers\GetAllCurrentUsersHandler.cs" />
     <Compile Include="Features\User\Manager\Queries\GetAllCurrentUsers\GetAllCurrentUsersQuery.cs" />
     <Compile Include="Features\User\Manager\Queries\GetAllCurrentUsers\GetAllCurrentUsersResponse.cs" />
