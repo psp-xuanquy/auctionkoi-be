@@ -8,7 +8,7 @@ using KoiAuction.Application.Common.Mappings;
 using KoiAuction.Domain.Entities;
 using MediatR;
 
-namespace Application.Features.User.CurrentUser.Commands.UpdateAvatar;
+namespace Application.Features.User.CurrentUser.Commands.UpdateInfo;
 public class UpdateCurrentUserAvatarCommand : IRequest<UserResponse>, IMapFrom<UserEntity>
 {
     public string UrlAvatar { get; set; }

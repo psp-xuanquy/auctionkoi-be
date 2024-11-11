@@ -10,7 +10,7 @@ using KoiAuction.Domain.Common.Exceptions;
 using KoiAuction.Domain.IRepositories;
 using MediatR;
 
-namespace Application.Features.User.CurrentUser.Commands.Update;
+namespace Application.Features.User.Manager.Commands.UpdateUserByManager;
 public class UpdateUserByManagerHandler : IRequestHandler<UpdateUserByManagerRequest, UserResponse>
 {
     private readonly IMapper _mapper;

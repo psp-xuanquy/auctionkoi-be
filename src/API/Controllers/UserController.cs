@@ -8,14 +8,11 @@ using Microsoft.AspNetCore.Identity;
 using Application.Features.User.CurrentUser.Queries.GetCurrentUser;
 using Application.Features.User;
 using System.Security.Claims;
-using Application.Features.User.CurrentUser.Commands.Update;
 using Application.Features.User.Manager.Queries.GetAllCurrentUsers;
-using Application.Features.AuctionMethod.Commands.Update;
-using Application.Features.User.Manager.Commands.Update;
-using Application.Features.AuctionMethod.Commands.Delete;
-using Application.Features.AuctionMethod;
 using Application.Features.User.CurrentUser.Commands.UpdateInfo;
 using Application.Features.User.CurrentUser.Commands.UpdateAvatar;
+using Application.Features.User.Manager.Commands.UpdateUserByManager;
+using Application.Features.User.Manager.Commands.DeleteUserByManager;
 
 namespace KoiAuction.API.Controllers
 {

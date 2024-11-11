@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Application.Features.User.CurrentUser.Commands.UpdateAvatar;
 using AutoMapper;
 using KoiAuction.Application.Common.Interfaces;
 using KoiAuction.Domain.Common.Exceptions;
@@ -11,8 +12,8 @@ using KoiAuction.Domain.IRepositories;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 
-namespace Application.Features.User.CurrentUser.Commands.UpdateAvatar;
-public class UpdateCurrentUserAvatarHandler : IRequestHandler<UpdateCurrentUserAvatarCommand, UserResponse>
+namespace Application.Features.User.CurrentUser.Commands.UpdateInfo;
+public class UpdateCurrentUserAvatarHandler : IRequestHandler<UpdateCurrentUserAvatarRequest, UserResponse>
 {
     private readonly IMapper _mapper;
     private readonly ICurrentUserService _currentUserService;
@@ -26,21 +27,16 @@ public class UpdateCurrentUserAvatarHandler : IRequestHandler<UpdateCurrentUserA
         _httpContextAccessor = httpContextAccessor;
     }
 
-    public async Task<UserResponse> Handle(UpdateCurrentUserAvatarCommand request, CancellationToken cancellationToken)
+    public async Task<UserResponse> Handle(UpdateCurrentUserAvatarRequest request, CancellationToken cancellationToken)
     {
-        var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        if (string.IsNullOrEmpty(userId))
-        {
-            throw new UnauthorizedAccessException("User not found.");
-        }
 
-        var user = await _userRepository.FindAsync(x => x.Id == userId);
+        var user = await _userRepository.FindAsync(x => x.Id == _currentUserService.UserId);
         if (user == null)
         {
             throw new NotFoundException("Please login again");
         }
 
-        user.UrlAvatar = request.UrlAvatar;
+        user.UrlAvatar = request.Command.UrlAvatar;
 
         _userRepository.Update(user);
         await _userRepository.UnitOfWork.SaveChangesAsync(cancellationToken);

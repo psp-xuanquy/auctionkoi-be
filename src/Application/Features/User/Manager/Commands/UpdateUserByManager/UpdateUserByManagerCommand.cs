@@ -8,7 +8,7 @@ using KoiAuction.Application.Common.Mappings;
 using KoiAuction.Domain.Entities;
 using MediatR;
 
-namespace Application.Features.User.Manager.Commands.Update;
+namespace Application.Features.User.Manager.Commands.UpdateUserByManager;
 public class UpdateUserByManagerCommand : IRequest<UserResponse>, IMapFrom<UserEntity>
 {
     //public string? Id { get; set; }

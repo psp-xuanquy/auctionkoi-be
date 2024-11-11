@@ -12,7 +12,7 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 
 namespace Application.Features.User.CurrentUser.Commands.UpdateInfo;
-public class UpdateCurrentUserInfoHandler : IRequestHandler<UpdateCurrentUserInfoCommand, UserResponse>
+public class UpdateCurrentUserInfoHandler : IRequestHandler<UpdateCurrentUserInfoRequest, UserResponse>
 {
     private readonly IMapper _mapper;
     private readonly ICurrentUserService _currentUserService;
@@ -26,25 +26,19 @@ public class UpdateCurrentUserInfoHandler : IRequestHandler<UpdateCurrentUserInf
         _httpContextAccessor = httpContextAccessor;
     }
 
-    public async Task<UserResponse> Handle(UpdateCurrentUserInfoCommand request, CancellationToken cancellationToken)
+    public async Task<UserResponse> Handle(UpdateCurrentUserInfoRequest request, CancellationToken cancellationToken)
     {
-        var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        if (string.IsNullOrEmpty(userId))
-        {
-            throw new UnauthorizedAccessException("User not found.");
-        }
-
-        var user = await _userRepository.FindAsync(x => x.Id == userId);
+        var user = await _userRepository.FindAsync(x => x.Id == _currentUserService.UserId);
         if (user == null)
         {
             throw new NotFoundException("Please login again");
         }
 
-        user.UserName = request.UserName;
-        user.Email = request.Email;
-        user.FullName = request.FullName;
-        user.Address = request.Address;
-        user.PhoneNumber = request.PhoneNumber;
+        user.UserName = request.Command.UserName;
+        user.Email = request.Command.Email;
+        user.FullName = request.Command.FullName;
+        user.Address = request.Command.Address;
+        user.PhoneNumber = request.Command.PhoneNumber;
         //user.UrlAvatar = request.UrlAvatar;
 
         _userRepository.Update(user);

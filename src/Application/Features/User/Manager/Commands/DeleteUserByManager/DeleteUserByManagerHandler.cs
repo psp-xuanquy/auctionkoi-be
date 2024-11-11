@@ -10,7 +10,7 @@ using KoiAuction.Domain.IRepositories;
 using KoiAuction.Infrastructure.Repositories;
 using MediatR;
 
-namespace Application.Features.User.CurrentUser.Commands.Update; 
+namespace Application.Features.User.Manager.Commands.DeleteUserByManager;
 public class DeleteUserByManagerHandler : IRequestHandler<DeleteUserByManagerCommand, string>
 {
     private readonly IMapper _mapper;

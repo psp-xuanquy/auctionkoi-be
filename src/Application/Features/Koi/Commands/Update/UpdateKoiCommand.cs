@@ -14,7 +14,7 @@ using MediatR;
 namespace Application.Features.Koi.Commands.Update;
 public class UpdateKoiCommand : IRequest<KoiResponse>, IMapFrom<KoiEntity>
 {
-    public string? Id { get; set; }
+    //public string? Id { get; set; }
     public string? Name { get; set; }
     public Sex Sex { get; set; }
     public double Size { get; set; }

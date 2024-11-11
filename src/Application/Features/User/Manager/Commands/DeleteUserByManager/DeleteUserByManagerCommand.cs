@@ -8,7 +8,7 @@ using KoiAuction.Application.Common.Mappings;
 using KoiAuction.Domain.Entities;
 using MediatR;
 
-namespace Application.Features.User.CurrentUser.Commands.Update;
+namespace Application.Features.User.Manager.Commands.DeleteUserByManager;
 public class DeleteUserByManagerCommand : IRequest<string>
 {
     public string UserId { get; set; }
