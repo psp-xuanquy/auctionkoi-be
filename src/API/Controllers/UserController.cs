@@ -28,12 +28,6 @@ namespace KoiAuction.API.Controllers
         private readonly IEmailService _emailService;
         private readonly UserManager<UserEntity> _userManager;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AuthenticationController"/> class.
-        /// </summary>
-        /// <param name="userManager">The UserManager instance used for managing user accounts.</param>
-        /// <param name="mediator">The mediator instance used for handling commands and queries.</param>
-        /// <param name="jwtService">The JWT service for token creation.</param>
         public UserController(UserManager<UserEntity> userManager, ISender mediator, IJwtService jwtService)
         {
             _userManager = userManager;
@@ -42,6 +36,7 @@ namespace KoiAuction.API.Controllers
         }
 
         [HttpGet("get-current-user")]
+        [Authorize]
         public async Task<ActionResult<JsonResponse<GetCurrentUserResponse>>> GetLoggedUser(CancellationToken cancellationToken = default)
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -59,19 +54,24 @@ namespace KoiAuction.API.Controllers
 
         [HttpPut("update-current-user-info")]
         [Authorize]
-        public async Task<ActionResult<JsonResponse<UserResponse>>> UpdateUserInfo(UpdateCurrentUserInfoCommand command, CancellationToken cancellationToken = default)
+        public async Task<ActionResult<JsonResponse<UserResponse>>> UpdateUserInfo([FromBody] UpdateCurrentUserInfoCommand command, CancellationToken cancellationToken = default)
         {
-            var result = await _mediator.Send(command, cancellationToken);
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var request = new UpdateCurrentUserInfoRequest(userId, command);
+            var result = await _mediator.Send(request, cancellationToken);
             return Ok(new JsonResponse<UserResponse>("Info User updated successfully.", result));
         }
 
         [HttpPut("update-current-user-avatar")]
         [Authorize]
-        public async Task<ActionResult<JsonResponse<UserResponse>>> UpdateUserAvatar(UpdateCurrentUserAvatarCommand command, CancellationToken cancellationToken = default)
+        public async Task<ActionResult<JsonResponse<UserResponse>>> UpdateUserAvatar([FromBody] UpdateCurrentUserAvatarCommand command, CancellationToken cancellationToken = default)
         {
-            var result = await _mediator.Send(command, cancellationToken);
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var request = new UpdateCurrentUserAvatarRequest(userId, command);
+            var result = await _mediator.Send(request, cancellationToken);
             return Ok(new JsonResponse<UserResponse>("Avatar User updated successfully.", result));
         }
+
 
         [HttpPut("update-user-by-manager/{userId}")]
         [Authorize(Roles = "MANAGER")]

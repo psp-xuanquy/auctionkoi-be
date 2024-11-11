@@ -64,14 +64,14 @@ namespace KoiAuction
 
             // Configure Swagger
             services.AddEndpointsApiExplorer();
-            services.AddSwaggerGen(c =>
-            {
-                //c.SwaggerDoc("v1", new OpenApiInfo { Title = "Koi Auction API", Version = "v1" });
+            //services.AddSwaggerGen(c =>
+            //{
+            //    //c.SwaggerDoc("v1", new OpenApiInfo { Title = "Koi Auction API", Version = "v1" });
 
-                //var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-                //var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-                //c.IncludeXmlComments(xmlPath);
-            });
+            //    //var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+            //    //var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+            //    //c.IncludeXmlComments(xmlPath);
+            //});
 
             // Add Identity services
             services.AddIdentity<UserEntity, IdentityRole>()
@@ -112,9 +112,9 @@ namespace KoiAuction
             app.UseCors("CorsPolicy");
             app.UseExceptionHandler();
             app.UseHttpsRedirection();
-            app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
+            app.UseRouting();
             app.UseEndpoints(endpoints =>
             {
                 //endpoints.MapDefaultHealthChecks();

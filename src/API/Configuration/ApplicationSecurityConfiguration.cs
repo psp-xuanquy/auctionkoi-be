@@ -34,6 +34,7 @@ namespace KoiAuction.Configuration
                         ValidIssuer = configuration.GetSection("Security.Bearer:Authority").Get<string>(),
                         ValidAudience = configuration.GetSection("Security.Bearer:Audience").Get<string>(),
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("This is Koi Auction Website SecretKey")),
+                        ClockSkew = TimeSpan.Zero
                     };
                 });
 
