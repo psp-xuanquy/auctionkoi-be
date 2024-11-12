@@ -49,14 +49,19 @@ public class GetAllKoiHandler : IRequestHandler<GetAllKoiQuery, List<KoiResponse
             StartTime = koi.StartTime,
             EndTime = koi.EndTime,
             AllowAutoBid = koi.AllowAutoBid,
-            AuctionMethodName = koi.AuctionMethod?.Name,
-            BreederName = koi.Breeder?.UserName,
-            Contact = koi.Breeder?.PhoneNumber,
+            AuctionMethodName = koi.AuctionMethod != null ? koi.AuctionMethod.Name : null,
+            BreederName = koi.Breeder != null ? koi.Breeder.UserName : null,
+            Contact = koi.Breeder != null ? koi.Breeder.PhoneNumber : null,
             Bidders = koi.Bids.Select(bid => new BidderDto
             {
                 BidderName = bid.Bidder.UserName,
                 BidAmount = bid.BidAmount,
                 BidTime = bid.BidTime.GetValueOrDefault()
+            }).ToList(),
+            KoiImages = koi.KoiImages.Select(img => new KoiImageDto
+            {
+                Url = img.Url,
+                KoiName = img.Koi.Name,
             }).ToList()
         }).ToList();
 

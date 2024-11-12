@@ -1,18 +1,14 @@
-﻿using Application.Features.AuctionMethod.Commands.Delete;
-using System.Threading;
-using Application.Features.Bid.AscendingBidAuction;
+﻿using Application.Features.Bid.AscendingBidAuction;
 using Application.Features.Bid.DescendingBidAuction;
 using Application.Features.Bid.FixedPriceBid;
-using Application.Features.Bid.Queries.GetUserPastAuctions;
 using Application.Features.Bid.SealedBidAuction;
 using KoiAuction.API.Controllers.ResponseTypes;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Application.Features.Koi;
-using KN_EXE201.Application.Features.Koi.Queries.GetActiveAuctionByKoiId;
 using System.Security.Claims;
+using Application.Features.Bid.GetUserPastAuctions;
 
 namespace API.Controllers
 {
@@ -33,19 +29,19 @@ namespace API.Controllers
 
         [HttpGet("user/past-auctions")]
         [Authorize]
-        public async Task<ActionResult<JsonResponse<GetUserPastAuctionResponse>>> GetUserPastAuctions(CancellationToken cancellationToken = default)
+        public async Task<ActionResult<JsonResponse<List<KoiResponse>>>> GetUserPastAuctions(CancellationToken cancellationToken = default)
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var result = await _mediator.Send(new GetUserPastAuctionsQuery(userId), cancellationToken);
-            return Ok(new JsonResponse<List<GetUserPastAuctionResponse>>("Get User Past Auctions successfully.", result));
+            return Ok(new JsonResponse<List<KoiResponse>>("Get User Past Auctions successfully.", result));
         }
 
         [HttpGet("user/{userId}/past-auctions/manager")]
         [Authorize(Roles = "MANAGER")]
-        public async Task<ActionResult<JsonResponse<GetUserPastAuctionResponse>>> GetUserPastAuctionsByManager([FromRoute] string userId, CancellationToken cancellationToken = default)
+        public async Task<ActionResult<JsonResponse<List<KoiResponse>>>> GetUserPastAuctionsByManager([FromRoute] string userId, CancellationToken cancellationToken = default)
         {
             var result = await _mediator.Send(new GetUserPastAuctionsQuery(userId), cancellationToken);
-            return Ok(new JsonResponse<List<GetUserPastAuctionResponse>>("Manager get Past Auctions of User successfully.", result));
+            return Ok(new JsonResponse<List<KoiResponse>>("Manager get Past Auctions of User successfully.", result));
         }
 
         /// <summary>

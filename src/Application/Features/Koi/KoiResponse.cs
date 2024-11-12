@@ -34,6 +34,7 @@ public class KoiResponse
     public string? BreederName { get; set; }
     public string? Contact { get; set; }
     public List<BidderDto> Bidders { get; set; } = new List<BidderDto>();
+    public List<KoiImageDto> KoiImages { get; set; } = new List<KoiImageDto>();
 
     public void Mapping(Profile profile)
     {
@@ -47,6 +48,11 @@ public class KoiResponse
             BidderName = bid.Bidder.UserName,
             BidAmount = bid.BidAmount,
             BidTime = bid.BidTime.GetValueOrDefault()
+        }).ToList()))
+        .ForMember(dest => dest.KoiImages, opt => opt.MapFrom(src => src.KoiImages.Select(img => new KoiImageDto
+        {
+            Url = img.Url,
+            KoiName = img.Koi.Name,
         }).ToList()));
     }
 }

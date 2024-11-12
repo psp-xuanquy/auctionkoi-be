@@ -3,35 +3,54 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Application.Features.AuctionMethod.Queries.GetAll;
-using Application.Features.AuctionMethod.Queries.GetRevenueForEachMethod;
+using Application.Features.Koi;
 using AutoMapper;
-using KoiAuction.Domain.Common.Exceptions;
+using KoiAuction.Application.Common.Interfaces;
 using KoiAuction.Domain.IRepositories;
+using KoiAuction.Domain.Common.Exceptions;
 using MediatR;
 
-namespace Application.Features.Koi.Queries.GetAllActiveAuctions
+namespace Application.Features.Bid.GetUserPastAuctions
 {
-    public class GetAllActiveAuctionsHandler : IRequestHandler<GetAllActiveAuctionsQuery, List<KoiResponse>>
+    public class GetUserPastAuctionsHandler : IRequestHandler<GetUserPastAuctionsQuery, List<KoiResponse>>
     {
-        private readonly IKoiRepository _koiRepository;
+        private readonly IUserRepository _userRepository;
+        private readonly IBidRepository _bidRepository;
+        private readonly ICurrentUserService _currentUserService;
         private readonly IMapper _mapper;
 
-        public GetAllActiveAuctionsHandler(IKoiRepository koiRepository, IMapper mapper)
+        public GetUserPastAuctionsHandler(IUserRepository userRepository,
+            ICurrentUserService currentUserService,
+            IBidRepository bidRepository,
+            IMapper mapper)
         {
-            _koiRepository = koiRepository;
+            _userRepository = userRepository;
+            _currentUserService = currentUserService;
+            _bidRepository = bidRepository;
             _mapper = mapper;
         }
 
-        public async Task<List<KoiResponse>> Handle(GetAllActiveAuctionsQuery request, CancellationToken cancellationToken)
+        public async Task<List<KoiResponse>> Handle(GetUserPastAuctionsQuery request, CancellationToken cancellationToken)
         {
-            var list = await _koiRepository.GetActiveAuctions(cancellationToken);
-            if (list == null || !list.Any())
+            var userId = _currentUserService.UserId;
+            if (string.IsNullOrEmpty(userId))
             {
-                throw new NotFoundException("No active auctions found.");
+                throw new NotFoundException("User is not authenticated or user ID is missing.");
             }
 
-            var responseList = list.Select(koi => new KoiResponse
+            var user = await _userRepository.FindAsync(x => x.Id == userId);
+            if (user == null)
+            {
+                throw new NotFoundException("User not found.");
+            }
+
+            var bids = await _bidRepository.FindBidsByUserIdAsync(userId, cancellationToken);
+            if (bids == null || !bids.Any())
+            {
+                throw new NotFoundException("No bids found for the user.");
+            }
+
+            var responseList = bids.Select(bid => bid.Koi).Select(koi => new KoiResponse
             {
                 Id = koi.ID,
                 Name = koi.Name,

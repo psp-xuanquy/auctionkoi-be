@@ -27,7 +27,7 @@ namespace KoiAuction.API.Controllers
         /// <param name="cancellationToken">A cancellation token to cancel the request.</param>
         /// <returns>A list of all Blog.</returns>
         /// <response code="200">Returns a list of Blog successfully retrieved.</response>
-        [HttpGet("get-all-Blogs")]
+        [HttpGet("Blogs")]
         public async Task<ActionResult<List<GetAllBlogResponse>>> GetAll(CancellationToken cancellationToken = default)
         {
             var result = await _mediator.Send(new GetAllBlogQuery(), cancellationToken);

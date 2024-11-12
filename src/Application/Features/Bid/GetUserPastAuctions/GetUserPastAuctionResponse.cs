@@ -7,7 +7,7 @@ using AutoMapper;
 using KoiAuction.Application.Common.Mappings;
 using KoiAuction.Domain.Entities;
 
-namespace Application.Features.Bid.Queries.GetUserPastAuctions;
+namespace Application.Features.Bid.GetUserPastAuctions;
 public class GetUserPastAuctionResponse : IMapFrom<BidEntity>
 {
     public string AuctionName { get; set; }

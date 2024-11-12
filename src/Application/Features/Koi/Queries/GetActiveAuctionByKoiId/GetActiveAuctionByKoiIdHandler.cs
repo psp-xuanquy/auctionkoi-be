@@ -24,7 +24,7 @@ namespace Application.Features.Koi.Queries.GetActiveAuctionByKoiId
 
         public async Task<KoiResponse> Handle(GetActiveAuctionByKoiIdQuery request, CancellationToken cancellationToken)
         {
-            var koi= await _koiRepository.FindAsync(x => x.ID == request.Id && x.AuctionStatus == AuctionStatus.OnGoing && x.DeletedBy == null && x.DeletedTime == null, cancellationToken);
+            var koi = await _koiRepository.FindAsync(x => x.ID == request.Id && x.AuctionStatus == AuctionStatus.OnGoing && x.DeletedBy == null && x.DeletedTime == null, cancellationToken);
             if (koi is null)
             {
                 throw new NotFoundException("Auction not found");
@@ -57,6 +57,11 @@ namespace Application.Features.Koi.Queries.GetActiveAuctionByKoiId
                     BidderName = bid.Bidder.UserName,
                     BidAmount = bid.BidAmount,
                     BidTime = bid.BidTime.GetValueOrDefault()
+                }).ToList(),
+                KoiImages = koi.KoiImages.Select(img => new KoiImageDto
+                {
+                    Url = img.Url,
+                    KoiName = img.Koi.Name,
                 }).ToList()
             };
 

@@ -14,6 +14,7 @@ public class SendRequestKoiAuctionCommand : IRequest<string>, IMapFrom<KoiEntity
     public string Location { get; set; }
     public string Variety { get; set; }
     public decimal InitialPrice { get; set; }
+    public string? Description { get; set; }
     public string? ImageUrl { get; set; }
     public DateTime? StartTime { get; set; }
     public string? AuctionMethodID { get; set; }

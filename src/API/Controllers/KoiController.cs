@@ -30,8 +30,9 @@ namespace KoiAuction.API.Controllers
             _mediator = mediator;
         }
 
-        
+
         [HttpGet("get-all-kois")]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<ActionResult<List<KoiResponse>>> GetAll(CancellationToken cancellationToken = default)
         {
             var result = await _mediator.Send(new GetAllKoiQuery(), cancellationToken);
@@ -61,6 +62,7 @@ namespace KoiAuction.API.Controllers
         }
 
         [HttpGet("filter")]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<ActionResult<JsonResponse<List<KoiResponse>>>> Filter(
             [FromQuery] string? name,
             [FromQuery] double? minLength,
@@ -82,6 +84,7 @@ namespace KoiAuction.API.Controllers
         [HttpPost]
         [Route("create")]
         [Authorize(Roles = "MANAGER")]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<ActionResult<JsonResponse<KoiResponse>>> Create(
             [FromBody] CreateKoiCommand command,
             CancellationToken cancellationToken = default)
@@ -92,6 +95,7 @@ namespace KoiAuction.API.Controllers
 
         [HttpPut]
         [Authorize(Roles = "MANAGER")]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<ActionResult<KoiResponse>> Update(
             [FromBody] UpdateKoiCommand command,
             string id,
@@ -104,6 +108,7 @@ namespace KoiAuction.API.Controllers
 
         [HttpDelete("{id}")]
         [Authorize(Roles = "MANAGER")]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<ActionResult<JsonResponse<string>>> Delete(
             [FromRoute] string id,
             CancellationToken cancellationToken = default)
