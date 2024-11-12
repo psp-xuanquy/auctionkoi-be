@@ -29,7 +29,6 @@ public class UpdateCurrentUserAvatarHandler : IRequestHandler<UpdateCurrentUserA
 
     public async Task<UserResponse> Handle(UpdateCurrentUserAvatarRequest request, CancellationToken cancellationToken)
     {
-
         var user = await _userRepository.FindAsync(x => x.Id == _currentUserService.UserId);
         if (user == null)
         {

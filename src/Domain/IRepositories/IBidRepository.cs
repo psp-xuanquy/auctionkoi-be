@@ -9,5 +9,6 @@ namespace KoiAuction.Domain.IRepositories
         Task<IEnumerable<BidEntity>> GetBidsForKoi(string koiId, CancellationToken cancellationToken = default);
         Task<BidEntity> GetUserBidForKoi(string koiId, string bidderId, CancellationToken cancellationToken = default);
         Task<BidEntity?> GetHighestBidForKoi(string koiId, CancellationToken cancellationToken);
+        Task<List<BidEntity>> FindBidsByUserIdAsync(string userId, CancellationToken cancellationToken);
     }
 }

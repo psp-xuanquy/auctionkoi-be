@@ -36,5 +36,13 @@ namespace KoiAuction.Infrastructure.Repositories
         {
             return await _context.Bids.FirstOrDefaultAsync(b => b.KoiID == koiId && b.BidderID == bidderId && b.DeletedTime == null, cancellationToken);
         }
+
+        public async Task<List<BidEntity>> FindBidsByUserIdAsync(string userId, CancellationToken cancellationToken)
+        {
+            return await _context.Bids
+                .Where(bid => bid.BidderID == userId)
+                .Include(bid => bid.Koi) 
+                .ToListAsync(cancellationToken);
+        }
     }
 }

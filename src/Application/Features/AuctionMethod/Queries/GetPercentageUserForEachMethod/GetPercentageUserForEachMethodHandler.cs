@@ -14,7 +14,7 @@ public class GetPercentageUserForEachMethodHandler : IRequestHandler<GetPercenta
 {
     private readonly IAuctionMethodRepository _auctionMethodRepository;
     private readonly ITransactionRepository _transactionRepository;
-    private readonly IUserRepository _userRepository; // Để lấy tổng số người dùng
+    private readonly IUserRepository _userRepository; 
 
     public GetPercentageUserForEachMethodHandler(
         IAuctionMethodRepository auctionMethodRepository,

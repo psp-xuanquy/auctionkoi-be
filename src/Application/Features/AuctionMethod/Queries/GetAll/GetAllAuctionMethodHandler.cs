@@ -22,7 +22,6 @@ public class GetAllAuctionMethodHandler : IRequestHandler<GetAllAuctionMethodQue
 
     public async Task<List<GetAllAuctionMethodResponse>> Handle(GetAllAuctionMethodQuery request, CancellationToken cancellationToken)
     {
-
         var list = await _auctionMethodRepository.FindAllAsync(cancellationToken);
         if (list is null)
         {
