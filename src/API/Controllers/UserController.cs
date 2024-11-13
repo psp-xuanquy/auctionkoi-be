@@ -36,37 +36,65 @@ namespace KoiAuction.API.Controllers
         [Authorize]
         public async Task<ActionResult<JsonResponse<GetCurrentUserResponse>>> GetLoggedUser(CancellationToken cancellationToken = default)
         {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var result = await _mediator.Send(new GetCurrentUserQuery(userId), cancellationToken);
-            return Ok(new JsonResponse<GetCurrentUserResponse>("Get Current User successfully.", result));
+            try
+            {
+                var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                var result = await _mediator.Send(new GetCurrentUserQuery(userId), cancellationToken);
+                return Ok(new JsonResponse<GetCurrentUserResponse>("Get Current User successfully.", result));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new JsonResponse<string>($"An error occurred: {ex.Message}", null));
+            }
         }
 
         [HttpGet("get-all-current-users-by-manager")]
         [Authorize(Roles = "MANAGER")]
         public async Task<ActionResult<JsonResponse<List<GetAllCurrentUsersResponse>>>> GetAllCurrentUser(CancellationToken cancellationToken = default)
         {
-            var result = await _mediator.Send(new GetAllCurrentUsersQuery(), cancellationToken);
-            return Ok(new JsonResponse<List<GetAllCurrentUsersResponse>>("Get all Current User successfully.", result));
+            try
+            {
+                var result = await _mediator.Send(new GetAllCurrentUsersQuery(), cancellationToken);
+                return Ok(new JsonResponse<List<GetAllCurrentUsersResponse>>("Get all Current User successfully.", result));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new JsonResponse<string>($"An error occurred: {ex.Message}", null));
+            }
         }
 
         [HttpPut("update-current-user-info")]
         [Authorize]
         public async Task<ActionResult<JsonResponse<UserResponse>>> UpdateUserInfo([FromBody] UpdateCurrentUserInfoCommand command, CancellationToken cancellationToken = default)
         {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var request = new UpdateCurrentUserInfoRequest(userId, command);
-            var result = await _mediator.Send(request, cancellationToken);
-            return Ok(new JsonResponse<UserResponse>("Info User updated successfully.", result));
+            try
+            {
+                var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                var request = new UpdateCurrentUserInfoRequest(userId, command);
+                var result = await _mediator.Send(request, cancellationToken);
+                return Ok(new JsonResponse<UserResponse>("Info User updated successfully.", result));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new JsonResponse<string>($"An error occurred: {ex.Message}", null));
+            }
         }
 
         [HttpPut("update-current-user-avatar")]
         [Authorize]
         public async Task<ActionResult<JsonResponse<UserResponse>>> UpdateUserAvatar([FromBody] UpdateCurrentUserAvatarCommand command, CancellationToken cancellationToken = default)
         {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var request = new UpdateCurrentUserAvatarRequest(userId, command);
-            var result = await _mediator.Send(request, cancellationToken);
-            return Ok(new JsonResponse<UserResponse>("Avatar User updated successfully.", result));
+            try
+            {
+                var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                var request = new UpdateCurrentUserAvatarRequest(userId, command);
+                var result = await _mediator.Send(request, cancellationToken);
+                return Ok(new JsonResponse<UserResponse>("Avatar User updated successfully.", result));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new JsonResponse<string>($"An error occurred: {ex.Message}", null));
+            }
         }
 
 
@@ -74,17 +102,31 @@ namespace KoiAuction.API.Controllers
         [Authorize(Roles = "MANAGER")]
         public async Task<ActionResult<JsonResponse<UserResponse>>> UpdateUserByManager(string userId, [FromBody] UpdateUserByManagerCommand command, CancellationToken cancellationToken = default)
         {
-            var request = new UpdateUserByManagerRequest(userId, command);
-            var result = await _mediator.Send(request, cancellationToken);
-            return Ok(new JsonResponse<UserResponse>("User updated successfully.", result));
+            try
+            {
+                var request = new UpdateUserByManagerRequest(userId, command);
+                var result = await _mediator.Send(request, cancellationToken);
+                return Ok(new JsonResponse<UserResponse>("User updated successfully.", result));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new JsonResponse<string>($"An error occurred: {ex.Message}", null));
+            }
         }
 
         [HttpDelete("delete-user-by-manager/{userId}")]
         [Authorize(Roles = "MANAGER")]
         public async Task<ActionResult<JsonResponse<string>>> DeleteUserByManager(string userId, CancellationToken cancellationToken = default)
         {
-            var result = await _mediator.Send(new DeleteUserByManagerCommand(userId: userId), cancellationToken);
-            return Ok(new JsonResponse<string>(result, null));
+            try
+            {
+                var result = await _mediator.Send(new DeleteUserByManagerCommand(userId: userId), cancellationToken);
+                return Ok(new JsonResponse<string>(result, null));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new JsonResponse<string>($"An error occurred: {ex.Message}", null));
+            }
         }
     }
 }

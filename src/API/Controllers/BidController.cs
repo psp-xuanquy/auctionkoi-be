@@ -33,27 +33,32 @@ namespace API.Controllers
         [Authorize]
         public async Task<ActionResult<JsonResponse<List<GetUserPastAuctionResponse>>>> GetUserPastAuctions(CancellationToken cancellationToken = default)
         {
-            try { }
+            try
+            {
+                var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                var result = await _mediator.Send(new GetUserPastAuctionsQuery(userId), cancellationToken);
+                return Ok(new JsonResponse<List<GetUserPastAuctionResponse>>("Get User Past Auctions successfully.", result));
+            }
             catch (Exception ex)
             {
                 return BadRequest(new JsonResponse<string>($"An error occurred: {ex.Message}", null));
             }
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var result = await _mediator.Send(new GetUserPastAuctionsQuery(userId), cancellationToken);
-            return Ok(new JsonResponse<List<GetUserPastAuctionResponse>>("Get User Past Auctions successfully.", result));
+
         }
 
         [HttpGet("user/{userId}/past-auctions/manager")]
         [Authorize(Roles = "MANAGER")]
         public async Task<ActionResult<JsonResponse<List<GetUserPastAuctionResponse>>>> GetUserPastAuctionsByManager([FromRoute] string userId, CancellationToken cancellationToken = default)
         {
-            try { }
+            try
+            {
+                var result = await _mediator.Send(new GetUserPastAuctionsQuery(userId), cancellationToken);
+                return Ok(new JsonResponse<List<GetUserPastAuctionResponse>>("Manager get Past Auctions of User successfully.", result));
+            }
             catch (Exception ex)
             {
                 return BadRequest(new JsonResponse<string>($"An error occurred: {ex.Message}", null));
             }
-            var result = await _mediator.Send(new GetUserPastAuctionsQuery(userId), cancellationToken);
-            return Ok(new JsonResponse<List<GetUserPastAuctionResponse>>("Manager get Past Auctions of User successfully.", result));
         }
 
         [HttpPost("place-bid")]
@@ -84,10 +89,10 @@ namespace API.Controllers
                     {
                         return BadRequest(new JsonResponse<string>($"An error occurred: {ex.Message}", null));
                     }
-                    
+
 
                 case "Sealed Bid Auction":
-                    try 
+                    try
                     {
                         var sealedBidCommand = new PlaceSealedBidAuctionCommand(command.KoiId, command.BidAmount);
                         var sealedBidResult = await _mediator.Send(sealedBidCommand, cancellationToken);
@@ -97,7 +102,7 @@ namespace API.Controllers
                     {
                         return BadRequest(new JsonResponse<string>($"An error occurred: {ex.Message}", null));
                     }
-                   
+
 
                 case "Ascending Bid Auction":
                     try
@@ -122,7 +127,7 @@ namespace API.Controllers
                     {
                         return BadRequest(new JsonResponse<string>($"An error occurred: {ex.Message}", null));
                     }
-                    
+
 
                 default:
                     return BadRequest("Unsupported auction method for this Koi.");

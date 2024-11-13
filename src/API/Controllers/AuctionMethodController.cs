@@ -30,9 +30,7 @@ namespace API.Controllers
         public async Task<ActionResult<JsonResponse<List<GetAllAuctionMethodResponse>>>> GetAll(CancellationToken cancellationToken = default)
         {
             var result = await _mediator.Send(new GetAllAuctionMethodQuery(), cancellationToken);
-
             var sortedResult = result.OrderBy(method => GetAuctionMethodOrder(method.Name)).ToList();
-
             return Ok(new JsonResponse<List<GetAllAuctionMethodResponse>>("Successfully retrieved all Auction Methods.", sortedResult));
         }
 
@@ -90,7 +88,7 @@ namespace API.Controllers
                 case "Descending Bid Auction":
                     return 4;
                 default:
-                    return 5; 
+                    return 5;
             }
         }
     }

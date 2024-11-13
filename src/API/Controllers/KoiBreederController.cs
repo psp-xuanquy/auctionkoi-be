@@ -39,19 +39,33 @@ namespace API.Controllers
         public async Task<ActionResult<List<GetAllKoiFarmBreederResponse>>> GetAllKoiFarm(
             CancellationToken cancellationToken = default)
         {
-            var result = await _mediator.Send(new GetAllKoiFarmBreederQuery(), cancellationToken);
-            return Ok(new JsonResponse<List<GetAllKoiFarmBreederResponse>>("Get all Koi Farm Breeder successfully.", result));
+            try
+            {
+                var result = await _mediator.Send(new GetAllKoiFarmBreederQuery(), cancellationToken);
+                return Ok(new JsonResponse<List<GetAllKoiFarmBreederResponse>>("Get all Koi Farm Breeder successfully.", result));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new JsonResponse<string>($"An error occurred: {ex.Message}", null));
+            }
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<JsonResponse<GetAllKoiFarmBreederResponse>>> GetKoiFarmBreederById([FromRoute] string id, CancellationToken cancellationToken = default)
         {
-            var result = await _mediator.Send(new GetKoiFarmBreederByIdQuery(id), cancellationToken);
-            if (result == null)
+            try
             {
-                return NotFound();
+                var result = await _mediator.Send(new GetKoiFarmBreederByIdQuery(id), cancellationToken);
+                if (result == null)
+                {
+                    return NotFound();
+                }
+                return Ok(new JsonResponse<GetAllKoiFarmBreederResponse>("Get Koi Farm Breeder successfully.", result));
             }
-            return Ok(new JsonResponse<GetAllKoiFarmBreederResponse>("Get Koi Farm Breeder successfully.", result));
+            catch (Exception ex)
+            {
+                return BadRequest(new JsonResponse<string>($"An error occurred: {ex.Message}", null));
+            }
         }
 
     }

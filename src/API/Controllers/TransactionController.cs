@@ -27,8 +27,15 @@ namespace KoiAuction.API.Controllers
         [Authorize(Roles = "MANAGER")]
         public async Task<ActionResult<List<GetAllTransactionsResponse>>> GetAll(CancellationToken cancellationToken = default)
         {
-            var result = await _mediator.Send(new GetAllTransactionsQuery(), cancellationToken);
-            return Ok(new JsonResponse<List<GetAllTransactionsResponse>>("Get all Transactions successfully", result));
+            try
+            {
+                var result = await _mediator.Send(new GetAllTransactionsQuery(), cancellationToken);
+                return Ok(new JsonResponse<List<GetAllTransactionsResponse>>("Get all Transactions successfully", result));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new JsonResponse<string>($"An error occurred: {ex.Message}", null));
+            }
         }
     }
 }

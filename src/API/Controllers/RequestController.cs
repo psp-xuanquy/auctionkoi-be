@@ -66,7 +66,8 @@ namespace API.Controllers
         [Route("kois")]
         public async Task<ActionResult<List<GetAllKoisRequestResponse>>> GetAllPendingKoisRequest(CancellationToken cancellationToken = default)
         {
-            try {
+            try
+            {
                 var result = await _mediator.Send(new GetAllKoisRequestQuery(), cancellationToken);
                 return Ok(new JsonResponse<List<GetAllKoisRequestResponse>>("Get all pending Kois request successfully", result));
             }
@@ -81,7 +82,8 @@ namespace API.Controllers
         [Route("koi/{id}")]
         public async Task<ActionResult<GetKoiRequestByIdResponse>> GetPendingKoisRequestById([FromRoute] string id, CancellationToken cancellationToken = default)
         {
-            try {
+            try 
+            {
                 var result = await _mediator.Send(new GetKoiRequestByIdQuery(koiId: id), cancellationToken);
                 return Ok(new JsonResponse<GetKoiRequestByIdResponse>("Get Koi request successfully", result));
             }
@@ -103,7 +105,8 @@ namespace API.Controllers
         [Route("koi")]
         public async Task<ActionResult<string>> SendKoiRequest([FromBody] SendRequestKoiAuctionCommand command, CancellationToken cancellationToken = default)
         {
-            try {
+            try 
+            {
                 var result = await _mediator.Send(command, cancellationToken);
                 return Ok(new JsonResponse<string>("Send Koi request successfully", result));
             }
@@ -125,7 +128,8 @@ namespace API.Controllers
         [Route("koi/resend")]
         public async Task<ActionResult<string>> ResendKoiRequest([FromBody] ResendRequestKoiAuctionCommand command, CancellationToken cancellationToken = default)
         {
-            try {
+            try 
+            {
                 var result = await _mediator.Send(command, cancellationToken);
                 return Ok(new JsonResponse<string>("Resend Koi request successfully", result));
             }
@@ -148,7 +152,8 @@ namespace API.Controllers
         [Route("koi/approval")]
         public async Task<ActionResult<string>> ApproveKoiRequest([FromBody] ApproveKoiRequestCommand command, CancellationToken cancellationToken = default)
         {
-            try {
+            try
+            {
                 var result = await _mediator.Send(command, cancellationToken);
                 return Ok(new JsonResponse<string>("Approve Koi request successfully", result));
             }
@@ -171,7 +176,8 @@ namespace API.Controllers
         [Route("koi/denial")]
         public async Task<ActionResult<string>> DenyKoiRequest([FromBody] DenyKoiRequestCommand command, CancellationToken cancellationToken = default)
         {
-            try {
+            try
+            {
                 var result = await _mediator.Send(command, cancellationToken);
                 return Ok(new JsonResponse<string>("Deny Koi request successfully", result));
             }
@@ -193,7 +199,8 @@ namespace API.Controllers
         [Route("role/current")]
         public async Task<ActionResult<List<GetRequestCurrentUserResponse>>> GetAllCurrentRolesRequest(CancellationToken cancellationToken = default)
         {
-            try {
+            try 
+            {
                 var result = await _mediator.Send(new GetRequestCurrentUserQuery(), cancellationToken);
                 return Ok(new JsonResponse<List<GetRequestCurrentUserResponse>>("Get all curnet Roles request successfully", result));
             }
@@ -215,7 +222,8 @@ namespace API.Controllers
         [Route("roles")]
         public async Task<ActionResult<List<GetAllRolesRequestResponse>>> GetAllPendingRoleRequest(CancellationToken cancellationToken = default)
         {
-            try {
+            try 
+            {
                 var result = await _mediator.Send(new GetAllRolesRequestQuery(), cancellationToken);
                 return Ok(new JsonResponse<List<GetAllRolesRequestResponse>>("Get all pending Roles request successfully", result));
             }
@@ -231,7 +239,8 @@ namespace API.Controllers
         [Route("role/{id}")]
         public async Task<ActionResult<GetRoleRequestByIdResponse>> GetRoleKoisRequestById([FromRoute] string id, CancellationToken cancellationToken = default)
         {
-            try {
+            try
+            {
                 var result = await _mediator.Send(new GetRoleRequestByIdQuery(breederId: id), cancellationToken);
                 return Ok(new JsonResponse<GetRoleRequestByIdResponse>("Get Role request successfully", result));
             }
@@ -254,7 +263,8 @@ namespace API.Controllers
         [Route("role/resend")]
         public async Task<ActionResult<string>> ResendRoleRequest([FromBody] ResendRegisterKoiBreederCommand command, CancellationToken cancellationToken = default)
         {
-            try {
+            try 
+            {
                 var result = await _mediator.Send(command, cancellationToken);
                 return Ok(new JsonResponse<string>("Resend register KoiBreeder successfully", result));
             }
@@ -277,7 +287,8 @@ namespace API.Controllers
         [Route("role/approval")]
         public async Task<ActionResult<string>> ApproveRoleRequest([FromBody] ApproveRoleRequestCommand command, CancellationToken cancellationToken = default)
         {
-            try {
+            try
+            {
                 var result = await _mediator.Send(command, cancellationToken);
                 return Ok(new JsonResponse<string>("Approve Role request successfully", result));
             }
@@ -300,7 +311,8 @@ namespace API.Controllers
         [Route("role/denial")]
         public async Task<ActionResult<string>> DenyRoleRequest([FromBody] DenyRoleRequestCommand command, CancellationToken cancellationToken = default)
         {
-            try {
+            try 
+            {
                 var result = await _mediator.Send(command, cancellationToken);
                 return Ok(new JsonResponse<string>("Deny Role request successfully", result));
             }

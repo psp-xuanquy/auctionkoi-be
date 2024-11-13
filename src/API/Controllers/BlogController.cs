@@ -30,8 +30,15 @@ namespace KoiAuction.API.Controllers
         [HttpGet("Blogs")]
         public async Task<ActionResult<List<GetAllBlogResponse>>> GetAll(CancellationToken cancellationToken = default)
         {
-            var result = await _mediator.Send(new GetAllBlogQuery(), cancellationToken);
-            return Ok(new JsonResponse<List<GetAllBlogResponse>>("Get all Blogs successfully", result));
+            try
+            {
+                var result = await _mediator.Send(new GetAllBlogQuery(), cancellationToken);
+                return Ok(new JsonResponse<List<GetAllBlogResponse>>("Get all Blogs successfully", result));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new JsonResponse<string>($"An error occurred: {ex.Message}", null));
+            }
         }
     }
 }

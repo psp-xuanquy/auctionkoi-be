@@ -36,13 +36,15 @@ namespace KoiAuction.API.Controllers
         [Authorize(Roles = "KOIBREEDER")]
         public async Task<ActionResult<List<KoiResponse>>> GetAll(CancellationToken cancellationToken = default)
         {
-            try { }
+            try 
+            {
+                var result = await _mediator.Send(new GetAllKoiQuery(), cancellationToken);
+                return base.Ok(new JsonResponse<List<KoiResponse>>("Get all Kois successfully", result));
+            }
             catch (Exception ex)
             {
                 return BadRequest(new JsonResponse<string>($"An error occurred: {ex.Message}", null));
             }
-            var result = await _mediator.Send(new GetAllKoiQuery(), cancellationToken);
-            return base.Ok(new JsonResponse<List<KoiResponse>>("Get all Kois successfully", result));
         }
 
         [HttpGet("all-active-auctions")]
@@ -93,14 +95,16 @@ namespace KoiAuction.API.Controllers
             [FromQuery] Sex? sex,
             CancellationToken cancellationToken = default)
         {
-            try { }
+            try 
+            {
+                var query = new FilterKoiQuery(name, minLength, maxLength, minAge, maxAge, minPrice, maxPrice, breederName, auctionMethodName, sex);
+                var result = await _mediator.Send(query, cancellationToken);
+                return result != null ? base.Ok(new JsonResponse<List<KoiResponse>>("Filter Koi successfully", result)) : base.NotFound();
+            }
             catch (Exception ex)
             {
                 return BadRequest(new JsonResponse<string>($"An error occurred: {ex.Message}", null));
             }
-            var query = new FilterKoiQuery(name, minLength, maxLength, minAge, maxAge, minPrice, maxPrice, breederName, auctionMethodName, sex);
-            var result = await _mediator.Send(query, cancellationToken);
-            return result != null ? base.Ok(new JsonResponse<List<KoiResponse>>("Filter Koi successfully", result)) : base.NotFound();
         }
 
         [HttpPost]
@@ -111,13 +115,15 @@ namespace KoiAuction.API.Controllers
             [FromBody] CreateKoiCommand command,
             CancellationToken cancellationToken = default)
         {
-            try { }
+            try 
+            {
+                var result = await _mediator.Send(command, cancellationToken);
+                return base.Ok(new JsonResponse<KoiResponse>("Create Koi successfully", result));
+            }
             catch (Exception ex)
             {
                 return BadRequest(new JsonResponse<string>($"An error occurred: {ex.Message}", null));
             }
-            var result = await _mediator.Send(command, cancellationToken);
-            return base.Ok(new JsonResponse<KoiResponse>("Create Koi successfully", result));
         }
 
         [HttpPut]
@@ -128,14 +134,16 @@ namespace KoiAuction.API.Controllers
             string id,
             CancellationToken cancellationToken = default)
         {
-            try { }
+            try
+            {
+                var request = new UpdateKoiRequest(id, command);
+                var result = await _mediator.Send(request, cancellationToken);
+                return base.Ok(new JsonResponse<KoiResponse>("Update Koi successfully", result));
+            }
             catch (Exception ex)
             {
                 return BadRequest(new JsonResponse<string>($"An error occurred: {ex.Message}", null));
             }
-            var request = new UpdateKoiRequest(id, command);
-            var result = await _mediator.Send(request, cancellationToken);
-            return base.Ok(new JsonResponse<KoiResponse>("Update Koi successfully", result));
         }
 
         [HttpDelete("{id}")]
@@ -145,13 +153,15 @@ namespace KoiAuction.API.Controllers
             [FromRoute] string id,
             CancellationToken cancellationToken = default)
         {
-            try { }
+            try
+            {
+                var result = await _mediator.Send(new DeleteKoiCommand(id: id), cancellationToken);
+                return Ok(new JsonResponse<string>("Delete Koi successfully", null));
+            }
             catch (Exception ex)
             {
                 return BadRequest(new JsonResponse<string>($"An error occurred: {ex.Message}", null));
             }
-            var result = await _mediator.Send(new DeleteKoiCommand(id: id), cancellationToken);
-            return Ok(new JsonResponse<string>("Delete Koi successfully", null));
         }
     }
 }
