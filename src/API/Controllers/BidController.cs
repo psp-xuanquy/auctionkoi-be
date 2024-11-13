@@ -33,6 +33,11 @@ namespace API.Controllers
         [Authorize]
         public async Task<ActionResult<JsonResponse<List<GetUserPastAuctionResponse>>>> GetUserPastAuctions(CancellationToken cancellationToken = default)
         {
+            try { }
+            catch (Exception ex)
+            {
+                return BadRequest(new JsonResponse<string>($"An error occurred: {ex.Message}", null));
+            }
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var result = await _mediator.Send(new GetUserPastAuctionsQuery(userId), cancellationToken);
             return Ok(new JsonResponse<List<GetUserPastAuctionResponse>>("Get User Past Auctions successfully.", result));
@@ -42,6 +47,11 @@ namespace API.Controllers
         [Authorize(Roles = "MANAGER")]
         public async Task<ActionResult<JsonResponse<List<GetUserPastAuctionResponse>>>> GetUserPastAuctionsByManager([FromRoute] string userId, CancellationToken cancellationToken = default)
         {
+            try { }
+            catch (Exception ex)
+            {
+                return BadRequest(new JsonResponse<string>($"An error occurred: {ex.Message}", null));
+            }
             var result = await _mediator.Send(new GetUserPastAuctionsQuery(userId), cancellationToken);
             return Ok(new JsonResponse<List<GetUserPastAuctionResponse>>("Manager get Past Auctions of User successfully.", result));
         }
@@ -64,24 +74,55 @@ namespace API.Controllers
             switch (koi.AuctionMethodName)
             {
                 case "Fixed Price Sale":
-                    var fixedPriceCommand = new PlaceFixedPriceBidCommand(command.KoiId, command.BidAmount);
-                    var fixedPriceResult = await _mediator.Send(fixedPriceCommand, cancellationToken);
-                    return Ok(new { Message = fixedPriceResult });
+                    try
+                    {
+                        var fixedPriceCommand = new PlaceFixedPriceBidCommand(command.KoiId, command.BidAmount);
+                        var fixedPriceResult = await _mediator.Send(fixedPriceCommand, cancellationToken);
+                        return Ok(new { Message = fixedPriceResult });
+                    }
+                    catch (Exception ex)
+                    {
+                        return BadRequest(new JsonResponse<string>($"An error occurred: {ex.Message}", null));
+                    }
+                    
 
                 case "Sealed Bid Auction":
-                    var sealedBidCommand = new PlaceSealedBidAuctionCommand(command.KoiId, command.BidAmount);
-                    var sealedBidResult = await _mediator.Send(sealedBidCommand, cancellationToken);
-                    return Ok(new { Message = sealedBidResult });
+                    try 
+                    {
+                        var sealedBidCommand = new PlaceSealedBidAuctionCommand(command.KoiId, command.BidAmount);
+                        var sealedBidResult = await _mediator.Send(sealedBidCommand, cancellationToken);
+                        return Ok(new { Message = sealedBidResult });
+                    }
+                    catch (Exception ex)
+                    {
+                        return BadRequest(new JsonResponse<string>($"An error occurred: {ex.Message}", null));
+                    }
+                   
 
                 case "Ascending Bid Auction":
-                    var ascendingBidCommand = new AscendingBidAuctionCommand(command.KoiId, command.BidAmount);
-                    var ascendingBidResult = await _mediator.Send(ascendingBidCommand, cancellationToken);
-                    return Ok(new { Message = ascendingBidResult });
+                    try
+                    {
+                        var ascendingBidCommand = new AscendingBidAuctionCommand(command.KoiId, command.BidAmount);
+                        var ascendingBidResult = await _mediator.Send(ascendingBidCommand, cancellationToken);
+                        return Ok(new { Message = ascendingBidResult });
+                    }
+                    catch (Exception ex)
+                    {
+                        return BadRequest(new JsonResponse<string>($"An error occurred: {ex.Message}", null));
+                    }
 
                 case "Descending Bid Auction":
-                    var descendingBidCommand = new DescendingBidAuctionCommand(command.KoiId, command.BidAmount);
-                    var descendingBidResult = await _mediator.Send(descendingBidCommand, cancellationToken);
-                    return Ok(new { Message = descendingBidResult });
+                    try
+                    {
+                        var descendingBidCommand = new DescendingBidAuctionCommand(command.KoiId, command.BidAmount);
+                        var descendingBidResult = await _mediator.Send(descendingBidCommand, cancellationToken);
+                        return Ok(new { Message = descendingBidResult });
+                    }
+                    catch (Exception ex)
+                    {
+                        return BadRequest(new JsonResponse<string>($"An error occurred: {ex.Message}", null));
+                    }
+                    
 
                 default:
                     return BadRequest("Unsupported auction method for this Koi.");

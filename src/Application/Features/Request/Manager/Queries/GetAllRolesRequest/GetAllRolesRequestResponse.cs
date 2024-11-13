@@ -20,6 +20,7 @@ public class GetAllRolesRequestResponse : IMapFrom<KoiBreederEntity>
     public string? KoiFarmImage { get; set; }
     public RoleRequestStatus RoleRequestStatus { get; set; }
     public string? BreederName { get; set; }
+    public string? RequestResponse { get; set; }
 
     public void Mapping(Profile profile)
     {
