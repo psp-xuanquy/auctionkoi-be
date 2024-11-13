@@ -29,19 +29,19 @@ namespace API.Controllers
 
         [HttpGet("user/past-auctions")]
         [Authorize]
-        public async Task<ActionResult<JsonResponse<List<KoiResponse>>>> GetUserPastAuctions(CancellationToken cancellationToken = default)
+        public async Task<ActionResult<JsonResponse<List<GetUserPastAuctionResponse>>>> GetUserPastAuctions(CancellationToken cancellationToken = default)
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var result = await _mediator.Send(new GetUserPastAuctionsQuery(userId), cancellationToken);
-            return Ok(new JsonResponse<List<KoiResponse>>("Get User Past Auctions successfully.", result));
+            return Ok(new JsonResponse<List<GetUserPastAuctionResponse>>("Get User Past Auctions successfully.", result));
         }
 
         [HttpGet("user/{userId}/past-auctions/manager")]
         [Authorize(Roles = "MANAGER")]
-        public async Task<ActionResult<JsonResponse<List<KoiResponse>>>> GetUserPastAuctionsByManager([FromRoute] string userId, CancellationToken cancellationToken = default)
+        public async Task<ActionResult<JsonResponse<List<GetUserPastAuctionResponse>>>> GetUserPastAuctionsByManager([FromRoute] string userId, CancellationToken cancellationToken = default)
         {
             var result = await _mediator.Send(new GetUserPastAuctionsQuery(userId), cancellationToken);
-            return Ok(new JsonResponse<List<KoiResponse>>("Manager get Past Auctions of User successfully.", result));
+            return Ok(new JsonResponse<List<GetUserPastAuctionResponse>>("Manager get Past Auctions of User successfully.", result));
         }
 
         /// <summary>

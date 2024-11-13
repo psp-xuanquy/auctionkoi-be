@@ -9,10 +9,12 @@ using KoiAuction.Application.Common.Interfaces;
 using KoiAuction.Domain.IRepositories;
 using KoiAuction.Domain.Common.Exceptions;
 using MediatR;
+using Domain.Enums;
+using KoiAuction.Domain.Enums;
 
 namespace Application.Features.Bid.GetUserPastAuctions
 {
-    public class GetUserPastAuctionsHandler : IRequestHandler<GetUserPastAuctionsQuery, List<KoiResponse>>
+    public class GetUserPastAuctionsHandler : IRequestHandler<GetUserPastAuctionsQuery, List<GetUserPastAuctionResponse>>
     {
         private readonly IUserRepository _userRepository;
         private readonly IBidRepository _bidRepository;
@@ -30,7 +32,7 @@ namespace Application.Features.Bid.GetUserPastAuctions
             _mapper = mapper;
         }
 
-        public async Task<List<KoiResponse>> Handle(GetUserPastAuctionsQuery request, CancellationToken cancellationToken)
+        public async Task<List<GetUserPastAuctionResponse>> Handle(GetUserPastAuctionsQuery request, CancellationToken cancellationToken)
         {
             var userId = _currentUserService.UserId;
             if (string.IsNullOrEmpty(userId))
@@ -50,7 +52,7 @@ namespace Application.Features.Bid.GetUserPastAuctions
                 throw new NotFoundException("No bids found for the user.");
             }
 
-            var responseList = bids.Select(bid => bid.Koi).Select(koi => new KoiResponse
+            var responseList = bids.Select(bid => bid.Koi).Select(koi => new GetUserPastAuctionResponse
             {
                 Id = koi.ID,
                 Name = koi.Name,
@@ -80,7 +82,8 @@ namespace Application.Features.Bid.GetUserPastAuctions
                 {
                     Url = img.Url,
                     KoiName = img.Koi.Name,
-                }).ToList()
+                }).ToList(),
+                DeliveryStatus = koi.AuctionStatus == AuctionStatus.Ended ? DeliveryStatus.OnGoing : DeliveryStatus.Finished
             }).ToList();
 
             return responseList;

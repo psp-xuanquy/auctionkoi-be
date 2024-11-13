@@ -35,6 +35,7 @@ public class KoiResponse
     public string? Contact { get; set; }
     public List<BidderDto> Bidders { get; set; } = new List<BidderDto>();
     public List<KoiImageDto> KoiImages { get; set; } = new List<KoiImageDto>();
+    public DeliveryStatus DeliveryStatus { get; set; }
 
     public void Mapping(Profile profile)
     {
