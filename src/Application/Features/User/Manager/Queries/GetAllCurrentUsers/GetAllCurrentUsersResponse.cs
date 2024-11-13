@@ -16,6 +16,7 @@ public class GetAllCurrentUsersResponse : IMapFrom<UserEntity>
     public string Role { get; set; }
     public string Gender { get; set; }
     public string Address { get; set; }
+    public string? UrlAvatar { get; set; }
     public string Phone { get; set; }
 
     public void Mapping(Profile profile)
