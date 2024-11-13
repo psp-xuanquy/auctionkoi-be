@@ -38,16 +38,16 @@ public class PlaceBidHandler : IRequestHandler<PlaceBidCommand, string>
 
         switch (auctionMethod?.Name)
         {
-            case "Method 1: Fixed Price Sale":
+            case "Fixed Price Sale":
                 return await HandleFixedPriceAuction(request, koi, cancellationToken);
 
-            case "Method 2: Sealed Bid Auction":
+            case "Sealed Bid Auction":
                 return await HandleSealedBidAuction(request, koi, cancellationToken);
 
-            case "Method 3: Ascending Bid Auction":
+            case "Ascending Bid Auction":
                 return await HandleAscendingBidAuction(request, koi, cancellationToken);
 
-            case "Method 4: Descending Bid Auction":
+            case "Descending Bid Auction":
                 return await HandleDescendingBidAuction(request, koi, cancellationToken);
 
 

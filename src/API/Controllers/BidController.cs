@@ -63,22 +63,22 @@ namespace API.Controllers
 
             switch (koi.AuctionMethodName)
             {
-                case "Method 1: Fixed Price Sale":
+                case "Fixed Price Sale":
                     var fixedPriceCommand = new PlaceFixedPriceBidCommand(command.KoiId, command.BidAmount);
                     var fixedPriceResult = await _mediator.Send(fixedPriceCommand, cancellationToken);
                     return Ok(new { Message = fixedPriceResult });
 
-                case "Method 2: Sealed Bid Auction":
+                case "Sealed Bid Auction":
                     var sealedBidCommand = new PlaceSealedBidAuctionCommand(command.KoiId, command.BidAmount);
                     var sealedBidResult = await _mediator.Send(sealedBidCommand, cancellationToken);
                     return Ok(new { Message = sealedBidResult });
 
-                case "Method 3: Ascending Bid Auction":
+                case "Ascending Bid Auction":
                     var ascendingBidCommand = new AscendingBidAuctionCommand(command.KoiId, command.BidAmount);
                     var ascendingBidResult = await _mediator.Send(ascendingBidCommand, cancellationToken);
                     return Ok(new { Message = ascendingBidResult });
 
-                case "Method 4: Descending Bid Auction":
+                case "Descending Bid Auction":
                     var descendingBidCommand = new DescendingBidAuctionCommand(command.KoiId, command.BidAmount);
                     var descendingBidResult = await _mediator.Send(descendingBidCommand, cancellationToken);
                     return Ok(new { Message = descendingBidResult });

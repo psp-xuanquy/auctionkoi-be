@@ -23,12 +23,6 @@ namespace KoiAuction.API.Controllers
             _mediator = mediator;
         }
 
-        /// <summary>
-        /// Gets all Blog.
-        /// </summary>
-        /// <param name="cancellationToken">A cancellation token to cancel the request.</param>
-        /// <returns>A list of all Blog.</returns>
-        /// <response code="200">Returns a list of Blog successfully retrieved.</response>
         [HttpGet("Transactions")]
         [Authorize(Roles = "MANAGER")]
         public async Task<ActionResult<List<GetAllTransactionsResponse>>> GetAll(CancellationToken cancellationToken = default)

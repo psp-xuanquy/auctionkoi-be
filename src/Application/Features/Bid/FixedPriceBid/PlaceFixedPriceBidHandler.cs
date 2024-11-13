@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Application.Common.Exceptions;
 using Domain.Enums;
 using KoiAuction.Application.Common.Interfaces;
 using KoiAuction.Domain.Common.Exceptions;
@@ -86,7 +87,7 @@ namespace Application.Features.Bid.FixedPriceBid
         {
             var koi = await _koiRepository.FindAsync(k => k.ID == koiId, cancellationToken);
             if (bidAmount != koi.InitialPrice)
-                throw new Exception("Bid amount must be equal to the initial price.");
+                throw new BadRequestException("Bid amount must be equal to the initial price.");
 
             await ValidateBidAmount(bidAmount, koiId, bidderId, cancellationToken);
         }

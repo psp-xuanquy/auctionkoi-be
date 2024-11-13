@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Application.Common.Exceptions;
 using Application.Features.Bid.AscendingBidAuction;
 using Domain.Enums;
 using KoiAuction.Application.Common.Interfaces;
@@ -51,7 +52,7 @@ public class DescendingBidAuctionHandler : BaseAuctionHandler, IRequestHandler<D
 
         var existingBid = await _bidRepository.GetUserBidForKoi(koi.ID, bidder.Id, cancellationToken);
         if (existingBid != null)
-            throw new Exception("You have already placed a bid for this auction.");
+            throw new BadRequestException("You have already placed a bid for this auction.");
 
         await ValidateBidAmount(request.BidAmount, koi.ID, bidder.Id, cancellationToken);
 

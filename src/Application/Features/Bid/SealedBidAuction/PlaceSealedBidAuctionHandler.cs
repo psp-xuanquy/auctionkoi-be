@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Application.Common.Exceptions;
 using Domain.Enums;
 using KoiAuction.Application.Common.Interfaces;
 using KoiAuction.Domain.Common.Exceptions;
@@ -28,7 +29,7 @@ namespace Application.Features.Bid.SealedBidAuction
 
             var existingBid = await _bidRepository.GetUserBidForKoi(koi.ID, bidder.Id, cancellationToken);
             if (existingBid != null)
-                throw new Exception("You have already placed a bid for this auction.");
+                throw new BadRequestException("You have already placed a bid for this auction.");
 
             await ValidateBid(request.BidAmount, koi.ID, bidder.Id, cancellationToken);
 
@@ -92,7 +93,7 @@ namespace Application.Features.Bid.SealedBidAuction
         {
             var koi = await _koiRepository.FindAsync(k => k.ID == koiId, cancellationToken);
             if (bidAmount < koi.InitialPrice)
-                throw new Exception($"Bid amount must be greater than the starting price of {koi.InitialPrice:C}.");
+                throw new BadRequestException($"Bid amount must be greater than the starting price of {koi.InitialPrice:C}.");
 
             await ValidateBidAmount(bidAmount, koiId, bidderId, cancellationToken);
         }

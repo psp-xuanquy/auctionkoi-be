@@ -79,7 +79,24 @@ public class AscendingBidAuctionHandler : BaseAuctionHandler, IRequestHandler<As
         {
             if (winningBid.BidderID == bidder.Id)
             {
-                throw new InvalidOperationException("You are currently the winning bidder.");
+                if (request.BidAmount <= winningBid.BidAmount)
+                {
+                    throw new InvalidOperationException("Your new bid must be higher than your previous winning bid.");
+                }
+            }
+            else
+            {
+                if (request.BidAmount <= winningBid.BidAmount)
+                {
+                    throw new InvalidOperationException("Bid amount must be higher than the current winning bid.");
+                }
+            }
+        }
+        else
+        {
+            if (request.BidAmount <= koi.InitialPrice)
+            {
+                throw new InvalidOperationException("Bid amount must be higher than the initial price.");
             }
         }
 

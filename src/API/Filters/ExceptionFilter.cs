@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using KoiAuction.Application.Common.Exceptions;
 using System.Diagnostics;
+using Application.Common.Exceptions;
 
 namespace KoiAuction.API.Filters
 {
@@ -20,15 +21,15 @@ namespace KoiAuction.API.Filters
                     }
                     context.Result = new BadRequestObjectResult(new ValidationProblemDetails(context.ModelState))
                     .AddContextInformation(context);
-                    context.ExceptionHandled = true;
+                    //context.ExceptionHandled = true;
                     break;
                 case ForbiddenAccessException:
                     context.Result = new ForbidResult();
-                    context.ExceptionHandled = true;
+                    //context.ExceptionHandled = true;
                     break;
                 case UnauthorizedAccessException:
                     context.Result = new ForbidResult();
-                    context.ExceptionHandled = true;
+                    //context.ExceptionHandled = true;
                     break;
                 case NotFoundException exception:
                     context.Result = new NotFoundObjectResult(new ProblemDetails
@@ -36,7 +37,7 @@ namespace KoiAuction.API.Filters
                         Detail = exception.Message
                     })
                     .AddContextInformation(context);
-                    context.ExceptionHandled = true;
+                    //context.ExceptionHandled = true;
                     break;
                 case DuplicationException exception:
                     context.Result = new BadRequestObjectResult(new ProblemDetails
@@ -44,7 +45,7 @@ namespace KoiAuction.API.Filters
                         Detail = exception.Message
                     })
                         .AddContextInformation(context);
-                    context.ExceptionHandled = true;
+                    //context.ExceptionHandled = true;
                     break;
                 case UnauthorizedException exception:
                     context.Result = new UnauthorizedObjectResult(new ProblemDetails
@@ -52,7 +53,15 @@ namespace KoiAuction.API.Filters
                         Detail = exception.Message
                     })
                         .AddContextInformation(context);
-                    context.ExceptionHandled = true;
+                    //context.ExceptionHandled = true;
+                    break;
+                case BadRequestException exception:
+                    context.Result = new BadRequestObjectResult(new ProblemDetails
+                    {
+                        Detail = exception.Message
+                    })
+                    .AddContextInformation(context);
+                   // context.ExceptionHandled = true;
                     break;
                 case ValidationsException exception:
                     context.Result = new BadRequestObjectResult(new ProblemDetails
@@ -60,7 +69,7 @@ namespace KoiAuction.API.Filters
                         Detail = exception.Message
                     })
                         .AddContextInformation(context);
-                    context.ExceptionHandled = true;
+                    //context.ExceptionHandled = true;
                     break;
 
             }
