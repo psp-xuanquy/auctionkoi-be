@@ -9,6 +9,7 @@ using Application.Features.Request.Manager.Commands.DenyRoleRequest;
 using Application.Features.Request.Manager.Queries.GetAllKoisRequest;
 using Application.Features.Request.Manager.Queries.GetAllRolesRequest;
 using Application.Features.Request.Manager.Queries.GetPendingKoiRequestById;
+using Application.Features.Request.Manager.Queries.GetRoleRequestById;
 using Application.Features.Request.User.Queries.GetRequestCurrentUser;
 using KoiAuction.API.Controllers.ResponseTypes;
 using KoiAuction.Domain.Entities;
@@ -64,7 +65,7 @@ namespace API.Controllers
 
         [HttpGet]
         [Authorize(Roles = "MANAGER, STAFF, KOIBREEDER")]
-        [Route("koi/pending/{id}")]
+        [Route("koi/{id}")]
         public async Task<ActionResult<GetKoiRequestByIdResponse>> GetPendingKoisRequestById([FromRoute] string id, CancellationToken cancellationToken = default)
         {
             var result = await _mediator.Send(new GetKoiRequestByIdQuery(koiId:id), cancellationToken);
@@ -163,6 +164,15 @@ namespace API.Controllers
         {
             var result = await _mediator.Send(new GetAllRolesRequestQuery(), cancellationToken);
             return Ok(new JsonResponse<List<GetAllRolesRequestResponse>>("Get all pending Roles request successfully", result));
+        }
+
+        [HttpGet]
+        [Authorize]
+        [Route("role/{id}")]
+        public async Task<ActionResult<GetRoleRequestByIdResponse>> GetRoleKoisRequestById([FromRoute] string id, CancellationToken cancellationToken = default)
+        {
+            var result = await _mediator.Send(new GetRoleRequestByIdQuery(breederId: id), cancellationToken);
+            return Ok(new JsonResponse<GetRoleRequestByIdResponse>("Get Role request successfully", result));
         }
 
         /// <summary>

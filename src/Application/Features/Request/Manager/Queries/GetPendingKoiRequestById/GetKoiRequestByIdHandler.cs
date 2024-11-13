@@ -21,7 +21,7 @@ public class GetKoiRequestByIdHandler : IRequestHandler<GetKoiRequestByIdQuery, 
 
     public async Task<GetKoiRequestByIdResponse> Handle(GetKoiRequestByIdQuery request, CancellationToken cancellationToken)
     {
-        var koi = await _koiRepository.FindAsync(x => x.ID == request.KoiId && x.AuctionRequestStatus == AuctionRequestStatus.Pending, cancellationToken);
+        var koi = await _koiRepository.FindAsync(x => x.ID == request.KoiId, cancellationToken);
         if (koi is null)
         {
             throw new NotFoundException("Koi not found!");
