@@ -15,6 +15,7 @@ namespace Application.Features.Transaction.Queries.GetAll
         public decimal CommissionRate { get; set; }
         public string BidMethod { get; set; }
         public string? KoiName { get; set; }
+        public decimal? CommissionAmount { get; set; }
         public string? BidderEmail { get; set; }
         public decimal BidAmount { get; set; }
         public PaymentStatus Status { get; set; }
@@ -22,7 +23,8 @@ namespace Application.Features.Transaction.Queries.GetAll
         public void Mapping(Profile profile)
         {
             profile.CreateMap<TransactionEntity, GetAllTransactionsResponse>()
-                .ForMember(d => d.KoiName, opt => opt.MapFrom(s => s.Koi.Name)) 
+                .ForMember(d => d.KoiName, opt => opt.MapFrom(s => s.Koi.Name))
+                .ForMember(d => d.CommissionAmount, opt => opt.MapFrom(s => (s.Bid.BidAmount * s.CommissionRate)/100))
                 .ForMember(d => d.BidderEmail, opt => opt.MapFrom(s => s.Bid.Bidder.Email))
                 .ForMember(d => d.BidMethod, opt => opt.MapFrom(s => s.Koi.AuctionMethod.Name))
                 .ForMember(d => d.BidAmount, opt => opt.MapFrom(s => s.Bid.BidAmount));

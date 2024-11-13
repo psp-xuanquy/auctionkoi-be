@@ -24,7 +24,7 @@ namespace KoiAuction.API.Controllers
         }
 
         [HttpGet("Transactions")]
-        [Authorize(Roles = "MANAGER")]
+        //[Authorize(Roles = "MANAGER")]
         public async Task<ActionResult<List<GetAllTransactionsResponse>>> GetAll(CancellationToken cancellationToken = default)
         {
             try
