@@ -27,19 +27,8 @@ namespace KoiAuction.Application.Transaction.Queries.GetAll
             {
                 throw new NotFoundException("Empty list");
             }
-            var responseList = list.Select(transaction => new GetAllTransactionsResponse
-            {
-                ID = transaction.ID,
-                TransactionDate = transaction.TransactionDate,
-                PaymentMethod = transaction.PaymentMethod,
-                CommissionRate = transaction.CommissionRate,
-                Status = transaction.Status,
-                KoiName = transaction.Koi?.Name,  
-                BidderName = transaction.Bid?.Bidder?.UserName, 
-                BidAmount = transaction.Bid?.BidAmount ?? 0  
-            }).ToList();
-
-            return responseList;
+           
+            return _mapper.Map<List<GetAllTransactionsResponse>>(list);
         }
     }
 }

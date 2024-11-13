@@ -13,9 +13,9 @@ namespace Application.Features.Transaction.Queries.GetAll
         public DateTime? TransactionDate { get; set; }
         public string PaymentMethod { get; set; } = "Banking";
         public decimal CommissionRate { get; set; }
-        public decimal BidMethod { get; set; }
+        public string BidMethod { get; set; }
         public string? KoiName { get; set; }
-        public string? BidderName { get; set; }
+        public string? BidderEmail { get; set; }
         public decimal BidAmount { get; set; }
         public PaymentStatus Status { get; set; }
 
@@ -23,8 +23,11 @@ namespace Application.Features.Transaction.Queries.GetAll
         {
             profile.CreateMap<TransactionEntity, GetAllTransactionsResponse>()
                 .ForMember(d => d.KoiName, opt => opt.MapFrom(s => s.Koi.Name)) 
-                .ForMember(d => d.BidderName, opt => opt.MapFrom(s => s.Bid.Bidder.UserName))
+                .ForMember(d => d.BidderEmail, opt => opt.MapFrom(s => s.Bid.Bidder.Email))
+                .ForMember(d => d.BidMethod, opt => opt.MapFrom(s => s.Koi.AuctionMethod.Name))
                 .ForMember(d => d.BidAmount, opt => opt.MapFrom(s => s.Bid.BidAmount));
+
+            //profile.CreateMap<KoiEntity, GetAllTransactionsResponse>();
         }
 
     }
