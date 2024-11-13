@@ -4,37 +4,34 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
-using KoiAuction.Application.Common.Interfaces;
+using KN_EXE201.Application.Features.Koi.Queries.GetActiveAuctionByKoiId;
 using KoiAuction.Domain.Common.Exceptions;
 using KoiAuction.Domain.IRepositories;
 using MediatR;
 
-namespace Application.Features.Koi.Queries.GetAll;
-public class GetAllKoiHandler : IRequestHandler<GetAllKoiQuery, List<KoiResponse>>
+namespace Application.Features.Koi.Queries.GetKoiById;
+public class GetKoiByIdHandler : IRequestHandler<GetKoiByIdQuery, KoiResponse>
 {
     private readonly IKoiRepository _koiRepository;
     private readonly IMapper _mapper;
-    private readonly ICurrentUserService _currentUserService;
 
-    public GetAllKoiHandler(IKoiRepository koiRepository, IMapper mapper, ICurrentUserService currentUserService)
+    public GetKoiByIdHandler(IKoiRepository koiRepository, IMapper mapper)
     {
         _koiRepository = koiRepository;
         _mapper = mapper;
-        _currentUserService = currentUserService;
     }
 
-    public async Task<List<KoiResponse>> Handle(GetAllKoiQuery request, CancellationToken cancellationToken)
+    public async Task<KoiResponse> Handle(GetKoiByIdQuery request, CancellationToken cancellationToken)
     {
-
-        var list = await _koiRepository.FindAllAsync(x => x.BreederID == _currentUserService.UserId ,cancellationToken);
-        if (list is null)
+        var koi = await _koiRepository.FindAsync(x => x.ID == request.Id && x.DeletedBy == null && x.DeletedTime == null, cancellationToken);
+        if (koi is null)
         {
-            throw new NotFoundException("Empty list");
+            throw new NotFoundException("Auction not found");
         }
 
-        //return _mapper.Map<List<KoiResponse>>(list);
+        //return _mapper.Map<KoiResponse>(koiBreeder);
 
-        var responseList = list.Select(koi => new KoiResponse
+        var response = new KoiResponse
         {
             Id = koi.ID,
             Name = koi.Name,
@@ -44,7 +41,6 @@ public class GetAllKoiHandler : IRequestHandler<GetAllKoiQuery, List<KoiResponse
             Location = koi.Location,
             Variety = koi.Variety,
             ReservePrice = koi.InitialPrice,
-            HighestPrice = koi.Bids.Max(bid => bid.BidAmount),
             Description = koi.Description,
             ImageUrl = koi.ImageUrl,
             AuctionRequestStatus = koi.AuctionRequestStatus,
@@ -52,9 +48,9 @@ public class GetAllKoiHandler : IRequestHandler<GetAllKoiQuery, List<KoiResponse
             StartTime = koi.StartTime,
             EndTime = koi.EndTime,
             AllowAutoBid = koi.AllowAutoBid,
-            AuctionMethodName = koi.AuctionMethod != null ? koi.AuctionMethod.Name : null,
-            BreederName = koi.Breeder != null ? koi.Breeder.UserName : null,
-            Contact = koi.Breeder != null ? koi.Breeder.PhoneNumber : null,
+            AuctionMethodName = koi.AuctionMethod?.Name,
+            BreederName = koi.Breeder?.UserName,
+            Contact = koi.Breeder?.PhoneNumber,
             Bidders = koi.Bids.Select(bid => new BidderDto
             {
                 BidderName = bid.Bidder.UserName,
@@ -66,8 +62,10 @@ public class GetAllKoiHandler : IRequestHandler<GetAllKoiQuery, List<KoiResponse
                 Url = img.Url,
                 KoiName = img.Koi.Name,
             }).ToList()
-        }).ToList();
+        };
 
-        return responseList;
+        return response;
     }
+
+   
 }

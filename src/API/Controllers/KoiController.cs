@@ -8,6 +8,7 @@ using Application.Features.Koi.Commands.Update;
 using Application.Features.Koi.Queries.Filter;
 using Application.Features.Koi.Queries.GetAll;
 using Application.Features.Koi.Queries.GetAllActiveAuctions;
+using Application.Features.Koi.Queries.GetKoiById;
 using Application.Features.KoiBreeder.Queries.GetAllKoiFarmBreeder;
 using KN_EXE201.Application.Features.Category.Queries.GetById;
 using KN_EXE201.Application.Features.Koi.Queries.GetActiveAuctionByKoiId;
@@ -32,7 +33,7 @@ namespace KoiAuction.API.Controllers
 
 
         [HttpGet("get-all-kois")]
-        [ApiExplorerSettings(IgnoreApi = true)]
+        [Authorize(Roles = "KOIBREEDER")]
         public async Task<ActionResult<List<KoiResponse>>> GetAll(CancellationToken cancellationToken = default)
         {
             var result = await _mediator.Send(new GetAllKoiQuery(), cancellationToken);
@@ -59,6 +60,17 @@ namespace KoiAuction.API.Controllers
                 return NotFound();
             }
             return Ok(new JsonResponse<KoiResponse>("Get Active Auction by KoiID successfully.", result));
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<JsonResponse<KoiResponse>>> GetKoiById([FromRoute] string id, CancellationToken cancellationToken = default)
+        {
+            var result = await _mediator.Send(new GetKoiByIdQuery(id), cancellationToken);
+            if (result == null)
+            {
+                return NotFound();
+            }
+            return Ok(new JsonResponse<KoiResponse>("Get by KoiID successfully.", result));
         }
 
         [HttpGet("filter")]

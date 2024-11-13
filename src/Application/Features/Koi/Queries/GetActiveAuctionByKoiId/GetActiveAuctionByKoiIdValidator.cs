@@ -13,7 +13,7 @@ namespace KN_EXE201.Application.Features.User.Queries.GetById
 
         private void ConfigureValidationRules()
         {
-            RuleFor(x => x.Id).NotEmpty().WithMessage("ID là bắt buộc");
+            RuleFor(x => x.Id).NotEmpty().WithMessage("ID is required");
         }
     }
 }
