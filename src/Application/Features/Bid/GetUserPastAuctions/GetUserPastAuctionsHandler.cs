@@ -62,7 +62,7 @@ namespace Application.Features.Bid.GetUserPastAuctions
                 Location = koi.Location,
                 Variety = koi.Variety,
                 ReservePrice = koi.InitialPrice,
-                HighestPrice = koi.Bids.Max(bid => bid.BidAmount),
+                HighestPrice = koi.Bids.Any() ? koi.Bids.Max(bid => bid.BidAmount) : koi.InitialPrice,
                 Description = koi.Description,
                 ImageUrl = koi.ImageUrl,
                 AuctionRequestStatus = koi.AuctionRequestStatus,
