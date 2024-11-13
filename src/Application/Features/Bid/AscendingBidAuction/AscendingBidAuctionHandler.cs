@@ -12,7 +12,7 @@ using KoiAuction.Domain.IRepositories;
 using MediatR;
 
 namespace Application.Features.Bid.AscendingBidAuction;
-public class AscendingBidAuctionHandler : BaseAuctionHandler, IRequestHandler<AscendingBidAuctionCommand, Unit>
+public class AscendingBidAuctionHandler : BaseAuctionHandler, IRequestHandler<AscendingBidAuctionCommand, string>
 {
     public AscendingBidAuctionHandler(
         IKoiRepository koiRepository, 
@@ -23,7 +23,7 @@ public class AscendingBidAuctionHandler : BaseAuctionHandler, IRequestHandler<As
     {
     }
 
-    public async Task<Unit> Handle(AscendingBidAuctionCommand request, CancellationToken cancellationToken)
+    public async Task<string> Handle(AscendingBidAuctionCommand request, CancellationToken cancellationToken)
     {
         var bidder = await GetCurrentBidder(cancellationToken);
         var koi = await GetKoiForAuction(request.KoiId, "Method 3: Ascending Bid Auction", cancellationToken);
@@ -51,7 +51,8 @@ public class AscendingBidAuctionHandler : BaseAuctionHandler, IRequestHandler<As
         }
 
         await _bidRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
-        return Unit.Value;
+
+        return $"You have successfully bid {request.BidAmount} for the fish {koi.Name}.";
     }
 
     private async Task ValidateBid(AscendingBidAuctionCommand request, UserEntity bidder, KoiEntity koi, CancellationToken cancellationToken)

@@ -26,6 +26,10 @@ namespace Application.Features.Bid.FixedPriceBid
             var bidder = await GetCurrentBidder(cancellationToken);
             var koi = await GetKoiForAuction(request.KoiId, "Method 1: Fixed Price Sale", cancellationToken);
 
+            var existingBid = await _bidRepository.GetUserBidForKoi(koi.ID, bidder.Id, cancellationToken);
+            if (existingBid != null)
+                throw new Exception("You have already placed a bid for this auction.");
+
             await ValidateBid(request.BidAmount, koi.ID, bidder.Id, cancellationToken);
 
             if (koi.IsAuctionExpired())

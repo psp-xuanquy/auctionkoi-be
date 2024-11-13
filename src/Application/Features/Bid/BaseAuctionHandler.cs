@@ -73,9 +73,9 @@ public abstract class BaseAuctionHandler
         if (bidAmount > bidder.Balance)
             throw new Exception("Bid amount exceeds available balance.");
 
-        var existingBid = await _bidRepository.GetUserBidForKoi(koiId, bidderId, cancellationToken);
-        if (existingBid != null)
-            throw new Exception("You have already placed a bid for this auction.");
+        //var existingBid = await _bidRepository.GetUserBidForKoi(koiId, bidderId, cancellationToken);
+        //if (existingBid != null)
+        //    throw new Exception("You have already placed a bid for this auction.");
     }
 
 }

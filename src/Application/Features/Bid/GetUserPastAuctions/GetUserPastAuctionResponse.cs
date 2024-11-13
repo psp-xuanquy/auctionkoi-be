@@ -21,6 +21,7 @@ public class GetUserPastAuctionResponse
     public string Location { get; set; }
     public Variety Variety { get; set; }
     public decimal ReservePrice { get; set; }
+    public decimal HighestPrice { get; set; }
     public string? Description { get; set; }
     public string? ImageUrl { get; set; }
     public AuctionRequestStatus AuctionRequestStatus { get; set; }
@@ -39,6 +40,7 @@ public class GetUserPastAuctionResponse
     {
         profile.CreateMap<KoiEntity, KoiResponse>()
         .ForMember(dest => dest.ReservePrice, opt => opt.MapFrom(src => src.InitialPrice))
+        .ForMember(dest => dest.HighestPrice, opt => opt.MapFrom(src => src.Bids.Max(bid => bid.BidAmount)))
         .ForMember(dest => dest.AuctionMethodName, opt => opt.MapFrom(src => src.AuctionMethod.Name))
         .ForMember(dest => dest.BreederName, opt => opt.MapFrom(src => src.Breeder.UserName))
         .ForMember(dest => dest.Contact, opt => opt.MapFrom(src => src.Breeder.PhoneNumber))

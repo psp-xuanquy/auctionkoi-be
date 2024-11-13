@@ -26,6 +26,10 @@ namespace Application.Features.Bid.SealedBidAuction
             var bidder = await GetCurrentBidder(cancellationToken);
             var koi = await GetKoiForAuction(request.KoiId, "Method 2: Sealed Bid Auction", cancellationToken);
 
+            var existingBid = await _bidRepository.GetUserBidForKoi(koi.ID, bidder.Id, cancellationToken);
+            if (existingBid != null)
+                throw new Exception("You have already placed a bid for this auction.");
+
             await ValidateBid(request.BidAmount, koi.ID, bidder.Id, cancellationToken);
 
             bidder.Balance -= request.BidAmount;

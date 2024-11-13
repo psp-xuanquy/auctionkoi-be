@@ -11,7 +11,7 @@ using KoiAuction.Domain.IRepositories;
 using MediatR;
 
 namespace Application.Features.Bid.DescendingBidAuction;
-public class DescendingBidAuctionHandler : BaseAuctionHandler, IRequestHandler<DescendingBidAuctionCommand, Unit>
+public class DescendingBidAuctionHandler : BaseAuctionHandler, IRequestHandler<DescendingBidAuctionCommand, string>
 {
     public DescendingBidAuctionHandler(
         IKoiRepository koiRepository,
@@ -22,7 +22,7 @@ public class DescendingBidAuctionHandler : BaseAuctionHandler, IRequestHandler<D
     {
     }
 
-    public async Task<Unit> Handle(DescendingBidAuctionCommand request, CancellationToken cancellationToken)
+    public async Task<string> Handle(DescendingBidAuctionCommand request, CancellationToken cancellationToken)
     {
         var bidder = await GetCurrentBidder(cancellationToken);
         var koi = await GetKoiForAuction(request.KoiId, "Method 4: Descending Bid Auction", cancellationToken);
@@ -41,13 +41,17 @@ public class DescendingBidAuctionHandler : BaseAuctionHandler, IRequestHandler<D
         }
 
         await _bidRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
-        return Unit.Value;
+        return $"You have successfully bid {request.BidAmount} for the fish {koi.Name}.";
     }
 
     private async Task ValidateBid(DescendingBidAuctionCommand request, UserEntity bidder, KoiEntity koi, CancellationToken cancellationToken)
     {
         if (request.BidAmount > bidder.Balance)
             throw new InvalidOperationException("Bid amount cannot exceed the user's balance.");
+
+        var existingBid = await _bidRepository.GetUserBidForKoi(koi.ID, bidder.Id, cancellationToken);
+        if (existingBid != null)
+            throw new Exception("You have already placed a bid for this auction.");
 
         await ValidateBidAmount(request.BidAmount, koi.ID, bidder.Id, cancellationToken);
 

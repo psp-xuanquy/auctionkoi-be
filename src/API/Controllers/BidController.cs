@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Mvc;
 using Application.Features.Koi;
 using System.Security.Claims;
 using Application.Features.Bid.GetUserPastAuctions;
+using Application.Features.Bid;
+using KN_EXE201.Application.Features.Koi.Queries.GetActiveAuctionByKoiId;
 
 namespace API.Controllers
 {
@@ -44,84 +46,126 @@ namespace API.Controllers
             return Ok(new JsonResponse<List<GetUserPastAuctionResponse>>("Manager get Past Auctions of User successfully.", result));
         }
 
-        /// <summary>
-        /// Places a Fixed Price bid on a koi.
-        /// </summary>
-        /// <param name="command">The command containing the KoiId and BidAmount.</param>
-        /// <returns>A response indicating the result of the bid placement.</returns>
-        /// <response code="200">Returns the result of the bid placement.</response>
-        /// <response code="400">If the command is invalid.</response>
-        [HttpPost("fixed-price")]
+        [HttpPost("place-bid")]
         [Authorize(Roles = "CUSTOMER")]
-        public async Task<IActionResult> PlaceFixedPriceBid([FromBody] PlaceFixedPriceBidCommand command)
+        public async Task<IActionResult> PlaceBid([FromBody] PlaceBidCommand command, CancellationToken cancellationToken)
         {
-            if (command == null)
+            if (command == null || string.IsNullOrEmpty(command.KoiId) || command.BidAmount <= 0)
             {
                 return BadRequest("Invalid command.");
             }
 
-            var result = await _mediator.Send(command);
-            return Ok(new { Message = result });
-        }
-
-        /// <summary>
-        /// Places a Sealed bid on a koi.
-        /// </summary>
-        /// <param name="command">The command containing the KoiId and BidAmount.</param>
-        /// <returns>A response indicating the result of the bid placement.</returns>
-        /// <response code="200">Returns the result of the bid placement.</response>
-        /// <response code="400">If the command is invalid.</response>
-        [HttpPost("sealed-bid")]
-        [Authorize(Roles = "CUSTOMER")]
-        public async Task<IActionResult> PlaceSealedBidAuction([FromBody] PlaceSealedBidAuctionCommand command)
-        {
-            if (command == null)
+            var koi = await _mediator.Send(new GetActiveAuctionByKoiIdQuery(command.KoiId), cancellationToken);
+            if (koi == null)
             {
-                return BadRequest("Invalid command.");
+                return NotFound("Koi not found.");
             }
 
-            var result = await _mediator.Send(command);
-            return Ok(new { Message = result });
-        }
-
-        /// <summary>
-        /// Places an Ascending bid on a koi.
-        /// </summary>
-        /// <param name="command">The command containing the KoiId and BidAmount.</param>
-        /// <returns>A response indicating the result of the bid placement.</returns>
-        /// <response code="200">Returns the result of the bid placement.</response>
-        /// <response code="400">If the command is invalid.</response>
-        [HttpPost("ascending-bid")]
-        [Authorize(Roles = "CUSTOMER")]
-        public async Task<IActionResult> PlaceAscendingBidAuction([FromBody] AscendingBidAuctionCommand command)
-        {
-            if (command == null)
+            switch (koi.AuctionMethodName)
             {
-                return BadRequest("Invalid command.");
-            }
+                case "Method 1: Fixed Price Sale":
+                    var fixedPriceCommand = new PlaceFixedPriceBidCommand(command.KoiId, command.BidAmount);
+                    var fixedPriceResult = await _mediator.Send(fixedPriceCommand, cancellationToken);
+                    return Ok(new { Message = fixedPriceResult });
 
-            var result = await _mediator.Send(command);
-            return Ok(result);
+                case "Method 2: Sealed Bid Auction":
+                    var sealedBidCommand = new PlaceSealedBidAuctionCommand(command.KoiId, command.BidAmount);
+                    var sealedBidResult = await _mediator.Send(sealedBidCommand, cancellationToken);
+                    return Ok(new { Message = sealedBidResult });
+
+                case "Method 3: Ascending Bid Auction":
+                    var ascendingBidCommand = new AscendingBidAuctionCommand(command.KoiId, command.BidAmount);
+                    var ascendingBidResult = await _mediator.Send(ascendingBidCommand, cancellationToken);
+                    return Ok(new { Message = ascendingBidResult });
+
+                case "Method 4: Descending Bid Auction":
+                    var descendingBidCommand = new DescendingBidAuctionCommand(command.KoiId, command.BidAmount);
+                    var descendingBidResult = await _mediator.Send(descendingBidCommand, cancellationToken);
+                    return Ok(new { Message = descendingBidResult });
+
+                default:
+                    return BadRequest("Unsupported auction method for this Koi.");
+            }
         }
 
-        /// <summary>
-        /// Places a Descending bid on a koi.
-        /// </summary>
-        /// <param name="command">The command containing the KoiId and BidAmount.</param>
-        /// <returns>A response indicating the result of the bid placement.</returns>
-        /// <response code="200">Returns the result of the bid placement.</response>
-        /// <response code="400">If the command is invalid.</response>
-        [HttpPost("descending-bid")]
-        [Authorize(Roles = "CUSTOMER")]
-        public async Task<IActionResult> PlaceDescendingBidAuction([FromBody] DescendingBidAuctionCommand command)
-        {
-            if (command == null)
-            {
-                return BadRequest("Invalid command.");
-            }
+        ///// <summary>
+        ///// Places a Fixed Price bid on a koi.
+        ///// </summary>
+        ///// <param name="command">The command containing the KoiId and BidAmount.</param>
+        ///// <returns>A response indicating the result of the bid placement.</returns>
+        ///// <response code="200">Returns the result of the bid placement.</response>
+        ///// <response code="400">If the command is invalid.</response>
+        //[HttpPost("fixed-price")]
+        //[Authorize(Roles = "CUSTOMER")]
+        //public async Task<IActionResult> PlaceFixedPriceBid([FromBody] PlaceFixedPriceBidCommand command)
+        //{
+        //    if (command == null)
+        //    {
+        //        return BadRequest("Invalid command.");
+        //    }
 
-            var result = await _mediator.Send(command);
-            return Ok(result);
-        }
+        //    var result = await _mediator.Send(command);
+        //    return Ok(new { Message = result });
+        //}
+
+        ///// <summary>
+        ///// Places a Sealed bid on a koi.
+        ///// </summary>
+        ///// <param name="command">The command containing the KoiId and BidAmount.</param>
+        ///// <returns>A response indicating the result of the bid placement.</returns>
+        ///// <response code="200">Returns the result of the bid placement.</response>
+        ///// <response code="400">If the command is invalid.</response>
+        //[HttpPost("sealed-bid")]
+        //[Authorize(Roles = "CUSTOMER")]
+        //public async Task<IActionResult> PlaceSealedBidAuction([FromBody] PlaceSealedBidAuctionCommand command)
+        //{
+        //    if (command == null)
+        //    {
+        //        return BadRequest("Invalid command.");
+        //    }
+
+        //    var result = await _mediator.Send(command);
+        //    return Ok(new { Message = result });
+        //}
+
+        ///// <summary>
+        ///// Places an Ascending bid on a koi.
+        ///// </summary>
+        ///// <param name="command">The command containing the KoiId and BidAmount.</param>
+        ///// <returns>A response indicating the result of the bid placement.</returns>
+        ///// <response code="200">Returns the result of the bid placement.</response>
+        ///// <response code="400">If the command is invalid.</response>
+        //[HttpPost("ascending-bid")]
+        //[Authorize(Roles = "CUSTOMER")]
+        //public async Task<IActionResult> PlaceAscendingBidAuction([FromBody] AscendingBidAuctionCommand command)
+        //{
+        //    if (command == null)
+        //    {
+        //        return BadRequest("Invalid command.");
+        //    }
+
+        //    var result = await _mediator.Send(command);
+        //    return Ok(result);
+        //}
+
+        ///// <summary>
+        ///// Places a Descending bid on a koi.
+        ///// </summary>
+        ///// <param name="command">The command containing the KoiId and BidAmount.</param>
+        ///// <returns>A response indicating the result of the bid placement.</returns>
+        ///// <response code="200">Returns the result of the bid placement.</response>
+        ///// <response code="400">If the command is invalid.</response>
+        //[HttpPost("descending-bid")]
+        //[Authorize(Roles = "CUSTOMER")]
+        //public async Task<IActionResult> PlaceDescendingBidAuction([FromBody] DescendingBidAuctionCommand command)
+        //{
+        //    if (command == null)
+        //    {
+        //        return BadRequest("Invalid command.");
+        //    }
+
+        //    var result = await _mediator.Send(command);
+        //    return Ok(result);
+        //}
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using MediatR;
 
 namespace Application.Features.Bid.DescendingBidAuction;
-public class DescendingBidAuctionCommand : IRequest<Unit>
+public class DescendingBidAuctionCommand : IRequest<string>
 {
     public string KoiId { get; }
     public decimal BidAmount { get; }
