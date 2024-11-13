@@ -12,8 +12,8 @@ using KoiAuction.Domain.Enums;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace Application.Features.Request.Manager.Queries.GetAllPendingKois;
-public class GetAllPendingKoisResponse : IMapFrom<KoiEntity>
+namespace Application.Features.Request.Manager.Queries.GetAllKoisRequest;
+public class GetAllKoisRequestResponse : IMapFrom<KoiEntity>
 {
     public string? ID { get; set; }
     public string? Name { get; set; }
@@ -39,7 +39,7 @@ public class GetAllPendingKoisResponse : IMapFrom<KoiEntity>
     public string? AuctionMethod { get; set; }
     public void Mapping(Profile profile)
     {
-        profile.CreateMap<KoiEntity, GetAllPendingKoisResponse>()
+        profile.CreateMap<KoiEntity, GetAllKoisRequestResponse>()
             .ForMember(dest => dest.AuctionMethod, opt => opt.MapFrom(src => src.AuctionMethod.Name))
             .ForMember(dest => dest.StartTime, opt => opt.MapFrom(src => FormatDateTime(src.StartTime)))
             .ForMember(dest => dest.EndTime, opt => opt.MapFrom(src => FormatDateTime(src.EndTime)));

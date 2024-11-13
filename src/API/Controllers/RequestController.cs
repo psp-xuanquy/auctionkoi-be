@@ -6,8 +6,8 @@ using Application.Features.Request.Manager.Commands.ApproveKoiRequest;
 using Application.Features.Request.Manager.Commands.ApproveRoleRequest;
 using Application.Features.Request.Manager.Commands.DenyKoiRequest;
 using Application.Features.Request.Manager.Commands.DenyRoleRequest;
-using Application.Features.Request.Manager.Queries.GetAllPendingKois;
-using Application.Features.Request.Manager.Queries.GetAllPendingRoles;
+using Application.Features.Request.Manager.Queries.GetAllKoisRequest;
+using Application.Features.Request.Manager.Queries.GetAllRolesRequest;
 using Application.Features.Request.Manager.Queries.GetPendingKoiRequestById;
 using Application.Features.Request.User.Queries.GetRequestCurrentUser;
 using KoiAuction.API.Controllers.ResponseTypes;
@@ -55,11 +55,11 @@ namespace API.Controllers
         /// <response code="200">Returns a list of pending koi requests.</response>
         [HttpGet]
         [Authorize(Roles = "MANAGER, STAFF")]
-        [Route("kois/pending")]
-        public async Task<ActionResult<List<GetAllPendingKoisResponse>>> GetAllPendingKoisRequest(CancellationToken cancellationToken = default)
+        [Route("kois")]
+        public async Task<ActionResult<List<GetAllKoisRequestResponse>>> GetAllPendingKoisRequest(CancellationToken cancellationToken = default)
         {
-            var result = await _mediator.Send(new GetAllPendingKoisQuery(), cancellationToken);
-            return Ok(new JsonResponse<List<GetAllPendingKoisResponse>>("Get all pending Kois request successfully", result));
+            var result = await _mediator.Send(new GetAllKoisRequestQuery(), cancellationToken);
+            return Ok(new JsonResponse<List<GetAllKoisRequestResponse>>("Get all pending Kois request successfully", result));
         }
 
         [HttpGet]
@@ -157,12 +157,12 @@ namespace API.Controllers
         /// <returns>A list of pending role requests.</returns>
         /// <response code="200">Returns a list of pending role requests.</response>
         [HttpGet]
-        [Authorize(Roles = "MANAGER")]
-        [Route("role/pending")]
-        public async Task<ActionResult<List<GetAllPendingRolesResponse>>> GetAllPendingRoleRequest(CancellationToken cancellationToken = default)
+        [Authorize(Roles = "MANAGER, STAFF")]
+        [Route("roles")]
+        public async Task<ActionResult<List<GetAllRolesRequestResponse>>> GetAllPendingRoleRequest(CancellationToken cancellationToken = default)
         {
-            var result = await _mediator.Send(new GetAllPendingRolesQuery(), cancellationToken);
-            return Ok(new JsonResponse<List<GetAllPendingRolesResponse>>("Get all pending Roles request successfully", result));
+            var result = await _mediator.Send(new GetAllRolesRequestQuery(), cancellationToken);
+            return Ok(new JsonResponse<List<GetAllRolesRequestResponse>>("Get all pending Roles request successfully", result));
         }
 
         /// <summary>
@@ -189,7 +189,7 @@ namespace API.Controllers
         /// <returns>A response indicating the result of the approval.</returns>
         /// <response code="200">Returns success message if the request is approved successfully.</response>
         [HttpPut]
-        [Authorize(Roles = "MANAGER")]
+        [Authorize(Roles = "MANAGER, STAFF")]
         [Route("role/approval")]
         public async Task<ActionResult<string>> ApproveRoleRequest([FromBody] ApproveRoleRequestCommand command, CancellationToken cancellationToken = default)
         {
@@ -205,7 +205,7 @@ namespace API.Controllers
         /// <returns>A response indicating the result of the denial.</returns>
         /// <response code="200">Returns success message if the request is denied successfully.</response>
         [HttpPut]
-        [Authorize(Roles = "MANAGER")]
+        [Authorize(Roles = "MANAGER, STAFF")]
         [Route("role/denial")]
         public async Task<ActionResult<string>> DenyRoleRequest([FromBody] DenyRoleRequestCommand command, CancellationToken cancellationToken = default)
         {

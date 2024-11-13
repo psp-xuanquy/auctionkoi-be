@@ -7,7 +7,7 @@ using KoiAuction.Application.Common.Interfaces;
 using MediatR;
 
 namespace Application.Features.AuctionMethod.Queries.GetRevenueForEachMethod;
-public class GetRevenueForEachMethodQuery : IRequest<List<GetRevenueForEachMethodResponse>>, IQuery
+public class GetRevenueForEachMethodQuery : IRequest<GetRevenueForAllMethodsResponse>, IQuery
 {
     public int Year { get; set; }
 

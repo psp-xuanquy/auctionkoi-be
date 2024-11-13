@@ -10,8 +10,8 @@ using KoiAuction.Application.Common.Mappings;
 using KoiAuction.Application.User.Queries;
 using KoiAuction.Domain.Entities;
 
-namespace Application.Features.Request.Manager.Queries.GetAllPendingRoles;
-public class GetAllPendingRolesResponse : IMapFrom<KoiBreederEntity>
+namespace Application.Features.Request.Manager.Queries.GetAllRolesRequest;
+public class GetAllRolesRequestResponse : IMapFrom<KoiBreederEntity>
 {
     public string? ID { get; set; }
     public string? KoiFarmName { get; set; }
@@ -23,7 +23,7 @@ public class GetAllPendingRolesResponse : IMapFrom<KoiBreederEntity>
 
     public void Mapping(Profile profile)
     {
-        profile.CreateMap<KoiBreederEntity, GetAllPendingRolesResponse>()
+        profile.CreateMap<KoiBreederEntity, GetAllRolesRequestResponse>()
             .ForMember(dest => dest.BreederName, opt => opt.MapFrom(src => src.User.FullName));
     }
 

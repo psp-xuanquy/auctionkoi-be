@@ -12,25 +12,25 @@ using MediatR;
 using Domain.IRepositories;
 using Domain.Enums;
 
-namespace Application.Features.Request.Manager.Queries.GetAllPendingRoles;
-public class GetAllPendingRolesHandler : IRequestHandler<GetAllPendingRolesQuery, List<GetAllPendingRolesResponse>>
+namespace Application.Features.Request.Manager.Queries.GetAllRolesRequest;
+public class GetAllRolesRequestHandler : IRequestHandler<GetAllRolesRequestQuery, List<GetAllRolesRequestResponse>>
 {
     private readonly IKoiBreederRepository _koiBreederRepository;
     private readonly IMapper _mapper;
 
-    public GetAllPendingRolesHandler(IKoiBreederRepository koiBreederRepository, IMapper mapper)
+    public GetAllRolesRequestHandler(IKoiBreederRepository koiBreederRepository, IMapper mapper)
     {
         _koiBreederRepository = koiBreederRepository;
         _mapper = mapper;
     }
 
-    public async Task<List<GetAllPendingRolesResponse>> Handle(GetAllPendingRolesQuery request, CancellationToken cancellationToken)
+    public async Task<List<GetAllRolesRequestResponse>> Handle(GetAllRolesRequestQuery request, CancellationToken cancellationToken)
     {
-        var list = await _koiBreederRepository.FindAllAsync(x => x.RoleRequestStatus == RoleRequestStatus.Pending, cancellationToken);
+        var list = await _koiBreederRepository.FindAllAsync(cancellationToken);
         if (list is null)
         {
             throw new NotFoundException("Empty list");
         }
-        return _mapper.Map<List<GetAllPendingRolesResponse>>(list);
+        return _mapper.Map<List<GetAllRolesRequestResponse>>(list);
     }
 }

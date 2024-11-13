@@ -10,7 +10,7 @@ using KoiAuction.Infrastructure.Repositories;
 using MediatR;
 
 namespace Application.Features.AuctionMethod.Queries.GetRevenueForEachMethod;
-public class GetRevenueForEachMethodHandler : IRequestHandler<GetRevenueForEachMethodQuery, List<GetRevenueForEachMethodResponse>>
+public class GetRevenueForEachMethodHandler : IRequestHandler<GetRevenueForEachMethodQuery, GetRevenueForAllMethodsResponse>
 {
     private readonly IAuctionMethodRepository _auctionMethodRepository;
     private readonly ITransactionRepository _transactionRepository;
@@ -26,88 +26,41 @@ public class GetRevenueForEachMethodHandler : IRequestHandler<GetRevenueForEachM
     }
 
 
-    public async Task<List<GetRevenueForEachMethodResponse>> Handle(GetRevenueForEachMethodQuery request, CancellationToken cancellationToken)
+    public async Task<GetRevenueForAllMethodsResponse> Handle(GetRevenueForEachMethodQuery request, CancellationToken cancellationToken)
     {
         var auctionMethods = await _auctionMethodRepository.FindAllAsync(cancellationToken);
-        if (auctionMethods is null || !auctionMethods.Any())
+        if (auctionMethods == null || !auctionMethods.Any())
         {
             throw new NotFoundException("No auction methods found.");
         }
 
         var transactions = await _transactionRepository.FindAllAsync(cancellationToken);
         var filteredTransactions = transactions
-            .Where(t => t.TransactionDate.HasValue
-                        && t.TransactionDate.Value.Year == request.Year)
+            .Where(t => t.TransactionDate.HasValue && t.TransactionDate.Value.Year == request.Year)
             .ToList();
 
-        //var response = auctionMethods.Select(method =>
-        //{
-        //    var methodTransactions = filteredTransactions
-        //        .Where(t => t.Bid?.Koi?.AuctionMethodID == method.ID)
-        //        .ToList();
+        // Aggregate total revenue across all methods
+        decimal totalRevenue = filteredTransactions.Sum(t => t.TotalAmount);
 
-        //    decimal totalRevenue = methodTransactions.Sum(t => t.TotalAmount);
-
-        //    var monthlyRevenue = new Dictionary<string, decimal>();
-        //    for (int month = 1; month <= 12; month++)
-        //    {
-        //        var monthlyTotal = methodTransactions
-        //            .Where(t => t.TransactionDate.Value.Month == month)
-        //            .Sum(t => t.TotalAmount);
-
-        //        monthlyRevenue.Add($"Month: {month}", monthlyTotal);
-        //    }
-
-        //    // Create the response object
-        //    return new GetRevenueForEachMethodResponse
-        //    {
-        //        AuctionMethodId = method.ID,
-        //        AuctionMethodName = method.Name,
-        //        TotalRevenue = totalRevenue,
-        //        MonthlyRevenue = monthlyRevenue
-        //    };
-        //}).ToList();
-
-        //return response;
-        var responseList = new List<GetRevenueForEachMethodResponse>();
-
-        // Duyệt qua từng phương thức đấu giá
-        foreach (var method in auctionMethods)
+        // Calculate monthly revenue for all methods
+        var monthlyRevenueList = new List<MonthlyRevenueResponse>();
+        for (int month = 1; month <= 12; month++)
         {
-            var methodTransactions = filteredTransactions
-                .Where(t => t.Bid?.Koi?.AuctionMethodID == method.ID)
-                .ToList();
+            decimal totalMonthlyRevenue = filteredTransactions
+                .Where(t => t.TransactionDate.Value.Month == month)
+                .Sum(t => t.TotalAmount);
 
-            // Tính tổng doanh thu của phương thức
-            decimal totalRevenue = methodTransactions.Sum(t => t.TotalAmount);
-
-            // Danh sách doanh thu theo từng tháng
-            var monthlyRevenueList = new List<MonthlyRevenueResponse>();
-
-            // Duyệt qua từng tháng trong năm
-            for (int month = 1; month <= 12; month++)
+            monthlyRevenueList.Add(new MonthlyRevenueResponse
             {
-                // Lọc các giao dịch trong tháng hiện tại
-                var monthlyTransactions = methodTransactions
-                    .Where(t => t.TransactionDate.Value.Month == month)
-                    .ToList();
-
-                decimal totalMonthlyRevenue = monthlyTransactions.Sum(t => t.TotalAmount);
-
-                monthlyRevenueList.Add(new MonthlyRevenueResponse
-                {
-                    Month = $"Month: {month}",
-                    Revenue = totalMonthlyRevenue
-                });
-            }
-
-            responseList.Add(new GetRevenueForEachMethodResponse
-            {
-                TotalRevenue = totalRevenue,
-                MonthlyRevenueList = monthlyRevenueList
+                Month = month.ToString(),
+                Revenue = totalMonthlyRevenue
             });
         }
 
-        return responseList;
+        return new GetRevenueForAllMethodsResponse
+        {
+            TotalRevenue = totalRevenue,
+            MonthlyRevenueList = monthlyRevenueList
+        };
     }
 }
