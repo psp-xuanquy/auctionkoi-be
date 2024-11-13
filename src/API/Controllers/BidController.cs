@@ -11,6 +11,8 @@ using System.Security.Claims;
 using Application.Features.Bid.GetUserPastAuctions;
 using Application.Features.Bid;
 using KN_EXE201.Application.Features.Koi.Queries.GetActiveAuctionByKoiId;
+using Application.Common.Exceptions;
+using KoiAuction.Domain.Common.Exceptions;
 
 namespace API.Controllers
 {
@@ -43,7 +45,6 @@ namespace API.Controllers
             {
                 return BadRequest(new JsonResponse<string>($"An error occurred: {ex.Message}", null));
             }
-
         }
 
         [HttpGet("user/{userId}/past-auctions/manager")]
@@ -59,7 +60,7 @@ namespace API.Controllers
             {
                 return BadRequest(new JsonResponse<string>($"An error occurred: {ex.Message}", null));
             }
-        }
+        }        
 
         [HttpPost("place-bid")]
         [Authorize(Roles = "CUSTOMER")]

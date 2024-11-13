@@ -1,10 +1,13 @@
-﻿using Application.Features.AuctionMethod;
+﻿using Application.Common.Exceptions;
+using Application.Features.AuctionMethod;
 using Application.Features.AuctionMethod.Commands.Create;
 using Application.Features.AuctionMethod.Commands.Delete;
 using Application.Features.AuctionMethod.Commands.Update;
 using Application.Features.AuctionMethod.Queries.GetAll;
 using Application.Features.AuctionMethod.Queries.GetRevenueForEachMethod;
+using Application.Features.Bid.SealedBidAuction;
 using KoiAuction.API.Controllers.ResponseTypes;
+using KoiAuction.Domain.Common.Exceptions;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -34,6 +37,31 @@ namespace API.Controllers
             return Ok(new JsonResponse<List<GetAllAuctionMethodResponse>>("Successfully retrieved all Auction Methods.", sortedResult));
         }
 
+        [HttpGet("check-sealed-bid/{koiId}")]
+        //[Authorize]
+        public async Task<ActionResult<bool>> CheckSealedBidAuction([FromRoute] string koiId, CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                var result = await _mediator.Send(new CheckSealedBidAuctionCommand(koiId), cancellationToken);
+
+                //return Ok(new JsonResponse<bool>("Koi is part of Sealed Bid Auction.", result));
+                return result;
+            }
+            catch (BadRequestException ex)
+            {
+                return BadRequest(new JsonResponse<string>($"An error occurred: {ex.Message}", null));
+            }
+            catch (NotFoundException ex)
+            {
+                return NotFound(new JsonResponse<string>($"Koi not found: {ex.Message}", null));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new JsonResponse<string>($"An error occurred: {ex.Message}", null));
+            }
+        }
+
         [HttpPost]
         [Authorize(Roles = "MANAGER, STAFF")]
         public async Task<ActionResult<JsonResponse<AuctionMethodResponse>>> Create([FromBody] CreateAuctionMethodCommand command, CancellationToken cancellationToken = default)
@@ -60,7 +88,7 @@ namespace API.Controllers
         }
 
         [HttpGet("revenue/{year}")]
-        //[Authorize(Roles = "MANAGER, STAFF")]
+        [Authorize(Roles = "MANAGER, STAFF")]
         public async Task<ActionResult<JsonResponse<GetRevenueForAllMethodsResponse>>> GetRevenueForEachMethod(int year, CancellationToken cancellationToken = default)
         {
             var result = await _mediator.Send(new GetRevenueForEachMethodQuery(year), cancellationToken);
@@ -68,7 +96,7 @@ namespace API.Controllers
         }
 
         [HttpGet("percentage-users")]
-        //[Authorize(Roles = "MANAGER, STAFF")]
+        [Authorize(Roles = "MANAGER, STAFF")]
         public async Task<ActionResult<JsonResponse<List<GetPercentageUserForEachMethodResponse>>>> GetPercentageUserForEachMethod([FromQuery] int year, [FromQuery] int month, CancellationToken cancellationToken = default)
         {
             var result = await _mediator.Send(new GetPercentageUserForEachMethodQuery(year, month), cancellationToken);
