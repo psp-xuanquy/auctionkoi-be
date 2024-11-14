@@ -25,10 +25,18 @@ public class GetAllBlogHandler : IRequestHandler<GetAllBlogQuery, List<GetAllBlo
     {
 
         var list = await _blogRepository.FindAllAsync(cancellationToken);
-        if (list is null)
+        if (list is null || !list.Any())
         {
-            throw new NotFoundException("Empty list");
+            throw new NotFoundException("No blog posts found");
         }
-        return _mapper.Map<List<GetAllBlogResponse>>(list);
+
+        var blogDtos = _mapper.Map<List<GetAllBlogResponse>>(list);
+
+        foreach (var blogDto in blogDtos)
+        {
+            blogDto.AuthorName = blogDto.AuthorName ?? "Unknown Author";
+        }
+
+        return blogDtos;
     }
 }

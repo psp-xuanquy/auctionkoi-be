@@ -1,4 +1,5 @@
 ﻿using Application.Features.Blog.Queries.GetAll;
+using Application.Features.Koi;
 using Application.Features.Koi.Queries.GetById;
 using AutoMapper;
 using KoiAuction.Domain.Common.Exceptions;
@@ -25,6 +26,10 @@ public class GetBlogByIdHandler : IRequestHandler<GetBlogByIdQuery, GetAllBlogRe
             throw new NotFoundException("Auction not found");
         }
 
-        return _mapper.Map<GetAllBlogResponse>(blog);
+        var blogDto = _mapper.Map<GetAllBlogResponse>(blog);
+        blogDto.AuthorName = blog.Author?.FullName ?? "Unknown Author";
+
+        return blogDto;
+
     }
 }

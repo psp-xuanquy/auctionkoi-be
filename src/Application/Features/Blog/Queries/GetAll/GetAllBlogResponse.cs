@@ -18,11 +18,12 @@ public class GetAllBlogResponse : IMapFrom<BlogEntity>
     public string? Content { get; set; }
     public string? UrlImage { get; set; }
     public DateTime? PostedDate { get; set; }
-    public string? AuthorID { get; set; }
+    public string? AuthorName { get; set; }
 
     public void Mapping(Profile profile)
     {
-        profile.CreateMap<BlogEntity, GetAllBlogResponse>();
+        profile.CreateMap<BlogEntity, GetAllBlogResponse>()
+            .ForMember(dest => dest.AuthorName, opt => opt.MapFrom(src => src.Author.FullName));
             
     }
 }

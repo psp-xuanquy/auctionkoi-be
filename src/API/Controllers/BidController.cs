@@ -10,6 +10,10 @@ using Application.Features.Bid.Commands.SealedBidAuction;
 using Application.Features.Bid.Commands.FixedPriceBid;
 using Application.Features.Bid.Commands.AscendingBidAuction;
 using Application.Features.Bid.Commands.DescendingBidAuction;
+using Application.Common.Exceptions;
+using Application.Features.Bid.Queries.CheckDescendingBidAuction;
+using KoiAuction.Domain.Common.Exceptions;
+using Application.Features.Bid.Queries.CheckUserBidForKoi;
 
 namespace API.Controllers
 {
@@ -147,6 +151,30 @@ namespace API.Controllers
             }
         }
 
+        [HttpGet("check-userBid-for-koi/{koiId}")]
+        //[Authorize]
+        public async Task<ActionResult<bool>> CheckUserBidForKoi([FromRoute] string koiId, CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                var result = await _mediator.Send(new CheckUserBidForKoiCommand(koiId), cancellationToken);
+
+                //return Ok(new JsonResponse<bool>("Koi is part of Sealed Bid Auction.", result));
+                return result;
+            }
+            catch (BadRequestException ex)
+            {
+                return BadRequest(new JsonResponse<string>($"An error occurred: {ex.Message}", null));
+            }
+            catch (NotFoundException ex)
+            {
+                return NotFound(new JsonResponse<string>($"Koi not found: {ex.Message}", null));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new JsonResponse<string>($"An error occurred: {ex.Message}", null));
+            }
+        }
 
         ///// <summary>
         ///// Places a Fixed Price bid on a koi.
