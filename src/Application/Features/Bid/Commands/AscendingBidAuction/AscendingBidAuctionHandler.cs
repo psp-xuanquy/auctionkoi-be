@@ -33,15 +33,17 @@ namespace Application.Features.Bid.Commands.AscendingBidAuction
 
             await ValidateBid(request, bidder, koi, cancellationToken);
 
-            var bids = await _bidRepository.GetBidsForKoi(koi.ID, cancellationToken);
-            if (bids.Count() > 0)
+            if (koi.IsAuctionExpired())
             {
-                foreach (var b in bids)
-                {
-                    b.IsWinningBid = false;
-                    _bidRepository.Update(b);
-                }
+                await HandleAuctionExpiry(koi, cancellationToken);
+                throw new InvalidOperationException("The auction has already expired.");
             }
+
+            await ResetWinningBids(koi, cancellationToken);
+
+            var temporaryBidAmount = request.BidAmount;
+            bidder.Balance -= temporaryBidAmount;
+            _userRepository.Update(bidder);
 
             var bid = new BidEntity(koi.ID, request.BidAmount, bidder.Id, bidder.Balance, koi.InitialPrice)
             {
@@ -50,34 +52,22 @@ namespace Application.Features.Bid.Commands.AscendingBidAuction
 
             _bidRepository.Add(bid);
 
-            if (koi.AuctionStatus == AuctionStatus.NotStarted)
+            if (koi.AuctionStatus == AuctionStatus.NotStarted || koi.AuctionStatus == AuctionStatus.OnGoing)
             {
                 koi.StartAuction();
                 _koiRepository.Update(koi);
             }
 
             await _bidRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
-
             await ProcessAutoBids(bid, koi, cancellationToken);
-
-            var winningBid = bids.OrderByDescending(b => b.BidAmount).ThenByDescending(b => b.CreatedTime).FirstOrDefault();
-            if (winningBid != null)
-            {
-                var winner = await _userRepository.FindAsync(w => w.Id == winningBid.BidderID, cancellationToken);
-                if (winner != null)
-                {
-                    winner.Balance -= winningBid.BidAmount;
-                    _userRepository.Update(winner);
-
-                    await _emailService.SendWinningEmail(winner.Email, koi.Name, winningBid.BidAmount);
-                }
-            }
-
             await _bidRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
 
-            koi.EndAuction();
-            _koiRepository.Update(koi);
-            await _koiRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
+            if (bidder.Balance < 0)
+            {
+                bidder.Balance += temporaryBidAmount;
+                _userRepository.Update(bidder);
+                await _userRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
+            }
 
             return $"You have successfully bid {request.BidAmount} for the fish {koi.Name}.";
         }
@@ -90,33 +80,13 @@ namespace Application.Features.Bid.Commands.AscendingBidAuction
             await ValidateBidAmount(request.BidAmount, koi.ID, bidder.Id, cancellationToken);
 
             var bids = await _bidRepository.GetBidsForKoi(koi.ID, cancellationToken);
-            if (bids.Count() > 0)
-            {
-                foreach (var bid in bids)
-                {
-                    if (bid.BidAmount >= request.BidAmount)
-                    {
-                        throw new InvalidOperationException("Bid amount cannot be lower than or equal the winning bid.");
-                    }
-                }
-            }
 
-            var winningBid = bids.Where(b => b.IsWinningBid).FirstOrDefault();
+            var winningBid = bids.FirstOrDefault(b => b.IsWinningBid);
             if (winningBid != null)
             {
-                if (winningBid.BidderID == bidder.Id)
+                if (request.BidAmount <= winningBid.BidAmount)
                 {
-                    if (request.BidAmount <= winningBid.BidAmount)
-                    {
-                        throw new InvalidOperationException("Your new bid must be higher than your previous winning bid.");
-                    }
-                }
-                else
-                {
-                    if (request.BidAmount <= winningBid.BidAmount)
-                    {
-                        throw new InvalidOperationException("Bid amount must be higher than the current winning bid.");
-                    }
+                    throw new InvalidOperationException("Bid amount must be higher than the current winning bid.");
                 }
             }
             else
@@ -126,11 +96,53 @@ namespace Application.Features.Bid.Commands.AscendingBidAuction
                     throw new InvalidOperationException("Bid amount must be higher than the initial price.");
                 }
             }
+        }
 
-            if (koi.IsAuctionExpired())
+        private async Task ResetWinningBids(KoiEntity koi, CancellationToken cancellationToken)
+        {
+            var bids = await _bidRepository.GetBidsForKoi(koi.ID, cancellationToken);
+            foreach (var bid in bids)
             {
-                throw new InvalidOperationException("The auction has already expired.");
+                bid.IsWinningBid = false;
+                _bidRepository.Update(bid);
             }
+        }
+
+        private async Task HandleAuctionExpiry(KoiEntity koi, CancellationToken cancellationToken)
+        {
+            if (!koi.IsAuctionExpired()) return;
+
+            var bids = await _bidRepository.GetBidsForKoi(koi.ID, cancellationToken);
+            if (bids.Any())
+            {
+                var winningBid = MarkWinningBid(bids);
+                await _emailService.SendWinningEmail(winningBid.Bidder.Email, koi.Name, winningBid.BidAmount);
+            }
+            else
+            {
+                foreach (var bid in bids)
+                {
+                    var bidder = await _userRepository.FindAsync(x => x.Id == bid.BidderID, cancellationToken);
+                    bidder.Balance += bid.BidAmount;
+                    _userRepository.Update(bidder);
+                }
+            }
+
+            koi.EndAuction();
+            _koiRepository.Update(koi);
+            await _koiRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
+        }
+
+        private BidEntity MarkWinningBid(IEnumerable<BidEntity> bids)
+        {
+            var winningBid = bids.OrderByDescending(b => b.BidAmount).ThenByDescending(b => b.CreatedTime).FirstOrDefault();
+            if (winningBid != null)
+            {
+                winningBid.MarkAsWinningBid();
+                _bidRepository.Update(winningBid);
+            }
+
+            return winningBid;
         }
 
         public async Task ProcessAutoBids(BidEntity currentBid, KoiEntity koi, CancellationToken cancellationToken)
@@ -138,7 +150,7 @@ namespace Application.Features.Bid.Commands.AscendingBidAuction
             var autoBids = await _autoBidRepository.GetAutoBidsForKoi(koi.ID, cancellationToken);
             foreach (var autoBid in autoBids)
             {
-                if (autoBid.BidderID == currentBid.BidderID) continue; 
+                if (autoBid.BidderID == currentBid.BidderID) continue;
 
                 var nextBidAmount = currentBid.BidAmount + autoBid.IncrementAmount;
                 if (nextBidAmount <= autoBid.MaxBid && nextBidAmount <= autoBid.Bidder?.Balance)
@@ -149,13 +161,7 @@ namespace Application.Features.Bid.Commands.AscendingBidAuction
                         IsWinningBid = true
                     };
 
-                     var allBids = await _bidRepository.GetBidsForKoi(koi.ID, cancellationToken);
-                    foreach (var b in allBids)
-                    {
-                        b.IsWinningBid = false;
-                        _bidRepository.Update(b);
-                    }
-
+                    await ResetWinningBids(koi, cancellationToken);
                     _bidRepository.Add(newBid);
 
                     await _bidRepository.UnitOfWork.SaveChangesAsync(cancellationToken);

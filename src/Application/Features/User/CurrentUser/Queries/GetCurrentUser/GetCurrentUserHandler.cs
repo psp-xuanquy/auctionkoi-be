@@ -17,8 +17,8 @@ namespace Application.Features.User.CurrentUser.Queries.GetCurrentUser;
 public class GetCurrentUserHandler : IRequestHandler<GetCurrentUserQuery, GetCurrentUserResponse>
 {
     private readonly IUserRepository _userRepository;
-    private readonly UserManager<UserEntity> _userManager;
     private readonly ICurrentUserService _currentUserService;
+    private readonly UserManager<UserEntity> _userManager;
     private readonly IMapper _mapper;
 
     public GetCurrentUserHandler(IUserRepository userRepository, ICurrentUserService currentUserService, IMapper mapper, UserManager<UserEntity> userManager)

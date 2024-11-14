@@ -12,7 +12,7 @@ public class BidderDto : IMapFrom<BidEntity>
 {
     public string BidderName { get; set; }
     public decimal BidAmount { get; set; }
-    public DateTime BidTime { get; set; }
+    public DateTime? BidTime { get; set; }
     //public string KoiID { get; set; }
 
     public void Mapping(Profile profile)

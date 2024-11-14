@@ -7,11 +7,11 @@ using Application.Features.Koi.Queries.GetBidderByKoiId;
 using KoiAuction.Application.Common.Interfaces;
 using MediatR;
 
-namespace Application.Features.Koi.Queries.GetBidderByKoiId;
-public class GetBidderByKoiIdQuery : IRequest<List<GetBidderByKoiIdResponse>>, IQuery
+namespace Application.Features.Koi.Queries.GetCurrentBidderByKoiId;
+public class GetCurrentBidderByKoiIdQuery : IRequest<BidderDto>, IQuery
 {
     public string KoiId { get; set; }
-    public GetBidderByKoiIdQuery(string koiId)
+    public GetCurrentBidderByKoiIdQuery(string koiId)
     {
         KoiId = koiId;
     }

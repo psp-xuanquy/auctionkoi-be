@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.Security.Claims;
+using System.Threading;
 using Application.Features.AuctionMethod;
 using Application.Features.AuctionMethod.Commands.Update;
 using Application.Features.AuctionMethod.Queries.GetRevenueForEachMethod;
@@ -10,8 +11,10 @@ using Application.Features.Koi.Queries.Filter;
 using Application.Features.Koi.Queries.GetAll;
 using Application.Features.Koi.Queries.GetAllActiveAuctions;
 using Application.Features.Koi.Queries.GetBidderByKoiId;
+using Application.Features.Koi.Queries.GetCurrentBidderByKoiId;
 using Application.Features.Koi.Queries.GetKoiById;
 using Application.Features.KoiBreeder.Queries.GetAllKoiFarmBreeder;
+using Application.Features.User.CurrentUser.Commands.UpdateAvatar;
 using KN_EXE201.Application.Features.Category.Queries.GetById;
 using KN_EXE201.Application.Features.Koi.Queries.GetActiveAuctionByKoiId;
 using KoiAuction.API.Controllers.ResponseTypes;
@@ -19,6 +22,7 @@ using KoiAuction.Domain.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace KoiAuction.API.Controllers
 {
@@ -92,6 +96,18 @@ namespace KoiAuction.API.Controllers
                 return NotFound();
             }
             return Ok(new JsonResponse<List<GetBidderByKoiIdResponse>>("Get Bidders by KoiID successfully.", result));
+        }
+
+        [HttpGet("get-current-bidder-by-koi-id/{id}")]
+        public async Task<ActionResult<JsonResponse<BidderDto>>> GetCurrentBidderByKoiId([FromRoute] string id, CancellationToken cancellationToken = default)
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var result = await _mediator.Send(new GetCurrentBidderByKoiIdQuery(id), cancellationToken);
+            if (result == null)
+            {
+                return NotFound();
+            }
+            return Ok(new JsonResponse<BidderDto>("Get Current Bidder by KoiID successfully.", result));
         }
 
         [HttpGet("filter")]

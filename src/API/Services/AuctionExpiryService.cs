@@ -157,7 +157,7 @@ namespace API.Services
         {
             _logger.LogInformation("Handling descending auction for koi: {koiId}", koi.ID);
 
-            if (koi.AuctionStatus == Domain.Enums.AuctionStatus.OnGoing)
+            if (koi.AuctionStatus == AuctionStatus.OnGoing)
             {
                 if (koi.CurrentDescendedPrice != null || koi.CurrentDescendedPrice != 0)
                 {

@@ -1,8 +1,11 @@
 ﻿using Application.Features.Blog.Queries.GetAll;
+using Application.Features.Koi.Queries.GetKoiById;
+using Application.Features.Koi;
 using KoiAuction.API.Controllers.ResponseTypes;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Application.Features.Koi.Queries.GetById;
 
 namespace KoiAuction.API.Controllers
 {
@@ -39,6 +42,17 @@ namespace KoiAuction.API.Controllers
             {
                 return BadRequest(new JsonResponse<string>($"An error occurred: {ex.Message}", null));
             }
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<JsonResponse<GetAllBlogResponse>>> GetKoiById([FromRoute] string id, CancellationToken cancellationToken = default)
+        {
+            var result = await _mediator.Send(new GetBlogByIdQuery(id), cancellationToken);
+            if (result == null)
+            {
+                return NotFound();
+            }
+            return Ok(new JsonResponse<GetAllBlogResponse>("Get by BlogID successfully.", result));
         }
     }
 }
