@@ -24,6 +24,7 @@ public class KoiResponse
     public Variety Variety { get; set; }
     public decimal ReservePrice { get; set; }
     public decimal HighestPrice { get; set; }
+    public decimal? CurrentDescendedPrice { get; set; }
     public string? Description { get; set; }
     public string? ImageUrl { get; set; }
     public AuctionRequestStatus AuctionRequestStatus { get; set; }
