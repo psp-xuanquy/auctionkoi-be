@@ -152,18 +152,24 @@ namespace API.Services
 
             if (koi.AuctionStatus == Domain.Enums.AuctionStatus.OnGoing)
             {
-                if (koi.LowestDescendedPrice >= koi.CurrentDescendedPrice * (100 - koi.DescendingRate)/100)
+                if (koi.CurrentDescendedPrice != null || koi.CurrentDescendedPrice != 0)
                 {
-                    if (koi.CurrentDescendedPrice == null || koi.CurrentDescendedPrice == 0)
-                    {
-                        koi.CurrentDescendedPrice = koi.InitialPrice * (100 - koi.DescendingRate) / 100;
-                    }
-                    else
+                    if (koi.LowestDescendedPrice <= koi.CurrentDescendedPrice * (100 - koi.DescendingRate) / 100)
                     {
                         koi.CurrentDescendedPrice = koi.CurrentDescendedPrice * (100 - koi.DescendingRate) / 100;
                     }
-                    repositories.KoiRepository.Update(koi);
+                    else
+                    {
+                        _logger.LogInformation("Cannot decrease more for this koi: {koiId}", koi.ID);
+                    }
                 }
+                else
+                {
+                    koi.CurrentDescendedPrice = koi.InitialPrice * (100 - koi.DescendingRate) / 100;
+                }
+
+                repositories.KoiRepository.Update(koi);
+                await repositories.KoiRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
             }
         }
     }
