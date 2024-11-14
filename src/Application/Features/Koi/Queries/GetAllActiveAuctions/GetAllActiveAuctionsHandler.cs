@@ -42,6 +42,7 @@ namespace Application.Features.Koi.Queries.GetAllActiveAuctions
                 Variety = koi.Variety,
                 ReservePrice = koi.InitialPrice,
                 HighestPrice = koi.Bids.Any() ? koi.Bids.Max(bid => bid.BidAmount) : koi.InitialPrice,
+                CurrentDescendedPrice = koi.CurrentDescendedPrice ?? 0,
                 Description = koi.Description,
                 ImageUrl = koi.ImageUrl,
                 AuctionRequestStatus = koi.AuctionRequestStatus,

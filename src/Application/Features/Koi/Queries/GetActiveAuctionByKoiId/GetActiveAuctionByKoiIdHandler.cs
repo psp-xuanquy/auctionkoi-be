@@ -47,6 +47,7 @@ namespace Application.Features.Koi.Queries.GetActiveAuctionByKoiId
                 ImageUrl = koi.ImageUrl,
                 AuctionRequestStatus = koi.AuctionRequestStatus,
                 AuctionStatus = koi.AuctionStatus,
+                CurrentDescendedPrice = koi.CurrentDescendedPrice ?? 0,
                 StartTime = koi.StartTime,
                 EndTime = koi.EndTime,
                 AllowAutoBid = koi.AllowAutoBid,
