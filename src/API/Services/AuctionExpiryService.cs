@@ -1,6 +1,8 @@
-﻿using Domain.IRepositories.IBaseRepositories;
+﻿using Domain.Enums;
+using Domain.IRepositories.IBaseRepositories;
 using KoiAuction.Application.Common.Interfaces;
 using KoiAuction.Domain.Entities;
+using KoiAuction.Domain.Enums;
 using KoiAuction.Domain.IRepositories;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -84,6 +86,22 @@ namespace API.Services
                     };
 
                     await _emailService.SendWinningEmail(winningBid.Bidder.Email, koi.Name, winningBid.BidAmount);
+
+                    var transaction = new TransactionEntity
+                    {
+                        ID = Guid.NewGuid().ToString(),
+                        TransactionType = TransactionType.Bought,
+                        Status = PaymentStatus.Success,
+                        TotalAmount = winningBid.BidAmount,
+                        TransactionDate = DateTime.UtcNow,
+                        PaymentMethod = "Banking",
+                        CommissionRate = 5,
+                        BidID = winningBid.ID,
+                        KoiID = koi.ID
+                    };
+
+                    repositories.TransactionRepository.Add(transaction);
+                    await repositories.TransactionRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
                 }
                 catch (Exception ex)
                 {
@@ -98,6 +116,7 @@ namespace API.Services
             koi.EndAuction();
             repositories.KoiRepository.Update(koi);
             await repositories.KoiRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
+        
         }
 
         public async Task RefundBidders(IEnumerable<BidEntity> bids, IUserRepository userRepository, CancellationToken cancellationToken)

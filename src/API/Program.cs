@@ -21,6 +21,7 @@ using Infrastructure.Repositories.BaseRepositories;
 using KoiAuction.Domain.IRepositories;
 using KoiAuction.Domain.Repositories;
 using KoiAuction.Infrastructure.Repositories;
+using Application.Common.Library;
 
 namespace KoiAuction
 {
@@ -78,6 +79,23 @@ namespace KoiAuction
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
+            // PayOS service registration
+            services.AddScoped<PayOSService>(provider =>
+            {
+                var payOSSettings = configuration.GetSection("payOS");
+                var clientId = payOSSettings["clientId"];
+                var apiKey = payOSSettings["apiKey"];
+                var checksumKey = payOSSettings["checksumKey"];
+
+                if (string.IsNullOrEmpty(clientId) || string.IsNullOrEmpty(apiKey) || string.IsNullOrEmpty(checksumKey))
+                {
+                    throw new InvalidOperationException("PayOS configuration is invalid.");
+                }
+
+                return new PayOSService(clientId, apiKey, checksumKey);
+            });
+
+
             // Additional service configurations
             services.AddHttpContextAccessor();
             services.AddEndpointsApiExplorer();
@@ -112,6 +130,7 @@ namespace KoiAuction
             app.UseCors("CorsPolicy");
             app.UseExceptionHandler();
             app.UseHttpsRedirection();
+            app.UseStaticFiles();   //wwwroot
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseRouting();

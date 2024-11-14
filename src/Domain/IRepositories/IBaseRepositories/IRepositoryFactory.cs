@@ -12,5 +12,6 @@ namespace Domain.IRepositories.IBaseRepositories
         IKoiRepository KoiRepository { get; }
         IBidRepository BidRepository { get; }
         IUserRepository UserRepository { get; }
+        ITransactionRepository TransactionRepository { get; }
     }
 }

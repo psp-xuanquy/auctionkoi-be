@@ -35,7 +35,6 @@ public static class DependencyInjection
         services.AddScoped<IUnitOfWork>(provider => provider.GetRequiredService<ApplicationDbContext>());
 
         services.AddScoped<IRepositoryFactory, RepositoryFactory>();
-
         services.AddTransient<IAutoBidRepository, AutoBidRepository>();
         services.AddTransient<IBidRepository, BidRepository>();            
         services.AddTransient<IBlogRepository, BlogRepository>();

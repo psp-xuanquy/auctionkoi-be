@@ -1,0 +1,81 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deposit Cancellation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .cancellation-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .cancellation-icon {
+            width: 80px;
+            height: 80px;
+            background-color: #FF5722;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 1rem;
+        }
+
+            .cancellation-icon::before {
+                content: "\2715";
+                font-size: 48px;
+                color: white;
+            }
+
+        h1 {
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        p {
+            color: #666;
+            margin-bottom: 1.5rem;
+        }
+
+        .button {
+            background-color: #2196F3;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+            display: inline-block;
+        }
+
+            .button:hover {
+                background-color: #1976D2;
+            }
+    </style>
+</head>
+<body>
+    <div class="cancellation-card" role="main">
+        <div class="cancellation-icon" aria-hidden="true"></div>
+        <h1>Deposit Cancelled</h1>
+        <p>Your wallet deposit transaction has been successfully cancelled.</p>
+        <a href="https://koiauction.site" class="button">Return to Koi Auction</a>
+    </div>
+</body>
+</html>

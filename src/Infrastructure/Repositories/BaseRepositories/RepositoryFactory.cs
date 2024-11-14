@@ -23,5 +23,7 @@ namespace Infrastructure.Repositories.BaseRepositories
         public IBidRepository BidRepository => _serviceProvider.GetRequiredService<IBidRepository>();
 
         public IUserRepository UserRepository => _serviceProvider.GetRequiredService<IUserRepository>();
+
+        public ITransactionRepository TransactionRepository => _serviceProvider.GetRequiredService<ITransactionRepository>();
     }
 }
