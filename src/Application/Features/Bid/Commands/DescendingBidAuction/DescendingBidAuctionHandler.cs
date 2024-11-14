@@ -37,6 +37,8 @@ public class DescendingBidAuctionHandler : BaseAuctionHandler, IRequestHandler<D
         }
 
         await _bidRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
+        await _koiRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
+
         return $"You have successfully bid {request.BidAmount} for the fish {koi.Name}.";
     }
 
