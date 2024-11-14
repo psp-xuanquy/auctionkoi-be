@@ -12,7 +12,7 @@ using MediatR;
 using Domain.Enums;
 using KoiAuction.Domain.Enums;
 
-namespace Application.Features.Bid.GetUserPastAuctions
+namespace Application.Features.Bid.Queries.GetUserPastAuctions
 {
     public class GetUserPastAuctionsHandler : IRequestHandler<GetUserPastAuctionsQuery, List<GetUserPastAuctionResponse>>
     {

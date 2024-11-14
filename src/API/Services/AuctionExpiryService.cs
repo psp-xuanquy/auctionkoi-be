@@ -85,6 +85,13 @@ namespace API.Services
                         _ => throw new Exception("Unknown auction method.")
                     };
 
+                    var winningBidder = await repositories.UserRepository.FindAsync(u => u.Id == winningBid.BidderID, cancellationToken);
+                    if (winningBidder != null)
+                    {
+                        winningBidder.Balance -= winningBid.BidAmount;  
+                        repositories.UserRepository.Update(winningBidder); 
+                    }
+
                     await _emailService.SendWinningEmail(winningBid.Bidder.Email, koi.Name, winningBid.BidAmount);
 
                     var transaction = new TransactionEntity

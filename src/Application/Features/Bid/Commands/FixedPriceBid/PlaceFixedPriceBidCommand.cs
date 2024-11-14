@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MediatR;
 
-namespace Application.Features.Bid.FixedPriceBid;
+namespace Application.Features.Bid.Commands.FixedPriceBid;
 public class PlaceFixedPriceBidCommand : IRequest<string>
 {
     public string KoiId { get; }

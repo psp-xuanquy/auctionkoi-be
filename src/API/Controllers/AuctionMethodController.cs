@@ -5,7 +5,8 @@ using Application.Features.AuctionMethod.Commands.Delete;
 using Application.Features.AuctionMethod.Commands.Update;
 using Application.Features.AuctionMethod.Queries.GetAll;
 using Application.Features.AuctionMethod.Queries.GetRevenueForEachMethod;
-using Application.Features.Bid.SealedBidAuction;
+using Application.Features.Bid.Queries.CheckAscendingBidAuction;
+using Application.Features.Bid.Queries.CheckSealedBidAuction;
 using KoiAuction.API.Controllers.ResponseTypes;
 using KoiAuction.Domain.Common.Exceptions;
 using MediatR;
@@ -44,6 +45,31 @@ namespace API.Controllers
             try
             {
                 var result = await _mediator.Send(new CheckSealedBidAuctionCommand(koiId), cancellationToken);
+
+                //return Ok(new JsonResponse<bool>("Koi is part of Sealed Bid Auction.", result));
+                return result;
+            }
+            catch (BadRequestException ex)
+            {
+                return BadRequest(new JsonResponse<string>($"An error occurred: {ex.Message}", null));
+            }
+            catch (NotFoundException ex)
+            {
+                return NotFound(new JsonResponse<string>($"Koi not found: {ex.Message}", null));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new JsonResponse<string>($"An error occurred: {ex.Message}", null));
+            }
+        }
+
+        [HttpGet("check-ascending-bid/{koiId}")]
+        //[Authorize]
+        public async Task<ActionResult<bool>> CheckAscendingBidAuction([FromRoute] string koiId, CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                var result = await _mediator.Send(new CheckAscendingBidAuctionCommand(koiId), cancellationToken);
 
                 //return Ok(new JsonResponse<bool>("Koi is part of Sealed Bid Auction.", result));
                 return result;

@@ -25,7 +25,9 @@ namespace KoiAuction.Domain.Repositories
                 .Include(koi => koi.Breeder)  
                 .Include(koi => koi.Bids)    
                     .ThenInclude(bid => bid.Bidder)
-                .Where(k => k.AuctionStatus == AuctionStatus.OnGoing)
+                 .Where(k => k.AuctionStatus == AuctionStatus.OnGoing
+                    && k.StartTime <= DateTime.Now
+                    && k.EndTime >= DateTime.Now)
                 .ToListAsync(cancellationToken);
         }
     }

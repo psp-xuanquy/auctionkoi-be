@@ -10,7 +10,7 @@ using KoiAuction.Application.Common.Mappings;
 using KoiAuction.Domain.Entities;
 using KoiAuction.Domain.Enums;
 
-namespace Application.Features.Bid.GetUserPastAuctions;
+namespace Application.Features.Bid.Queries.GetUserPastAuctions;
 public class GetUserPastAuctionResponse
 {
     public string Id { get; set; }

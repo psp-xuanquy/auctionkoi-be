@@ -1,18 +1,15 @@
-﻿using Application.Features.Bid.AscendingBidAuction;
-using Application.Features.Bid.DescendingBidAuction;
-using Application.Features.Bid.FixedPriceBid;
-using Application.Features.Bid.SealedBidAuction;
-using KoiAuction.API.Controllers.ResponseTypes;
+﻿using KoiAuction.API.Controllers.ResponseTypes;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Application.Features.Koi;
 using System.Security.Claims;
-using Application.Features.Bid.GetUserPastAuctions;
 using Application.Features.Bid;
 using KN_EXE201.Application.Features.Koi.Queries.GetActiveAuctionByKoiId;
-using Application.Common.Exceptions;
-using KoiAuction.Domain.Common.Exceptions;
+using Application.Features.Bid.Queries.GetUserPastAuctions;
+using Application.Features.Bid.Commands.SealedBidAuction;
+using Application.Features.Bid.Commands.FixedPriceBid;
+using Application.Features.Bid.Commands.AscendingBidAuction;
+using Application.Features.Bid.Commands.DescendingBidAuction;
 
 namespace API.Controllers
 {
@@ -63,7 +60,7 @@ namespace API.Controllers
         }        
 
         [HttpPost("place-bid")]
-        [Authorize(Roles = "CUSTOMER")]
+        [Authorize(Roles = "CUSTOMER, KOIBREEDER")]
         public async Task<IActionResult> PlaceBid([FromBody] PlaceBidCommand command, CancellationToken cancellationToken)
         {
             if (command == null || string.IsNullOrEmpty(command.KoiId) || command.BidAmount <= 0)
@@ -134,6 +131,22 @@ namespace API.Controllers
                     return BadRequest("Unsupported auction method for this Koi.");
             }
         }
+
+        [HttpPost("auto-bid")]
+        [Authorize(Roles = "CUSTOMER, KOIBREEDER")]
+        public async Task<IActionResult> PlaceAutoBid([FromBody] PlaceAutoBidCommand command, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var result = await _mediator.Send(command, cancellationToken);
+                return Ok(new JsonResponse<string>(result, null));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new JsonResponse<string>($"An error occurred: {ex.Message}", null));
+            }
+        }
+
 
         ///// <summary>
         ///// Places a Fixed Price bid on a koi.

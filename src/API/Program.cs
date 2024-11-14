@@ -22,6 +22,7 @@ using KoiAuction.Domain.IRepositories;
 using KoiAuction.Domain.Repositories;
 using KoiAuction.Infrastructure.Repositories;
 using Application.Common.Library;
+using Application.Features.Bid.Commands.AscendingBidAuction;
 
 namespace KoiAuction
 {
@@ -110,6 +111,7 @@ namespace KoiAuction
 
             services.Configure<EmailSettings>(configuration.GetSection("EmailSettings"));
             services.AddTransient<IEmailService, EmailService>();
+            services.AddTransient<AscendingBidAuctionHandler>();
 
             services.AddHostedService<AuctionExpiryService>();
 

@@ -5,6 +5,7 @@ using KoiAuction.Domain.Repositories;
 namespace KoiAuction.Domain.IRepositories
 {
     public interface IAutoBidRepository : IEFRepository<AutoBidEntity, AutoBidEntity>
-    {       
+    {
+        Task<IEnumerable<AutoBidEntity>> GetAutoBidsForKoi(string koiId, CancellationToken cancellationToken = default);
     }
 }

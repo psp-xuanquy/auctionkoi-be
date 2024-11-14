@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MediatR;
 
-namespace Application.Features.Bid.SealedBidAuction;
+namespace Application.Features.Bid.Queries.CheckSealedBidAuction;
 public class CheckSealedBidAuctionCommand : IRequest<bool>
 {
     public string KoiId { get; }

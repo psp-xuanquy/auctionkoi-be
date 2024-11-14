@@ -11,7 +11,7 @@ using KoiAuction.Domain.Entities;
 using KoiAuction.Domain.IRepositories;
 using MediatR;
 
-namespace Application.Features.Bid.SealedBidAuction;
+namespace Application.Features.Bid.Commands.SealedBidAuction;
 
 public class PlaceSealedBidAuctionValidator : AbstractValidator<PlaceSealedBidAuctionCommand>
 {

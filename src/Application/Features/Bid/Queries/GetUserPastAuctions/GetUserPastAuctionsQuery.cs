@@ -7,7 +7,7 @@ using Application.Features.Koi;
 using KoiAuction.Application.Common.Interfaces;
 using MediatR;
 
-namespace Application.Features.Bid.GetUserPastAuctions;
+namespace Application.Features.Bid.Queries.GetUserPastAuctions;
 public class GetUserPastAuctionsQuery : IRequest<List<GetUserPastAuctionResponse>>, IQuery
 {
     public string UserId { get; set; }

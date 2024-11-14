@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Application.Features.Bid.FixedPriceBid
+namespace Application.Features.Bid.Commands.FixedPriceBid
 {
     public class PlaceFixedPriceBidValidator : AbstractValidator<PlaceFixedPriceBidCommand>
     {

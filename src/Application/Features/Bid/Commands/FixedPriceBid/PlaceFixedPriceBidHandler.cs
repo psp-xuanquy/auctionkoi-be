@@ -10,14 +10,14 @@ using KoiAuction.Domain.Entities;
 using KoiAuction.Domain.IRepositories;
 using MediatR;
 
-namespace Application.Features.Bid.FixedPriceBid
+namespace Application.Features.Bid.Commands.FixedPriceBid
 {
     public class FixedPriceAuctionHandler : BaseAuctionHandler, IRequestHandler<PlaceFixedPriceBidCommand, string>
     {
         private readonly IEmailService _emailService;
 
-        public FixedPriceAuctionHandler(ICurrentUserService currentUserService, IKoiRepository koiRepository, IBidRepository bidRepository, IUserRepository userRepository, IEmailService emailService)
-            : base(koiRepository, bidRepository, userRepository, currentUserService)
+        public FixedPriceAuctionHandler(ICurrentUserService currentUserService, IKoiRepository koiRepository, IBidRepository bidRepository, IAutoBidRepository autoBidRepository, IUserRepository userRepository, IEmailService emailService)
+            : base(koiRepository, bidRepository, autoBidRepository, userRepository, currentUserService)
         {
             _emailService = emailService;
         }

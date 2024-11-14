@@ -1,25 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Application.Common.Exceptions;
-using Application.Features.Bid.AscendingBidAuction;
+﻿using Application.Common.Exceptions;
 using Domain.Enums;
 using KoiAuction.Application.Common.Interfaces;
 using KoiAuction.Domain.Entities;
 using KoiAuction.Domain.IRepositories;
 using MediatR;
 
-namespace Application.Features.Bid.DescendingBidAuction;
+namespace Application.Features.Bid.Commands.DescendingBidAuction;
 public class DescendingBidAuctionHandler : BaseAuctionHandler, IRequestHandler<DescendingBidAuctionCommand, string>
 {
     public DescendingBidAuctionHandler(
         IKoiRepository koiRepository,
         IBidRepository bidRepository,
+        IAutoBidRepository autoBidRepository,
         IUserRepository userRepository,
         ICurrentUserService currentUserService)
-        : base(koiRepository, bidRepository, userRepository, currentUserService)
+        : base(koiRepository, bidRepository, autoBidRepository, userRepository, currentUserService)
     {
     }
 

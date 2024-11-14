@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MediatR;
 
-namespace Application.Features.Bid.DescendingBidAuction;
+namespace Application.Features.Bid.Commands.DescendingBidAuction;
 public class DescendingBidAuctionCommand : IRequest<string>
 {
     public string KoiId { get; }

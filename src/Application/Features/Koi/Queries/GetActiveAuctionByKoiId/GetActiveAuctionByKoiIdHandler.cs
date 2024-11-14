@@ -24,7 +24,14 @@ namespace Application.Features.Koi.Queries.GetActiveAuctionByKoiId
 
         public async Task<KoiResponse> Handle(GetActiveAuctionByKoiIdQuery request, CancellationToken cancellationToken)
         {
-            var koi = await _koiRepository.FindAsync(x => x.ID == request.Id && x.AuctionStatus == AuctionStatus.OnGoing && x.DeletedBy == null && x.DeletedTime == null, cancellationToken);
+            var koi = await _koiRepository.FindAsync(x => x.ID == request.Id
+                && x.AuctionStatus == AuctionStatus.OnGoing
+                && x.StartTime <= DateTime.Now
+                && x.EndTime >= DateTime.Now
+                && x.DeletedBy == null 
+                && x.DeletedTime == null
+                , cancellationToken);
+
             if (koi is null)
             {
                 throw new NotFoundException("Auction not found");
@@ -32,7 +39,7 @@ namespace Application.Features.Koi.Queries.GetActiveAuctionByKoiId
 
             //return _mapper.Map<KoiResponse>(koiBreeder);
 
-            var response =  new KoiResponse
+            var response = new KoiResponse
             {
                 Id = koi.ID,
                 Name = koi.Name,

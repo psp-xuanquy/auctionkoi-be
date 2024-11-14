@@ -10,22 +10,25 @@ using KoiAuction.Domain.Common.Exceptions;
 using KoiAuction.Domain.Entities;
 using KoiAuction.Domain.IRepositories;
 
-namespace Application.Features.Bid;
+namespace Application.Features.Bid.Commands;
 public abstract class BaseAuctionHandler
 {
     protected readonly IKoiRepository _koiRepository;
     protected readonly IBidRepository _bidRepository;
+    protected readonly IAutoBidRepository _autoBidRepository;
     protected readonly IUserRepository _userRepository;
     protected readonly ICurrentUserService _currentUserService;
 
     protected BaseAuctionHandler(
         IKoiRepository koiRepository,
         IBidRepository bidRepository,
+        IAutoBidRepository autoBidRepository,
         IUserRepository userRepository,
         ICurrentUserService currentUserService)
     {
         _koiRepository = koiRepository;
         _bidRepository = bidRepository;
+        _autoBidRepository = autoBidRepository;
         _userRepository = userRepository;
         _currentUserService = currentUserService;
     }
@@ -42,10 +45,14 @@ public abstract class BaseAuctionHandler
 
     protected async Task<KoiEntity> GetKoiForAuction(string koiId, string auctionMethod, CancellationToken cancellationToken)
     {
-        var koi = await _koiRepository.FindAsync(k => k.ID == koiId &&
-                                                  k.AuctionMethod.Name == auctionMethod &&
-                                                  k.DeletedTime == null,
-                                                  cancellationToken);
+        var koi = await _koiRepository.FindAsync(k => k.ID == koiId
+            && k.AuctionStatus == AuctionStatus.OnGoing
+            && k.StartTime <= DateTime.Now
+            && k.EndTime >= DateTime.Now
+            && k.AuctionMethod.Name == auctionMethod
+            && k.DeletedTime == null,
+            cancellationToken);
+        
         if (koi == null)
         {
             throw new NotFoundException($"Koi with ID '{koiId}' not found for auction method '{auctionMethod}'.");
@@ -59,7 +66,12 @@ public abstract class BaseAuctionHandler
 
     protected async Task ValidateBidAmount(decimal bidAmount, string koiId, string bidderId, CancellationToken cancellationToken)
     {
-        var koi = await _koiRepository.FindAsync(k => k.ID == koiId, cancellationToken);
+        var koi = await _koiRepository.FindAsync(k => k.ID == koiId
+            && k.AuctionStatus == AuctionStatus.OnGoing
+            && k.StartTime <= DateTime.Now
+            && k.EndTime >= DateTime.Now
+            , cancellationToken);
+        
         if (koi == null)
             throw new NotFoundException($"Koi with ID '{koiId}' not found.");
 
