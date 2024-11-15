@@ -30,8 +30,7 @@ namespace KoiAuction.Domain.Repositories
                 .ToListAsync(cancellationToken);
 
             kois = kois.Where(k => k.AuctionStatus == AuctionStatus.OnGoing
-                    && k.StartTime <= DateTime.Now
-                    && k.EndTime >= DateTime.Now).ToList();
+                    && k.StartTime <= DateTime.Now).ToList();
 
             return kois;
         }
