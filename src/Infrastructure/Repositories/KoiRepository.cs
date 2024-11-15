@@ -20,15 +20,20 @@ namespace KoiAuction.Domain.Repositories
 
         public async Task<List<KoiEntity>> GetActiveAuctions(CancellationToken cancellationToken)
         {
-            return await _context.Kois
+            var now = DateTime.Now;
+
+            var kois = await _context.Kois
                 .Include(k => k.AuctionMethod)
-                .Include(koi => koi.Breeder)  
-                .Include(koi => koi.Bids)    
+                .Include(koi => koi.Breeder)
+                .Include(koi => koi.Bids)
                     .ThenInclude(bid => bid.Bidder)
-                 .Where(k => k.AuctionStatus == AuctionStatus.OnGoing
-                    && k.StartTime <= DateTime.Now
-                    && k.EndTime >= DateTime.Now)
                 .ToListAsync(cancellationToken);
+
+            kois = kois.Where(k => k.AuctionStatus == AuctionStatus.OnGoing
+                    && k.StartTime <= DateTime.Now
+                    && k.EndTime >= DateTime.Now).ToList();
+
+            return kois;
         }
     }
 }

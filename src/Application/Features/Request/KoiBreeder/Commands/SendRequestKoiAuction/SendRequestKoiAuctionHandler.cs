@@ -52,7 +52,7 @@ public class SendRequestKoiAuctionHandler : IRequestHandler<SendRequestKoiAuctio
         koi.CreatedTime = DateTime.UtcNow;
         koi.CreatedBy = user.FullName;
         koi.BreederID = user.Id;
-        koi.EndTime = (request.StartTime ?? DateTime.Now).AddMinutes(1);
+        koi.EndTime = (request.StartTime ?? DateTime.UtcNow).AddMinutes(5);
         koi.AuctionStatus = AuctionStatus.NotStarted;
         koi.AuctionRequestStatus = AuctionRequestStatus.Pending;
 
