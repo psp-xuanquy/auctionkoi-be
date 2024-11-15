@@ -29,8 +29,7 @@ namespace KoiAuction.Domain.Repositories
                     .ThenInclude(bid => bid.Bidder)
                 .ToListAsync(cancellationToken);
 
-            kois = kois.Where(k => k.AuctionStatus == AuctionStatus.OnGoing
-                    && k.StartTime <= DateTime.Now).ToList();
+            kois = kois.Where(k => k.AuctionStatus == AuctionStatus.OnGoing).ToList();
 
             return kois;
         }
