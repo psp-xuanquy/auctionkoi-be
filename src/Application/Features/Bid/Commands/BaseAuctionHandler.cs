@@ -45,13 +45,7 @@ public abstract class BaseAuctionHandler
 
     protected async Task<KoiEntity> GetKoiForAuction(string koiId, string auctionMethod, CancellationToken cancellationToken)
     {
-        var koi = await _koiRepository.FindAsync(k => k.ID == koiId
-            && k.AuctionStatus == AuctionStatus.OnGoing
-            && k.StartTime <= DateTime.Now
-            && k.EndTime >= DateTime.Now
-            && k.AuctionMethod.Name == auctionMethod
-            && k.DeletedTime == null,
-            cancellationToken);
+        var koi = await _koiRepository.FindAsync(k => k.ID == koiId, cancellationToken);
         
         if (koi == null)
         {
@@ -68,8 +62,6 @@ public abstract class BaseAuctionHandler
     {
         var koi = await _koiRepository.FindAsync(k => k.ID == koiId
             && k.AuctionStatus == AuctionStatus.OnGoing
-            && k.StartTime <= DateTime.Now
-            && k.EndTime >= DateTime.Now
             , cancellationToken);
         
         if (koi == null)

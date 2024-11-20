@@ -31,9 +31,7 @@ public class PlaceBidHandler : IRequestHandler<PlaceBidCommand, string>
     public async Task<string> Handle(PlaceBidCommand request, CancellationToken cancellationToken)
     {
         var koi = await _koiRepository.FindAsync(k => k.ID == request.KoiId
-            && k.AuctionStatus == AuctionStatus.OnGoing
-            && k.StartTime <= DateTime.Now
-            && k.EndTime >= DateTime.Now
+            && k.AuctionStatus == AuctionStatus.OnGoing          
             , cancellationToken);
 
         if (koi == null)

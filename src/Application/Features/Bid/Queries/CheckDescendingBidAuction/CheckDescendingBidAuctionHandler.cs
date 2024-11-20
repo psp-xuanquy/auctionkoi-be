@@ -27,8 +27,6 @@ namespace Application.Features.Bid.Queries.CheckDescendingBidAuction
         {
             var koi = await _koiRepository.FindAsync(k => k.ID == request.KoiId
             && k.AuctionStatus == AuctionStatus.OnGoing
-            && k.StartTime <= DateTime.Now
-            && k.EndTime >= DateTime.Now
             , cancellationToken);
 
             if (koi == null)

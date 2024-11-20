@@ -35,8 +35,8 @@ namespace KoiAuction.Domain.Entities
         {
             KoiID = koiId ?? throw new ArgumentNullException(nameof(koiId));
 
-            if (bidAmount < initialPrice)
-                throw new ArgumentException($"Bid amount must be at least the initial price of {initialPrice:C}");
+            //if (bidAmount < initialPrice)
+            //    throw new ArgumentException($"Bid amount must be at least the initial price of {initialPrice:C}");
 
             if (bidAmount > userBalance)
                 throw new ArgumentException("Bid amount cannot exceed the user's balance.");

@@ -25,9 +25,7 @@ namespace Application.Features.Koi.Queries.GetActiveAuctionByKoiId
         public async Task<KoiResponse> Handle(GetActiveAuctionByKoiIdQuery request, CancellationToken cancellationToken)
         {
             var koi = await _koiRepository.FindAsync(x => x.ID == request.Id
-                && x.AuctionStatus == AuctionStatus.OnGoing
-                && x.StartTime <= DateTime.Now
-                && x.EndTime >= DateTime.Now
+                && x.AuctionStatus == AuctionStatus.OnGoing           
                 && x.DeletedBy == null 
                 && x.DeletedTime == null
                 , cancellationToken);
